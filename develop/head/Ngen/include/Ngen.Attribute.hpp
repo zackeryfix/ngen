@@ -26,48 +26,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_HPP
-#define __NGEN_HPP
+#ifndef __NGEN_ATTRIBUTE_HPP
+#define __NGEN_ATTRIBUTE_HPP
 
-#include "Build.Documentation.hpp"
-#include "Build.Token.hpp"
-#include "Build.Configuration.hpp"
-#include "Build.Macro.hpp"
-#include "Build.Logic.hpp"
-#include "Build.External.hpp"
-
-#include "Ngen.Typedefs.hpp"
-#include "Ngen.Trait.hpp"
-#include "Ngen.Cast.hpp"
-#include "Ngen.Memory.hpp"
-#include "Ngen.Algorithm.hpp"
-#include "Ngen.Reference.hpp"
-#include "Ngen.KeyValuePair.hpp"
-#include "Ngen.Calculator.hpp"
-#include "Ngen.Container.hpp"
-
-#include "Ngen.Delegate.hpp"
-#include "Ngen.StaticDelegate.hpp"
-
-#include "Ngen.Array.hpp"
-#include "Ngen.String.hpp"
-#include "Ngen.List.hpp"
-#include "Ngen.Map.hpp"
-
-#include "Ngen.Encoding.hpp"
-#include "Ngen.AsciiEncoding.hpp"
-#include "Ngen.Text.hpp"
 #include "Ngen.Mirror.hpp"
-#include "Ngen.Event.hpp"
-#include "Ngen.Exception.hpp"
-#include "Ngen.DateTime.hpp"
-#include "Ngen.Native.hpp"
+#include "Ngen.Array.hpp"
 
-#include "Ngen.Object.hpp"
-//#include "Ngen.Attribute.hpp"
-//#include "Ngen.Type.hpp"
-//#include "Ngen.Assembly.hpp"
+namespace Ngen {
+	class ngen_api Attribute {
+	public:
+		Attribute(const mirror& identity) : mIdentity(identity) {}
+		Attribute(const mirror& identity, const Array<mirror>& parents) : mIdentity(identity), mParents(parents) {}
+		Attribute(const Attribute& copy) : mIdentity(copy.mIdentity), mParents(copy.mParents) {}
 
-#include "Ngen.Console.hpp"
+		bool operator==(const Attribute& rhs) const {
+			return rhs.mIdentity == this->mIdentity;
+		}
 
-#endif // __NGEN_HPP
+		bool operator!=(const Attribute& rhs) const {
+			return rhs.mIdentity != this->mIdentity;
+		}
+
+		/** @brief Determines if the attribute inherited another attribute. */
+		bool IsTypeOf(const mirror& identity) const {
+			for(uword i = 0; i < mParents.Length(); ++i) {
+				if(mParents->Begin(i)->mIdentity == identity) {
+					return true;
+				} else if(mParents->Begin(i)->IsTypeOf(identity)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+	protected:
+		mirror mIdentity;
+		Array<Attribute*> mParents;
+	};
+}
+#endif // __NGEN_ATTRIBUTE_HPP

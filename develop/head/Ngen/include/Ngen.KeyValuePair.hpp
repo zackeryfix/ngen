@@ -39,7 +39,7 @@ namespace Ngen {
       // Construction/Deconstruction -------------------------------------------
 
       KeyValuePair(TKey key, TValue value) : Key(key), Value(value) {}
-      KeyValuePair(const KeyValuePair& copy) : Key(copy.mKey), Value(copy.mValue) {}
+      KeyValuePair(const KeyValuePair& copy) : Key(copy.Key), Value(copy.Value) {}
 
       // Operators -------------------------------------------------------------
 

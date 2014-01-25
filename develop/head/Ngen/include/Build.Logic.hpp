@@ -31,8 +31,6 @@ THE SOFTWARE.
 
 #include "Build.Macro.hpp"
 #include "Build.Configuration.hpp"
-#include "Build.External.hpp"
-
 
 /** @brief The compiler used to build the framework source code. */
 #if defined(__GNUC__)
@@ -123,7 +121,7 @@ THE SOFTWARE.
 #endif
 
 /** @brief Used to export or import public symbols from the framework. */
-#if TKN_PLATFORMID == TKNVAL_PLATFORMID_WINDOWS
+#if _tkn_Platform == _tknval_Platform_Windows
 #  if defined(NGEN_EXPORT)
 #     define ngen_api __declspec(dllexport)
 #  else
@@ -158,7 +156,9 @@ THE SOFTWARE.
 #if _tkn_NoThrow_ == _tknval_True
 #	define THROW(e)
 #else
-#	define THROW(e) throw(e)
+#	define THROW(e) throw e
 #endif
+
+#define _tkn_Mute 9999991
 
 #endif // __NGEN_BUILD_LOGIC_HPP

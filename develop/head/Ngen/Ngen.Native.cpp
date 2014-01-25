@@ -26,13 +26,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_RTI_ATTRIBUTEINFO_HPP
-#define __NGEN_RTI_ATTRIBUTEINFO_HPP
-
+#include "Ngen.Native.hpp"
+#include "Ngen.Map.hpp"
 
 namespace Ngen {
-	namespace Rti {
+	typedef Map<mirror, Library> LibraryMap;
+
+	LibraryMap mNativeCache = LibraryMap();
+
+	bool System::Load(const mirror& path, Library*& lib) {
+		if(!Cache(path)) {
+			THROW(InvalidOperationException("Failed to cache library information before being loaded."));
+		}
+
+		lib = &mNativeCache[path];
+	}
+
+	bool System::Unload(const mirror& path) {
 
 	}
+
+	bool System::Cache(const mirror& path) {
+		if(!mNativeCache.ContainsKey(path)) {
+			mNativeCache[path] = Library(path);
+		}
+
+		return mNativeCache.ContainsKey(path);
+	}
 }
-#endif // __NGEN_RTI_HPP

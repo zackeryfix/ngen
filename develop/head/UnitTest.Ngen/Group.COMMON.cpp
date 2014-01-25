@@ -78,9 +78,9 @@ t_begin_test(COMMON, sizeof_primitive) [] (TestResult& result) {
 t_end_test
 
 t_begin_test(COMMON, Memory) [] (TestResult& result) {
-	byte* ptr = Memory::New<byte>(10);
-	byte* bigger = Memory::New<byte>(15);
-	byte* smaller = Memory::New<byte>(5);
+	Ngen::byte* ptr = Memory::New<Ngen::byte>(10);
+	Ngen::byte* bigger = Memory::New<Ngen::byte>(15);
+	Ngen::byte* smaller = Memory::New<Ngen::byte>(5);
 
 	Memory::Delete(ptr);
 	Memory::Delete(bigger);

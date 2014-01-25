@@ -46,11 +46,11 @@ namespace Ngen {
 	 * an overloaded constructor that utilizes a 'readOnly' flag:
 	 *
 	 * @code
-	 * text abc = const_text("Abc");  // read-only
-	 * text Abc = text(abc, false);   // writeable copy of 'abc'
+	 * text r = const_text("r");  // read-only
+	 * text rw = text(abc, false);   // writeable copy of 'abc'
 	 *
-	 * Abc += abc; // == "Abcabc"
-	 * abc += Abc; // !InvalidOperationException - 'abc' is read-only!
+	 * rw += r; // == "rw"
+	 * r += rw; // !InvalidOperationException - 'abc' is read-only!
 	 * @endcode
 	 */
    template<typename TEncoding>
@@ -58,6 +58,7 @@ namespace Ngen {
    public:
 		/** @brief The character data-type used by the encoded text. */
       typedef typename TEncoding::TChar TChar;
+
       /** @brief A typedef representing the class without template decorations. */
       typedef Text<TEncoding> TSelf;
 
@@ -276,12 +277,12 @@ namespace Ngen {
 				THROW(InvalidParameterException("The given parameter 'at' must be greater than the length of the text."));
 			}
 
-			return mData + at;
+			return (TChar*)(mData + at);
 		}
 
 		/** @brief Gets a pointer referencing the last character in the text. */
 		TChar* End() const {
-			return mData + mLength - 1;
+			return (TChar*)(mData + (mLength - 1));
 		}
 
 		/** @brief Gets the pointer location to the first occurrence of the given character.
@@ -351,25 +352,25 @@ namespace Ngen {
 		 * @return The text that was read.
 		 */
 		TSelf ReadTo(TChar c) const {
-			uword start = 0;
-			return ReadTo(c, start);
+			uword from = 0;
+			return ReadTo(c, inref from);
 		}
 
 		/** @brief Reads text from the string until the given character is discovered.
-		 * @param start The character index within the text to begin reading from, and a place to
+		 * @param from The character index within the text to begin reading from, and a place to
 		 * store the stopping location when the function terminates.
 		 * @param c The character, if found, to stop at.
 		 * @return The text that was read.
 		 */
-		TSelf ReadTo(TChar c, uword& start) const {
+		TSelf ReadTo(TChar c, uword& from) const {
 			if(IsNullOrEmpty()) {
 				THROW(NullReferenceException("Unable to read from text that is null or empty!"));
-			} else if(start >= mLength) {
-				THROW(InvalidParameterException("The parameter 'start' cannot be greater than the length of the text!"));
+			} else if(from >= mLength) {
+				THROW(InvalidParameterException("The parameter 'from' cannot be greater than the length of the text!"));
 			}
 
 			TSelf result = TSelf(mLength);
-			TChar* begin = mData + start;
+			TChar* begin = mData + from;
 
 			do {
 				if(*begin == c) {
@@ -377,6 +378,7 @@ namespace Ngen {
 				}
 
 				result += *begin;
+				from++;
 			} while(++begin != End());
 
 			return TSelf((TSelf&&)result);
@@ -457,6 +459,22 @@ namespace Ngen {
 			}
 
 			return Array<TSelf>((Array<TSelf>&&)result);
+		}
+
+		/** @brief Gets the text that falls between the first set of matching characters. */
+		bool Between(TChar lhs, TChar rhs, TSelf& ref) const {
+			ref = TSelf();
+
+			uword from = 0;
+			TSelf tmp = this->ReadTo(lhs, inref from);
+			if(this->operator!=(tmp)) {
+				ref = this->ReadTo(rhs, inref from);
+				if(!ref.IsNullOrEmpty() && this->operator!=(ref)) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/** @brief Determines if the text is null or empty. */

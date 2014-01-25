@@ -144,7 +144,7 @@ namespace Ngen {
 
       byte& operator[](uword index) {
          if(index >= mLength) {
-            throw InvalidParameterException("The given parameter 'index' cannot be greater-than the length of the string!");
+            THROW(InvalidParameterException("The given parameter 'index' cannot be greater-than the length of the string!"));
          }
 
          return *(mData + index);

@@ -29,12 +29,9 @@ THE SOFTWARE.
 #ifndef __NGEN_TYPEDEFS_HPP
 #define __NGEN_TYPEDEFS_HPP
 
-#include "Build.Logic.hpp"
+#include "Build.External.hpp"
 
 namespace Ngen {
-   /** @addtogroup integralprimitives
-    * @{
-    */
    /** @brief An 8-bit wide unsigned integer value. */
    typedef unsigned char uint8;
 
@@ -127,10 +124,13 @@ namespace Ngen {
    	return rhs == null;
 	}
 
-	/** @brief A data-structure used to represent void. Needed for use with delegates and events. */
+	/** @brief A data-structure used to represent void. Needed for use with delegates, events, and callbacks. */
    struct void_t {
    	void_t() {}
    	void_t(const void_t& copy) {}
+   	//void_t& operator=(const void_t& rhs) const { return rhs; }
+   	bool operator==(const void_t& rhs) const { return true; }
+   	bool operator!=(const void_t& rhs) const { return false; }
 	};
 
 	/** @brief Recursive structure used to represent the indices required for accessing a template parameter pack. */
@@ -156,7 +156,19 @@ namespace Ngen {
 	using pack_indices_t = typename make_index_pack_t<sizeof...(Types)>::type;
 
 
-   /** @} */
+	template<typename T> struct typename_t {
+		const char8* result() { return "unknown"; }
+	};
+
+	#define _define_typename(T, typeName) template<> struct typename_t<T> {\
+		static const char8* __m;\
+		static const char8* result() {\
+			return __m;\
+		}\
+	};\
+	const char8* typename_t<T>::__m = typeName;
+
+	#define typenameof(T) typename_t<T>::result()
 
    // XXXX: Primitive Data-Type Registration -----------------------------------
    __make_primitive(int8);

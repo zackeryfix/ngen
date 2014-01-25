@@ -61,21 +61,6 @@ int main(int32 length, const char** args) {
    return 0;
 }
 
-/* Entity.ncc
-space MyNamespace {
-   public type Entity : GameObject {
-      ctor() {
-			this->X = 0;
-			this->Y = 0;
-		}
-
-      dtor() {}
-
-		public real X[auto, protected auto];
-		public real Y[auto, protected auto];
-   }
-}
-*/
 
 bool ToConsole(List<TestGroupResult> results) {
 	List<TestGroupResult>::Node* group = results.Begin();

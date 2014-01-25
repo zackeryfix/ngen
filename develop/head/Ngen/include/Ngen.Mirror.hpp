@@ -50,6 +50,12 @@ namespace Ngen {
 		 */
 		Mirror(const Mirror& copy) : mLongName(copy.mLongName), mHashcode(copy.mHashcode) {}
 
+		/** @brief Constructor. Copy. (const Mirror&).
+		 * @param copy The unique identity being representing in the mirror.
+		 */
+		Mirror(Mirror&& move) : mLongName((text&&)move.mLongName), mHashcode(move.mHashcode) {}
+
+
 		/** @brief operator=(const Mirror&). */
 		Mirror& operator=(const Mirror& rhs) {
 			mHashcode = rhs.mHashcode;
@@ -65,7 +71,7 @@ namespace Ngen {
 
 		/** @brief operator!=(const Mirror&). */
 		bool operator!=(const Mirror& rhs) const {
-			return rhs.mHashcode != rhs.mHashcode;
+			return rhs.mHashcode != mHashcode;
 		}
 
 		/** @brief Gets the mirror represented as a hash-code. */
@@ -82,6 +88,19 @@ namespace Ngen {
 		text mLongName;
 		uword mHashcode;
 	};
+
+
+	typedef Mirror mirror;
+
+#	define const_mirror(s) mirror(text(s, true))
+
+	/** @brief A logic structure used by the trait class for determining if a
+    * typename is movable.
+    */
+   template<typename T> mirror mirrorof() {
+   	return mirror(const_text(typenameof(T)));
+	};
+
 }
 
 

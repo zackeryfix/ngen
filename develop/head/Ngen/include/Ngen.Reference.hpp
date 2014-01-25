@@ -32,11 +32,9 @@ THE SOFTWARE.
 namespace Ngen {
    /** @brief A class that maintains the reference count of an object instance. */
    class Reference {
-      uword mCount;
-
    public:
       /** @brief Constructor. Default. */
-      Reference() : mCount(0) {}
+      Reference() : mIsValid(true), mCount(0) {}
 
       /** @brief Increments the reference count by one. */
       Reference& Increment() {
@@ -54,6 +52,19 @@ namespace Ngen {
       uword Current() const {
          return mCount;
       }
+
+      void IsValid(bool validity) {
+			mIsValid = validity;
+      }
+
+      bool IsValid() const {
+			return mIsValid;
+      }
+
+	protected:
+		bool mIsValid;
+      uword mCount;
+
    };
 }
 #endif // __NGEN_REFERENCECOUNT_HPP

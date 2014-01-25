@@ -101,7 +101,7 @@ namespace Ngen {
        */
       template<typename T> static void UnknownCopy(const unknown from, unknown& to) {
       	byte* ptr = (byte*)to;
-			Memory::Copy((byte*)from, ptr, sizeof(T));
+			Copy((byte*)from, ptr, sizeof(T));
       }
 
 		/** @brief Performs a memory copy operation at a given address.
@@ -109,14 +109,21 @@ namespace Ngen {
        */
 		template<typename T> static void UnknownPlace(unknown& at, const unknown from) {
       	byte* ptr = (byte*)at;
-			Memory::Copy((byte*)from, ptr, sizeof(T));
+			Copy((byte*)from, ptr, sizeof(T));
       }
 
 		/** @brief Allocates a new memory block based on the size of the given typename.
        * @param count The number of structures (typeof(T)) to allocate.
        */
 		template<typename T> static void UnknownNew(unknown& at, uword count = 1) {
-      	at = (unknown)Memory::New<T>(count);
+      	at = (unknown)New<T>(count);
+      }
+
+		/** @brief A template that deletes a previously allocated memory block.
+       * @param at The memory address that points the memory block being freed.
+       */
+      template<typename T = byte> static void UnknownDelete(unknown* at) {
+         Delete<T>((T*)at);
       }
    };
 

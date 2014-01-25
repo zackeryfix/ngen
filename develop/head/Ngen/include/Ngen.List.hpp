@@ -189,7 +189,7 @@ namespace Ngen {
       }
 
       /** @brief Gets the last node in the list. */
-      Node* End() {
+      Node* End() const {
          return mTail;
       }
 
@@ -349,15 +349,15 @@ namespace Ngen {
          if(mLength == 0) {
             return Array<T>::Empty;
          } else if(start > mLength) {
-            throw OutOfRangeException("The given argument 'start' cannot be larger than the length of the list.");
+            THROW(OutOfRangeException("The given argument 'start' cannot be larger than the length of the list."));
          } else if(length > mLength) {
-            throw InvalidParameterException("The given argument 'length' cannot be greater-than the length of the list.");
+            THROW(InvalidParameterException("The given argument 'length' cannot be greater-than the length of the list."));
          } else if(length == 0) {
             length = mLength;
          }
 
          if(start > length) {
-            throw InvalidParameterException("The given argument 'start' cannot be greater-than the given 'length' argument.");
+            THROW(InvalidParameterException("The given argument 'start' cannot be greater-than the given 'length' argument."));
          }
 
          Array<T> result = Array<T>(length);

@@ -25,49 +25,31 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+*
+
+#include "Ngen.Rti.TypeInfo.hpp"
+
+
+namespace Ngen {
+	typedef Map<mirror, Assembly> AssemblyMap;
+	struct Library {
+		mirror RelativePath;
+		AssemblyMap Registered;
+	};
+
+	typedef Map<mirror, Library> LibraryMap;
+
+	LibraryMap mRtiNative; // assemblies required by the reflection engine (the ngen framework)
+	LibraryMap mRtiLoaded; // any external libraries loaded during runtime that contained reflected information
+	LibraryMap mRtiCache; // a set of unloaded assemblies that have been registered to a global cache
+
+	namespace Rti {
+
+	}
+}
+
+TypeInfo* wNewTypeInfo(const TypeInfo& info) {
+
+}
 */
-#ifndef __NGEN_HPP
-#define __NGEN_HPP
 
-#include "Build.Documentation.hpp"
-#include "Build.Token.hpp"
-#include "Build.Configuration.hpp"
-#include "Build.Macro.hpp"
-#include "Build.Logic.hpp"
-#include "Build.External.hpp"
-
-#include "Ngen.Typedefs.hpp"
-#include "Ngen.Trait.hpp"
-#include "Ngen.Cast.hpp"
-#include "Ngen.Memory.hpp"
-#include "Ngen.Algorithm.hpp"
-#include "Ngen.Reference.hpp"
-#include "Ngen.KeyValuePair.hpp"
-#include "Ngen.Calculator.hpp"
-#include "Ngen.Container.hpp"
-
-#include "Ngen.Delegate.hpp"
-#include "Ngen.StaticDelegate.hpp"
-
-#include "Ngen.Array.hpp"
-#include "Ngen.String.hpp"
-#include "Ngen.List.hpp"
-#include "Ngen.Map.hpp"
-
-#include "Ngen.Encoding.hpp"
-#include "Ngen.AsciiEncoding.hpp"
-#include "Ngen.Text.hpp"
-#include "Ngen.Mirror.hpp"
-#include "Ngen.Event.hpp"
-#include "Ngen.Exception.hpp"
-#include "Ngen.DateTime.hpp"
-#include "Ngen.Native.hpp"
-
-#include "Ngen.Object.hpp"
-//#include "Ngen.Attribute.hpp"
-//#include "Ngen.Type.hpp"
-//#include "Ngen.Assembly.hpp"
-
-#include "Ngen.Console.hpp"
-
-#endif // __NGEN_HPP

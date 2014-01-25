@@ -33,7 +33,7 @@ namespace Ngen {
 
    template<typename T> struct Cast {
 
-      static inline unknown To(T value) {
+      static inline unknown To(const T& value) {
          return (unknown)&value;
       }
 
@@ -77,7 +77,7 @@ namespace Ngen {
 
    template<typename T> struct Cast<const T> {
 
-      static inline unknown To(const T value) {
+      static inline unknown To(const T& value) {
          return (unknown)&value;
       }
 
@@ -97,7 +97,6 @@ namespace Ngen {
       }
    };
 
-
    template<> struct Cast<unknown&> {
       static inline unknown To(unknown& value) {
          return value;
@@ -108,7 +107,7 @@ namespace Ngen {
       }
    };
 
-    template<> struct Cast<unknown> {
+	template<> struct Cast<unknown> {
       static inline unknown To(unknown value) {
          return value;
       }
@@ -118,7 +117,7 @@ namespace Ngen {
       }
    };
 
-    template<> struct Cast<void_t> {
+	template<> struct Cast<void_t> {
 
       static inline unknown To(void_t value) {
          return 0;

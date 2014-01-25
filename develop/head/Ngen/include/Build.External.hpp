@@ -29,7 +29,17 @@ THE SOFTWARE.
 #ifndef __NGEN_BUILD_EXTERNAL_HPP
 #define __NGEN_BUILD_EXTERNAL_HPP
 
+#include "Build.Logic.hpp"
+
 #include <exception>
 #include <new>
+
+#if _tkn_Platform == _tknval_Platform_Windows
+#	include <windows.h>
+#elif _tkn_Platform == _tknval_Platform_Linux
+#	include <dlfcn.h>
+#elif _tkn_Platform == _tknval_Platform_Mac
+#	include <dlfcn.h>
+#endif
 
 #endif // __NGEN_BUILD_EXTERNAL_HPP

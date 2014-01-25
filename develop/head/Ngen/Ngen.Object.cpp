@@ -27,6 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #include "Ngen.Object.hpp"
+#include "Ngen.Type.hpp"
 
 namespace Ngen {
 	Object __nullObject = Object();
@@ -34,10 +35,10 @@ namespace Ngen {
 		return __nullObject;
 	}
 
-	void Object::pInit() {
+	void Object::pInitialize() {
 		if(!mIsReadonly) {
 			//byte* p = (byte*)mThis;
-			//mThis = (unknown)Memory::New<byte>(mType->Size());
+			//mThis = (unknown)memory::New<byte>(mType->Size());
 			//Memory::Copy<byte>((byte*)mThis, p, mType->Size());
 			mReference = new Reference();
 			mReference->Increment();
@@ -46,11 +47,11 @@ namespace Ngen {
 
 	void Object::pSet(unknown _this, Type* type, Reference* reference, bool readOnly) {
 		mThis = _this;
-		//mType = type;
+		mType = type;
 		mIsReadonly = readOnly;
 		mReference = reference;
 
-		pInit();
+		this->pInitialize();
 	}
 
 	void Object::pThrowIfReadonly() const {
@@ -65,12 +66,22 @@ namespace Ngen {
 		}
 
 		if(!mIsReadonly) {
-			if(mReference->Decrement().Current() == 0) {
-				Memory::Delete((byte*)mThis); //mType->Dtor(mThis);
-				mThis = null;
+			if(mReference->IsValid()) {
+				mReference->Decrement();
+				if(mReference->Current() <= 0) {
+					delete mReference;
+					mReference = null;
 
-				mIsReadonly = false;
-				delete mReference;
+					if(pIsTypeInstace()) {
+						mType->DestroyInstance(mThis);
+					} else {
+						memory::Delete<byte>((byte*)mThis);
+					}
+
+					mThis = null;
+					mType = null;
+					mIsReadonly = true;
+				}
 			}
 		}
 	}

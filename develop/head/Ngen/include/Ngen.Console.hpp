@@ -33,10 +33,6 @@ THE SOFTWARE.
 #include "Ngen.Text.hpp"
 
 namespace Ngen {
-   /** @addtogroup corecomponents
-    * @{
-    */
-
    /** @brief A static instance used to handle IO for the console input/output streams.
     * @remarks The console is only available for 'Console' applications.
     */
@@ -67,19 +63,24 @@ namespace Ngen {
       /** @brief Appends a null terminated string to the console output stream.
        * @param str A pointer to the first character of the string being appended.
        */
-      static void Write(const text& str) { Write(str.Data()); }
+      static void Write(const text& str) {
+      	Write(str.Data());
+		}
 
       /** @brief Appends a null terminated string to the console output stream with a newline terminator.
        * @param str A pointer to the first character of the string being appended.
        */
-      static void WriteLine(const text& str) { WriteLine(str.Data()); }
+      static void WriteLine(const text& str) {
+      	WriteLine(str.Data());
+		}
 
       /** @brief Appends a label with the given max width to the console output stream.
        * @param width The maximum number characters allowed for the label.
        * @param str A pointer to the first character of the string being appended.
        */
-      static void WriteLabel(uword width, const text& str) { WriteLabel(width, str.Data()); }
+      static void WriteLabel(uword width, const text& str) {
+      	WriteLabel(width, str.Data());
+		}
    };
 }
-
 #endif // __NGEN_CONSOLE_HPP

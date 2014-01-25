@@ -81,7 +81,7 @@ t_begin_test(class_Object, StaticCall) [] (TestResult& result) {
 	((Delegate*)&staticFunc)->Call<void_t, void_t, real&, real&>(0, x, y);
 	((Delegate*)&staticFunc)->operator()(null, args);
 
-	if(x != y) {
+	if(x != y || x != 100) {
 		result.Error("Failed to invoke object delegate.");
 	}
 }t_end_test

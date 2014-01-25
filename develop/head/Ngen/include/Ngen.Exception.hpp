@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_EXCEPTION_HPP
 #define __NGEN_EXCEPTION_HPP
 
-#include "Build.Logic.hpp"
+#include "Build.External.hpp"
 
 namespace Ngen {
    /** @brief A general purpose exception message used by the framework. */

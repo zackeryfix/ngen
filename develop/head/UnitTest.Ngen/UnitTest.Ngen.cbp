@@ -59,6 +59,9 @@
 		<Unit filename="Group.class_List.cpp">
 			<Option virtualFolder="Group/" />
 		</Unit>
+		<Unit filename="Group.class_Map.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
 		<Unit filename="Group.class_Object.cpp">
 			<Option virtualFolder="Group/" />
 		</Unit>

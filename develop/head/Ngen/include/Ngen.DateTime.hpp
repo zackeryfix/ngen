@@ -26,10 +26,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_TIMER_HPP
-#define __NGEN_TIMER_HPP
+#ifndef __NGEN_DATETIME_HPP
+#define __NGEN_DATETIME_HPP
 
-#include "Build.Logic.hpp"
+#include "Build.External.hpp"
 
 namespace Ngen {
 
@@ -63,6 +63,7 @@ namespace Ngen {
    protected:
       DateTime() {}
 
+      uint64 mTickStamp;
       uint64 mFrequency;
    };
 
@@ -84,4 +85,4 @@ namespace Ngen {
    };
 }
 
-#endif // __NGEN_TIMER_HPP
+#endif // __NGEN_DATETIME_HPP

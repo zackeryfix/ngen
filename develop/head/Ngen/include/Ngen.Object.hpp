@@ -42,19 +42,19 @@ namespace Ngen {
 		Object() : mThis(null), mReference(null), mIsReadonly(true), mType(0) {}
 
 		Object(unknown _this, bool readOnly = true) : mThis(_this), mReference(0), mIsReadonly(readOnly), mType(0) {
-			pInit();
+			pInitialize();
 		}
 
 		Object(unknown _this, Type* type, bool readOnly = true) : mThis(_this), mReference(0), mIsReadonly(readOnly), mType(type) {
-			pInit();
+			pInitialize();
 		}
 
 		Object(const Object& copy) : mThis(copy.mThis), mReference(copy.mReference), mIsReadonly(copy.mIsReadonly), mType(copy.mType) {
-			pInit();
+			pInitialize();
 		}
 
 		Object(const Object& copy, bool readOnly) : mThis(copy.mThis), mReference(copy.mReference), mIsReadonly(readOnly), mType(copy.mType) {
-			pInit();
+			pInitialize();
 		}
 
 		Object(Object&& move) : mThis(move.mThis), mReference(move.mReference), mIsReadonly(move.mIsReadonly), mType(move.mType) {
@@ -63,6 +63,10 @@ namespace Ngen {
 				move.mReference = null;
 				move.mIsReadonly = true;
 			}
+		}
+
+		~Object() {
+			pClear(true);
 		}
 
 		bool operator==(const Object& rhs) const {
@@ -79,7 +83,7 @@ namespace Ngen {
 			}
 
 			pClear(true);
-			pSet(rhs.This(), rhs.GetType(), rhs.GetReference(), rhs.IsReadonly());
+			pSet(rhs.mThis, rhs.mType, rhs.mReference, rhs.mIsReadonly);
 
 			return *this;
 		}
@@ -105,10 +109,6 @@ namespace Ngen {
 			return *this;
 		}
 
-		~Object() {
-			pClear(true);
-		}
-
 		bool IsNull() const {
 			return isnull(mThis) || this == &Null() || this->operator==(Null());
 		}
@@ -129,7 +129,7 @@ namespace Ngen {
 			return mIsReadonly;
 		}
 
-		Reference* GetReference() const {
+		const Reference* GetReference() const {
 			return mReference;
 		}
 
@@ -147,10 +147,13 @@ namespace Ngen {
 		static Object New(unknown value, bool readOnly = false);
 
 	protected:
-		void pInit();
+		void pInitialize();
 		void pSet(unknown _this, Type* type, Reference* reference, bool readOnly);
 		void pThrowIfReadonly() const;
 		void pClear(bool ignoreReadonlyError);
+		bool pIsTypeInstace() const {
+			return !isnull(mType);
+		}
 
 		unknown mThis;
 		Reference* mReference;

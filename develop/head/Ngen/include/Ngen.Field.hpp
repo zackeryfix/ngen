@@ -26,39 +26,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_REFLECTION_HPP
-#define __NGEN_REFLECTION_HPP
+#ifndef __NGEN_FIELD_HPP
+#define __NGEN_FIELD_HPP
 
-#include "Ngen.Delegate.hpp"
+
+#include "Ngen.Trait.hpp"
 
 namespace Ngen {
-	class Type;
-
-	/** @brief The gateway into the frameworks reflected type information.
-	 */
-	class ngen_api Reflection final {
-
-		class TypeLibrary {
-			public:
-		};
-
-		Reflection();
-
+	/** @brief Represents a static or member field. */
+	class ngen_api Field {
 	public:
-		/** @brief A reflection of all reflected code elements. */
-		static Reflection* All();
+		virtual ~Field() {}
 
-		Reflection(text scopeName);
+		/** @brief Gets the value of the field. */
+		virtual unknown Get(unknown _this = 0) const pure;
 
-		Type* GetType(text typeName) pure;
-		Delegate* GetFunction(text signature);
-		Reflection
-	protected:
-		static const Reflection mAll;
+		/** @brief Sets the value of the field. */
+		virtual unknown Set(unknown _this, unknown value) const pure;
 
-		Mirror mScopeName;
-		friend class Type;
+		/** @brief Gets the size of the field (in bytes).
+		 */
+		uword Size() const pure;
+
+		template<T, TValue> T Get(T* +this, TValue value)
 	};
 }
-
-#endif // __NGEN_REFLECTION_HPP
+#endif // __NGEN_FIELD_HPP

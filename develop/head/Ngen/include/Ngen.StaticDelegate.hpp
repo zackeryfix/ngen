@@ -100,6 +100,8 @@ namespace Ngen {
 		/** @brief Determines if the delegate references a member function. */
       bool IsMember() const { return false; }
 
+		/** @brief Gets the number of parameters needed to perform a valid invocation. */
+		uword Length() const { return sizeof...(TParams); }
 
 		/** @brief Invokes the function being referenced by the delegate. */
       void Call(TParams... params) {
@@ -159,8 +161,6 @@ namespace Ngen {
       bool IsConst() const { return false; }
 
       bool IsMember() const { return false; }
-
-		bool IsLinq() const { return false; }
 
       TReturn Call(TParams... params) {
          return mFunction(params...);

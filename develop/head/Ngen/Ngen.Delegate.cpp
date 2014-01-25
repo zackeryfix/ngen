@@ -33,5 +33,4 @@ THE SOFTWARE.
 
 namespace Ngen {
 
-
 }

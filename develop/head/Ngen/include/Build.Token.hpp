@@ -33,15 +33,10 @@ THE SOFTWARE.
 
 // Custom Keywords -------------------------------------------------------------
 
-/** @addtogroup customkeywords
- * @{
- */
-
 /** @brief A cosmetic preprocessor token that is used for identifying arguments passed to
  * functions by reference.
  */
 #define inref
-
 
 /** @brief A cosmetic preprocessor token that is used for marking pure virtual member functions.
  */
@@ -51,13 +46,12 @@ THE SOFTWARE.
  */
 #define abstract
 
-/** @} */
+/** @brief A cosmetic preprocessor token that is used in place of the equal operator.
+ */
+#define equalto operator==
 
 // Build Tokens ----------------------------------------------------------------
 
-/** @addtogroup buildtokenvalues
- *  @{
- */
 /** @brief A token value representing an unknown value. */
 #define _tknval_Unknown 0
 
@@ -67,19 +61,12 @@ THE SOFTWARE.
 /** @brief A token value representing an false value. */
 #define _tknval_False -1
 
-/** @addtogroup supportedcompilers
- * @{
- */
 /** @brief The Gnu C++ Compiler. */
 #define _tknval_Compiler_GCC 1
 
 /** @brief The Microsoft Visual C++ Compiler. */
 #define _tknval_Compiler_MSVC 2
-/** @} */
 
-/** @addtogroup supportedplatforms
- * @{
- */
 /** @brief The Microsoft Windows operating system. */
 #define _tknval_Platform_Windows 1
 
@@ -97,11 +84,7 @@ THE SOFTWARE.
 
 /** @brief The Linux kernel powered operating system. */
 #define _tknval_Platform_Linux 6
-/** @} */
 
-/** @addtogroup supportedregisterwidths
- * @{
- */
 /** @brief A register width of 32-bits. */
 #define _tknval_RegisterWidth_32 32
 
@@ -110,11 +93,7 @@ THE SOFTWARE.
 
 /** @brief A register width of 128-bits. */
 #define _tknval_RegisterWidth_128 128
-/** @} */
 
-/** @addtogroup supportedcpus
- * @{
- */
 /** @brief An Intel branded central processing unit. */
 #define _tknval_Cpu_Intel 1
 
@@ -126,11 +105,7 @@ THE SOFTWARE.
 
 /** @brief An PowerPC branded central processing unit. */
 #define _tknval_Cpu_PowerPC 4
-/** @} */
 
-/** @addtogroup supportedparallelcpus
- * @{
- */
 /** @brief An SSE instruction set for parallel computing techniques. */
 #define _tknval_ParallelCpu_SSE 1
 
@@ -139,27 +114,17 @@ THE SOFTWARE.
 
 /** @brief A VFP instruction set for parallel computing techniques. */
 #define _tknval_ParallelCpu_VFP 3
-/** @} */
 
-/** @addtogroup supportedendians
- * @{
- */
 /** @brief The big-endian bit-order. */
 #define _tknval_Endian_Big 1
 
 /** @brief The little-endian bit-order. */
 #define _tknval_Endian_Little 2
-/** @} */
 
-/** @addtogroup supportedunixlinuxdisplaymanagers
- * @{
- */
 /** @brief The X11 window/display manager used by most Linux/Unix distributions. */
 #define _tknval_UnixLinux_DisplayManager_X11 1
 
 /** @brief The Wayland window/display manager used in some Linux/Unix distributions. */
 #define _tknval_UnixLinux_DisplayManager_Wayland 2
-/** @} */
 
-/** @} */
 #endif // __NGEN_BUILD_TOKEN_HPP

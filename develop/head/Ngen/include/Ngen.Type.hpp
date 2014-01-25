@@ -32,90 +32,162 @@ THE SOFTWARE.
 #include "Ngen.List.hpp"
 #include "Ngen.Object.hpp"
 #include "Ngen.StaticDelegate.hpp"
+//#include "Ngen.Attribute.hpp"
 
 namespace Ngen {
+	class Assembly;
+
 	/** @brief */
 	class ngen_api Type {
 	public:
 		virtual ~Type() {}
 
-		/** @brief Gets the byte size of the data structure represented by the Type. */
+		/** @brief operator==(Type* const) */
+		virtual bool operator==(Type* const rhs) const pure;
+
+		/** @brief operator!=(Type* const) */
+		virtual bool operator!=(Type* const rhs) const pure;
+
+		/** @brief Gets the size (in bytes) of the data structure represented by the Type.
+		 */
 		virtual uword Size() const pure;
 
-		/** @brief Gets the full reflected name of the Type. */
+		/** @brief Gets the full reflected name of the Type.
+		 */
 		virtual text FullName() const pure;
 
-		/** @brief Gets the short name of the Type. */
+		/** @brief Gets the short name of the Type.
+		 */
 		virtual text Name() const pure;
 
-		/** @brief Gets a human readable string representing a Object known to be of the same Type. */
+		/** @brief Gets a human readable string representing a Object known to be of the same Type.
+		 */
 		//virtual text ToText(const Object& _this) const pure;
 
-		/** @brief Gets a method known to the Type using the given signature. */
-		//virtual Delegate* GetMethod(const text& signature) const pure;
+		/** @brief Gets a method known to the Type using the given signature.
+		 * @param signature The signature of the method nested within the scope of the type.
+		 * @return A delegate representing the method that was found.
+		 * @throw MissingReferenceException when the method signature could not be resolved to an actual function.
+		 */
+		virtual Delegate* GetMethod(const mirror& signature) const pure;
 
 		/** @brief Invokes a method known to the Type using the given signature. */
 		//virtual Object Invoke(const text& signature, Object _this, Object* params) const pure;
 
-		/** @brief Creates a new default Object instance of the Type. */
-		virtual Object CreateInstance() const pure;
+		/** @brief Creates a new default Object instance of the Type.
+		 */
+		virtual Object NewInstance() const pure;
 
-		/** @brief Creates a new Object instance of the Type from the copy of another same type Object. */
-		virtual Object CreateInstance(Object copy) const pure;
+		/** @brief Creates a new Object instance of the Type using unknown data.
+		 * @param data A pointer representing a the data that will encapsulate the new Object.
+		 * @param stackBound Determines if the object is stack bound, or heap bound.
+		 */
+		virtual Object NewInstance(unknown data, bool stackBound = true) const pure;
 
-		/** @brief Destroys an Object instance of the Type. */
+		/** @brief Creates a new Object instance of the Type from the copy of another same type Object.
+		 */
+		virtual Object CopyInstance(Object copy) const pure;
+
+		/** @brief Destroys an Object instance of the Type.
+		 */
 		virtual void DestroyInstance(Object _this) const pure;
 
 		/** @brief Determines if the Type is a base and does not inherit another type. */
-		//virtual bool IsBase() const pure;
-
-		/** @brief Determines if the Type is a concrete implementation with pure abstractions. */
-		//virtual bool IsAbstract() const pure;
-
-		/** @brief Determines if the Type is a pure abstraction with no concrete implementation. */
-		//virtual bool IsInterface() const pure;
-
-		/** @brief Determines if the Type has been finalized and can not be inherited. */
-		//virtual bool IsFinal() const pure;
+		virtual bool IsBase() const pure;
 
 		/** @brief Determines if the Type is considered a primitive structure. */
-		//virtual bool IsPrimitive() const pure;
+		virtual bool IsPrimitive() const pure;
 
-		/** @brief Determines if the Type inherits the given Type. */
-		//virtual bool IsChild(const Type* oftype) const pure;
-
-		/** @brief Determines if the Type has been inherited by the given Type. */
-		//virtual bool IsParent(const Type* oftype) const pure;
-
-		/** @brief Determines if the Type is a completely reflected or is minimally reflected. */
-		//virtual bool IsComplete() const pure;
-
-		/** @brief Determines if the Type should be treated as a namespace and should not be constructed. */
-		//virtual bool IsStatic() const pure;
-
-		/** @brief Determines if the Type can be copied or only referenced. */
-		//virtual bool IsCopyable() const pure;
-
-		/** @brief Gets an array of each Type the Type inherits. */
-		//virtual List<Type*> Parents() const pure;
-
-		/** @brief Gets an array of each Attribute assigned to the Type. */
-		//virtual List<Attribute*> Attributes() const pure;
-
-		/** @brief Gets an array of each Method available through the Type.
-		 * @param inherited Determines if inherited methods should be included. Default = true.
+		/** @brief Determines if the Type inherits the given Type.
+		 * @param parent A mirror that can be used to identify the type expected in the chain of inheritance.
+		 * @return True when the type is a child of the type belonging to the given mirror.
 		 */
-		//virtual List<Delegate*> Methods(bool inherited = true) const pure;
+		virtual bool IsChildOf(const mirror& parent) const pure;
 
-		/** @brief Gets an array of each Field available through the Type.
-		 * @param inherited Determines if inherited fields should be included. Default = true.
+		/** @brief Determines if the Type is inherited by the given Type.
+		 * @param child A mirror that can be used to identify the type expected in the chain of inheritance.
+		 * @return True when the type is a parent of the type belonging to the given mirror.
 		 */
-		//virtual List<Field*> Fields(bool inherited = true) const pure;
+		virtual bool IsParentOf(const mirror& child) const pure;
 
-		/** @brief Gets an array of each nested Type available through the Type.
+		/** @brief Determines if the Type can always be constructed as an object.
 		 */
-		//virtual List<Type*> Nested() const pure;
+		virtual bool IsConstructable() const pure;
 
+		/** @brief Determines if the Type is represented as pure namespace, which is always static and can never be constructed.
+		 */
+		virtual bool IsPureNamespace() const pure;
+
+		/** @brief Determines if the Type can be copied or only referenced.
+		 */
+		virtual bool IsCopyable() const pure;
+
+		/** @brief Determines if the type is public.
+		 */
+		virtual bool IsPublic() const pure;
+
+		/** @brief Determines if the type is protected.
+		 */
+		virtual bool IsProtected() const pure;
+
+		/** @brief Determines if the type is private.
+		 */
+		virtual bool IsPrivate() const pure;
+
+		/** @brief Determines if the type is a template for new types.
+		 */
+		virtual bool IsTemplate() const pure;
+
+		/** @brief Determines if the type is a base abstraction for new types.
+		 */
+		virtual bool IsAbstract() const pure;
+
+		/** @brief Determines if the type is a virtual interface for new types.
+		 */
+		virtual bool IsVirtual() const pure;
+
+		/** @brief Determines if the type is hidden from external processes.
+		 */
+		virtual bool IsHidden() const pure;
+
+		/** @brief Determines if the type is the final abstraction in a chain of inheritance.
+		 */
+		virtual bool IsFinal() const pure;
+
+		/** @brief Determines if the type is nested inside am upper level scope.
+		 */
+		virtual bool IsNested() const pure;
+
+		/** @brief Gets the assembly where the type is located.
+		 */
+		virtual Assembly* GetAssembly() const pure;
+
+		/** @brief Gets all the types that inherit this type.
+		 */
+		virtual Array<Type*> GetChildren() const pure;
+
+		/** @brief Gets all the types that are inherited by this type.
+		 */
+		virtual Array<Type*> GetParents() const pure;
+
+		/** @brief Gets all the types nested within this type, including non-constructable namespace types.
+		 */
+		virtual Array<Type*> GetNested() const pure;
+
+		/** @brief Gets the type (or namespace) where the type is nested.
+		 */
+		virtual Type* GetDirectory() const pure;
+
+	protected:
+		/** @brief Invalidates the data integrity of a given object.
+		 * @remarks Used to mark an object instance as bad, in cases where an object is
+		 * destroyed, but still being referenced.
+		 */
+		void pInvalidate(Object o) const  {
+			if(!isnull(o.mReference)) {
+				o.mReference->IsValid(false);
+			}
+		}
 	};
 }
 #endif // __NGEN_TYPE_HPP

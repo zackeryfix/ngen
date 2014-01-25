@@ -26,48 +26,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_HPP
-#define __NGEN_HPP
+#ifndef __NGEN_RTI_ASSEMBLYINFO_HPP
+#define __NGEN_RTI_ASSEMBLYINFO_HPP
 
-#include "Build.Documentation.hpp"
-#include "Build.Token.hpp"
-#include "Build.Configuration.hpp"
-#include "Build.Macro.hpp"
-#include "Build.Logic.hpp"
-#include "Build.External.hpp"
+#include "Ngen.Rti.TypeInfo.hpp"
 
-#include "Ngen.Typedefs.hpp"
-#include "Ngen.Trait.hpp"
-#include "Ngen.Cast.hpp"
-#include "Ngen.Memory.hpp"
-#include "Ngen.Algorithm.hpp"
-#include "Ngen.Reference.hpp"
-#include "Ngen.KeyValuePair.hpp"
-#include "Ngen.Calculator.hpp"
-#include "Ngen.Container.hpp"
+namespace Ngen {
+	namespace Rti {
 
-#include "Ngen.Delegate.hpp"
-#include "Ngen.StaticDelegate.hpp"
+		class ngen_api AssemblyInfo : public Assembly {
+		public:
+			AssemblyInfo(const mirror& library, const mirror& assemblyName) : mLibrary(library), mAssemblyName(assemblyName) {
 
-#include "Ngen.Array.hpp"
-#include "Ngen.String.hpp"
-#include "Ngen.List.hpp"
-#include "Ngen.Map.hpp"
+			}
 
-#include "Ngen.Encoding.hpp"
-#include "Ngen.AsciiEncoding.hpp"
-#include "Ngen.Text.hpp"
-#include "Ngen.Mirror.hpp"
-#include "Ngen.Event.hpp"
-#include "Ngen.Exception.hpp"
-#include "Ngen.DateTime.hpp"
-#include "Ngen.Native.hpp"
+		protected:
 
-#include "Ngen.Object.hpp"
-//#include "Ngen.Attribute.hpp"
-//#include "Ngen.Type.hpp"
-//#include "Ngen.Assembly.hpp"
+			mirror mAssemblyName;
+			Library* mLibrary;
+			NamespaceMap mNamespaces;
+			Array<Attribute*> mAttributes;
+		};
 
-#include "Ngen.Console.hpp"
+	}
+}
 
-#endif // __NGEN_HPP
+#endif // __NGEN_RTI_ASSEMBLYINFO_HPP

@@ -33,7 +33,6 @@ using namespace Ngen::Diagnostics;
 
 t_testgroup(class_Event);
 
-/*
 t_begin_test(class_Event, Subscribe5Invoke) [] (TestResult& result) {
 	auto func = StaticDelegate<>([] () {
 		Console::WriteLine("F.T.W.!");
@@ -42,23 +41,22 @@ t_begin_test(class_Event, Subscribe5Invoke) [] (TestResult& result) {
 	Event e = Event();
 	Delegate* d = (Delegate*)&func;
 
-	e += Event::Subscriber(0, d);
-	e += Event::Subscriber(0, d);
-	e += Event::Subscriber(0, d);
-	e += Event::Subscriber(0, d);
-	e += Event::Subscriber(0, d);
+	e += Callback(0, d);
+	e += Callback(0, d);
+	e += Callback(0, d);
+	e += Callback(0, d);
+	e += Callback(0, d);
 	if(e.Length() != 5) {
 		result.Error("Failed to correctly subscribe from event!");
 	}
-	e.Invoke<void_t>();
+	e.Fire<>();
 
-	e -= Event::Subscriber(0, d);
-	e -= Event::Subscriber(0, d);
+	e -= Callback(0, d);
+	e -= Callback(0, d);
 	if(e.Length() != 3) {
 		result.Error("Failed to correctly unsubscribe from event!");
 	}
-	e.Invoke<void_t>();
+	e.Fire<>();
 }
 t_end_test
-*/
 

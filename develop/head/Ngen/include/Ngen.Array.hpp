@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include "Ngen.Memory.hpp"
 #include "Ngen.Container.hpp"
+#include "Ngen.StaticDelegate.hpp"
 
 namespace Ngen {
    /** @brief A contiguous data structure for holding items contiguously in memory. */
@@ -139,11 +140,11 @@ namespace Ngen {
        */
       void Set(T* data, uword length, uword capacity, bool readOnly = false) {
          if(data == null) {
-            throw InvalidParameterException("The parameter 'data' cannot be null!");
+            THROW(InvalidParameterException("The parameter 'data' cannot be null!"));
          } else if(length == 0) {
-            throw InvalidParameterException("The parameter 'length' cannot be a zero!");
+            THROW(InvalidParameterException("The parameter 'length' cannot be a zero!"));
          } else if(capacity != 0 && length > capacity) {
-            throw InvalidParameterException("The parameter 'length' must be less-than or equal-to the parameter 'capacity'!");
+            THROW(InvalidParameterException("The parameter 'length' must be less-than or equal-to the parameter 'capacity'!"));
          }
 
          pClear(true);
@@ -266,6 +267,98 @@ namespace Ngen {
 			} while(End() != begin++);
 			return result;
 		}
+
+		/** @brief Iterates over each item and allocates them into a new collection based on a given predicate.
+		 * @param predicate A function or lambda used to filter out unwanted items.
+	    * @return An array of items that was collected after being filter using the predicate.
+		 */
+		TSelf Where(typename NonVoidStaticDelegate<bool, T&>::TFunction predicate) {
+			if(this->IsNullOrEmpty()) {
+				return Array<T&>();
+			}
+
+			TSelf result = TSelf(1);
+			for(uword i = 0; i < mLength; ++i) {
+				if(predicate(Begin(i))) {
+					result.Add(*Begin(i));
+				}
+			}
+
+			return TSelf((TSelf&&)result);
+		}
+
+		/** @brief Iterates over each item and allocates selected data into a new collection based on a different data type.
+		 * @param selector A function or lambda used to gather the required data.
+	    * @return An array of items that was collected after being transformed by using the selector.
+		 */
+		template<typename TSelect> Array<TSelect> Select(typename NonVoidStaticDelegate<TSelect, T&>::TFunction selector) {
+			if(this->IsNullOrEmpty()) {
+				return Array<TSelect>();
+			}
+
+			TSelf result = TSelf(1);
+			for(uword i = 0; i < mLength; ++i) {
+				result.Add(selector(*(mData+i)));
+			}
+
+			return Array<TSelect>((Array<TSelect>&&)result);
+		}
+
+		/** @brief Gets the last item in the array, or will throw an exception if the array does contain multiple items.
+		 */
+		T& Last() {
+			pThrowIfNullOrEmpty();
+			if(mLength == 1) {
+				THROW(InvalidOperationException("The array only contains a single item."));
+			}
+
+			return *(End());
+		}
+
+		/** @brief Gets the first item in the array.
+		 */
+		T& First() {
+			pThrowIfNullOrEmpty();
+			return *(Begin());
+		}
+
+		/** @brief Gets the only item in the array, or will throw an exception if the array contains multiple items.
+		 */
+		T& Single() {
+			pThrowIfNullOrEmpty();
+			if(mLength != 1) {
+				THROW(InvalidOperationException("The array contains multiple items."));
+			}
+
+			return *(mData);
+		}
+
+		template<typename TCast> Array<TCast> Recasted() const {
+			Array<TCast> result = Array<TCast>();
+			for(uword i = 0; i < this->mLength; ++i) {
+				result.Add((TCast)*(this->Begin(i)));
+			}
+
+			return Array<TCast>((Array<TCast>&&)result);
+		}
+
+		template<typename TCast> Array<TCast> Recasted(typename NonVoidStaticDelegate<TCast, T&>::TFunction caster) const {
+			Array<TCast> result = Array<TCast>();
+			for(uword i = 0; i < this->mLength; ++i) {
+				result.Add(caster(*this->Begin(i)));
+			}
+
+			return Array<TCast>((Array<TCast>&&)result);
+		}
+
+		template<typename TValue> TValue Accumulate(typename NonVoidStaticDelegate<TValue, T&>::TFunction accumulator) const {
+			TValue result = TValue();
+			for(uword i = 0; i < this->mLength; ++i) {
+				result += accumulator(this->Begin(i));
+			}
+
+			return result;
+		}
    protected:
       /** @brief Clears the items from the array, with an option to ignore read-only errors.
        * @param ignoreReadOnlyError Determines if the read-only flag should be checked before clearing the items.
@@ -289,6 +382,13 @@ namespace Ngen {
 		void pThrowIfReadonly() const {
          if(mIsReadonly) {
             throw InvalidOperationException("Cannot manipulate a read-only array!");
+         }
+      }
+
+		/** @brief Throws an InvalidOperationException if the array is read-only. */
+		void pThrowIfNullOrEmpty() const {
+         if(mLength == 0 || isnull(mData)) {
+            throw InvalidOperationException("The array is null or empty.");
          }
       }
 

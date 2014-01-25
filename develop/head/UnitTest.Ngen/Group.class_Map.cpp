@@ -26,19 +26,55 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_TABLE_HPP
-#define __NGEN_TABLE_HPP
 
-#include "Ngen.Memory.hpp"
-#include "Ngen.IContainer.hpp"
-#include "Ngen.List.hpp"
+#include "_External.hpp"
 
-namespace Ngen {
-   /** @brief A generic container of key-value pairs.
-    */
-   template<typename TKey, typename TValue>
-   class Map { // IContainer<TValue, TKey>
+using namespace Ngen;
+using namespace Ngen::Diagnostics;
 
-   };
-}
-#endif // __NGEN_ICOMPARABLE_HPP
+t_testgroup(class_Map);
+
+t_begin_test(class_Map, Add3) [] (TestResult& result) {
+	mirror ref;
+	Map<mirror, int32> map = Map<mirror, int32>();
+
+	ref = const_mirror("unknown");
+	map.Add(ref, 0);
+
+	ref = const_mirror("void");
+	map.Add(ref, 1);
+
+	ref = const_mirror(":D");
+	map.Add(ref, 2);
+
+	if(!map.ContainsKey(const_mirror(":D"))) {
+		result.Error(const_text(":("));
+	}
+
+	if(!map.ContainsKey(const_mirror("void"))) {
+		result.Error(const_text("'void' did not exist in map!"));
+	}
+
+	if(!map.ContainsKey(const_mirror("unknown"))) {
+		result.Error(const_text("''unknown' did not exist in map!"));
+	}
+}t_end_test
+
+
+t_begin_test(class_Map, Add1ModifyValue) [] (TestResult& result) {
+	mirror ref;
+	Map<mirror, int32> map = Map<mirror, int32>();
+
+	ref = const_mirror("unknown");
+	map.Add(ref, 13);
+
+	if(!map.ContainsKey(ref)) {
+		result.Error(const_text("Pair was not added to map!"));
+	}
+
+	map[ref] = 100;
+	int32 val = map[ref];
+	if(val != 100) {
+		result.Error("The value was not modified!");
+	}
+}t_end_test

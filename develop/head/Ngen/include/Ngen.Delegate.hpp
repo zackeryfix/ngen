@@ -33,9 +33,11 @@ THE SOFTWARE.
 #include "Ngen.Cast.hpp"
 
 namespace Ngen {
+	class Mirror;
+
 	/** @brief A data structure that represents the reference to a function.
 	*/
-   class Delegate {
+   class ngen_api Delegate {
    public:
 		/** @brief De-constructor. */
       virtual ~Delegate() {}
@@ -55,6 +57,9 @@ namespace Ngen {
 		/** @brief Determines if the delegate references a non-void function. */
       virtual bool IsNonVoid() const pure;
 
+		/** @brief Gets the number parameters that are needed for a valid invocation of the delegate. */
+		virtual uword Length() const pure;
+
 		/** @brief Invokes the function being referenced by the delegate. */
       template<typename TOwner, typename TReturn, typename... TParams>
       TReturn Call(TOwner* _this, TParams... params) {
@@ -71,22 +76,34 @@ namespace Ngen {
 
 			return Cast<TReturn>::From(ret);
 		}
+
+		/** @brief Gets the mirror that identifies the return type of the function call. */
+		virtual const char8* ReturnTypename() const pure;
+
+		/** @brief Gets the size (in bytes) for the return type of the function call. */
+		virtual uword ReturnSize() const pure;
    };
 
    template<typename TReturn, typename... TParams>
-   class NonVoidDelegate : public Delegate {
+   class ngen_api NonVoidDelegate : public Delegate {
    public:
       virtual ~NonVoidDelegate() {}
       virtual TReturn Call(TParams... params) pure;
       bool IsNonVoid() const { return true; };
+
+      const char8* ReturnTypename() const { return typenameof(TReturn); }
+      uword ReturnSize() const { return sizeof(TReturn); }
    };
 
    template<typename... TParams>
-   class VoidDelegate : public Delegate {
+   class ngen_api VoidDelegate : public Delegate {
    public:
       virtual ~VoidDelegate() {}
       virtual void Call(TParams... params) pure;
       bool IsNonVoid() const { return false; };
+
+      const char8* ReturnTypename() const { return null; }
+      uword ReturnSize() const { return 0; }
    };
 }
 

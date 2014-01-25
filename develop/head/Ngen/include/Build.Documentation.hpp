@@ -32,7 +32,7 @@ THE SOFTWARE.
 /* reserve words
 
  t_begin_test t_end_test const_text text ascii uint8 int8 uint16 int16 uint32 int32 uint64 int64 float32
- float64 float96 real char8 char16 char32 byte ubyte uknown word uword void_t trait delegate pure
+ float64 float96 real char8 char16 char32 byte ubyte unknown word uword void_t trait delegate pure
  t_testgroup cast calc time memory reflection call object reference inref THROW event unicode datetime
  cast trait mirror
 
