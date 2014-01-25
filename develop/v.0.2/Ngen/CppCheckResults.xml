@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<results>
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;DEBUG&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;_MSC_VER&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__APPLE_CC__&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__GNUC__&apos;." />
+    <error file="include\Ngen.Type.hpp" line="37" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__arm__&apos;." />
+    <error file="include\Ngen.List.hpp" line="67" id="cstyleCast" severity="style" msg="C-style pointer casting" />
+    <error file="include\Ngen.List.hpp" line="311" id="cstyleCast" severity="style" msg="C-style pointer casting" />
+    <error file="include\Ngen.Rti.Builders.hpp" line="21" id="class_X_Y" severity="style" msg="The code &apos;class ngen_api MethodBuilder {&apos; is not handled. You can use -I or --include to add handling of this code." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="39" id="class_X_Y" severity="style" msg="The code &apos;class ngen_api TypeBuilder {&apos; is not handled. You can use -I or --include to add handling of this code." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="86" id="class_X_Y" severity="style" msg="The code &apos;class ngen_api NamespaceBuilder {&apos; is not handled. You can use -I or --include to add handling of this code." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="75" id="cstyleCast" severity="style" msg="C-style pointer casting" />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;&apos;." />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;DEBUG&apos;." />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;_MSC_VER&apos;." />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__APPLE_CC__&apos;." />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__GNUC__&apos;." />
+    <error file="include\Ngen.Rti.Enums.hpp" line="6" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__arm__&apos;." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="40" id="uninitMemberVar" severity="style" msg="Member variable &apos;MethodInfo::mReturn&apos; is not initialized in the constructor." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="51" id="uninitMemberVar" severity="style" msg="Member variable &apos;MethodInfo::mReturn&apos; is not initialized in the constructor." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="38" id="class_X_Y" severity="style" msg="The code &apos;class ngen_api NamespaceInfo :&apos; is not handled. You can use -I or --include to add handling of this code." />
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;DEBUG&apos;." />
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;_MSC_VER&apos;." />
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__APPLE_CC__&apos;." />
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__GNUC__&apos;." />
+    <error file="include\Ngen.Rti.TypeInfo.hpp" line="34" id="syntaxError" severity="error" msg="Invalid number of character ({) when these macros are defined: &apos;__arm__&apos;." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="62" id="unusedFunction" severity="style" msg="The function &apos;AddFlag&apos; is never used." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="54" id="unusedFunction" severity="style" msg="The function &apos;AddParent&apos; is never used." />
+    <error file="Ngen.Console.cpp" line="46" id="unusedFunction" severity="style" msg="The function &apos;AlignLeft&apos; is never used." />
+    <error file="Ngen.Console.cpp" line="50" id="unusedFunction" severity="style" msg="The function &apos;AlignRight&apos; is never used." />
+    <error file="include\Ngen.Object.hpp" line="116" id="unusedFunction" severity="style" msg="The function &apos;As&apos; is never used." />
+    <error file="include\Ngen.Encoding.hpp" line="72" id="unusedFunction" severity="style" msg="The function &apos;Ascii&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="74" id="unusedFunction" severity="style" msg="The function &apos;Atan&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="82" id="unusedFunction" severity="style" msg="The function &apos;Atan2&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="54" id="unusedFunction" severity="style" msg="The function &apos;Ceil&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="50" id="unusedFunction" severity="style" msg="The function &apos;Ciel&apos; is never used." />
+    <error file="include\Ngen.Array.hpp" line="167" id="unusedFunction" severity="style" msg="The function &apos;Clear&apos; is never used." />
+    <error file="include\Ngen.Map.hpp" line="116" id="unusedFunction" severity="style" msg="The function &apos;ContainsKey&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="152" id="unusedFunction" severity="style" msg="The function &apos;CreateInstance&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="162" id="unusedFunction" severity="style" msg="The function &apos;DestroyInstance&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="72" id="unusedFunction" severity="style" msg="The function &apos;Destruct&apos; is never used." />
+    <error file="Ngen.AsciiEncoding.cpp" line="60" id="unusedFunction" severity="style" msg="The function &apos;Encode&apos; is never used." />
+    <error file="include\Ngen.Array.hpp" line="319" id="unusedFunction" severity="style" msg="The function &apos;First&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="42" id="unusedFunction" severity="style" msg="The function &apos;Floor&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="176" id="unusedFunction" severity="style" msg="The function &apos;GetAssembly&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="192" id="unusedFunction" severity="style" msg="The function &apos;GetDirectory&apos; is never used." />
+    <error file="include\Ngen.List.hpp" line="217" id="unusedFunction" severity="style" msg="The function &apos;Insert&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="123" id="unusedFunction" severity="style" msg="The function &apos;IsAbstract&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="167" id="unusedFunction" severity="style" msg="The function &apos;IsChildOf&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="103" id="unusedFunction" severity="style" msg="The function &apos;IsConstructable&apos; is never used." />
+    <error file="include\Ngen.Trait.hpp" line="61" id="unusedFunction" severity="style" msg="The function &apos;IsEqual&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="138" id="unusedFunction" severity="style" msg="The function &apos;IsFinal&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="133" id="unusedFunction" severity="style" msg="The function &apos;IsHidden&apos; is never used." />
+    <error file="include\Ngen.Object.hpp" line="112" id="unusedFunction" severity="style" msg="The function &apos;IsNull&apos; is never used." />
+    <error file="include\Ngen.Rti.NamespaceInfo.hpp" line="172" id="unusedFunction" severity="style" msg="The function &apos;IsParentOf&apos; is never used." />
+    <error file="include\Ngen.Trait.hpp" line="58" id="unusedFunction" severity="style" msg="The function &apos;IsPointerConst&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="113" id="unusedFunction" severity="style" msg="The function &apos;IsPrivate&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="108" id="unusedFunction" severity="style" msg="The function &apos;IsProtected&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="103" id="unusedFunction" severity="style" msg="The function &apos;IsPublic&apos; is never used." />
+    <error file="include\Ngen.Trait.hpp" line="57" id="unusedFunction" severity="style" msg="The function &apos;IsReference&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="88" id="unusedFunction" severity="style" msg="The function &apos;IsStatic&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="118" id="unusedFunction" severity="style" msg="The function &apos;IsTemplate&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="128" id="unusedFunction" severity="style" msg="The function &apos;IsVirtual&apos; is never used." />
+    <error file="include\Ngen.Callback.hpp" line="93" id="unusedFunction" severity="style" msg="The function &apos;MakeValid&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="86" id="unusedFunction" severity="style" msg="The function &apos;Move&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="66" id="unusedFunction" severity="style" msg="The function &apos;Reciprocal&apos; is never used." />
+    <error file="include\Ngen.List.hpp" line="251" id="unusedFunction" severity="style" msg="The function &apos;RemoveAny&apos; is never used." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="66" id="unusedFunction" severity="style" msg="The function &apos;RemoveFlag&apos; is never used." />
+    <error file="include\Ngen.Algorithm.hpp" line="132" id="unusedFunction" severity="style" msg="The function &apos;ReverseSort&apos; is never used." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="74" id="unusedFunction" severity="style" msg="The function &apos;SetDestructor&apos; is never used." />
+    <error file="include\Ngen.Rti.Builders.hpp" line="70" id="unusedFunction" severity="style" msg="The function &apos;SetModifierFlags&apos; is never used." />
+    <error file="include\Ngen.Array.hpp" line="326" id="unusedFunction" severity="style" msg="The function &apos;Single&apos; is never used." />
+    <error file="include\Ngen.Calculator.hpp" line="58" id="unusedFunction" severity="style" msg="The function &apos;Sqrt&apos; is never used." />
+    <error file="include\Ngen.Mirror.hpp" line="78" id="unusedFunction" severity="style" msg="The function &apos;ToHashcode&apos; is never used." />
+    <error file="include\Ngen.Map.hpp" line="129" id="unusedFunction" severity="style" msg="The function &apos;TryGetValue&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="102" id="unusedFunction" severity="style" msg="The function &apos;UnknownCopy&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="125" id="unusedFunction" severity="style" msg="The function &apos;UnknownDelete&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="118" id="unusedFunction" severity="style" msg="The function &apos;UnknownNew&apos; is never used." />
+    <error file="include\Ngen.Memory.hpp" line="110" id="unusedFunction" severity="style" msg="The function &apos;UnknownPlace&apos; is never used." />
+    <error file="include\Ngen.Rti.MethodInfo.hpp" line="174" id="unusedFunction" severity="style" msg="The function &apos;pMute&apos; is never used." />
+    <error file="include\Ngen.Text.hpp" line="557" id="unusedFunction" severity="style" msg="The function &apos;pShrink&apos; is never used." />
+    <error id="missingInclude" severity="style" msg="Cppcheck cannot find all the include files. Cppcheck can check the code without the include files found. But the results will probably be more accurate if all the include files are found. Please check your project&apos;s include directories and add all of them as include directories for Cppcheck. To see what files Cppcheck cannot find use --check-config." />
+</results>
