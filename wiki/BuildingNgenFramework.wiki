@@ -4,7 +4,7 @@
 
 Considering that the project is still in it's early stages of development, we decided not to design a robust make system for compiling the libraries.  This is because we may change the overall architecture of the frameworks source-tree and package structure as more shared systems are developed.  With that said, compiling the Ngen Framework is very simple, and can be accomplished in a matter of a few minutes.
 
-== CodeBlocks == 
+== IDE == 
 To begin, you will need two things, the CodeBlocks IDE and a supported C++ compiler.  The reason we choose CodeBlocks for development is because of it being cross-platform (Linux, Windows, and Mac), and because it can easily integrate almost all modern compilers into it's build system.
 
 To download CodeBlocks, please see their download page [http://www.codeblocks.org/downloads here] and download the package for your platform (without MingW if using Windows).
@@ -18,21 +18,44 @@ If your using Windows, you will need to download the latest TDM-GCC package for 
 Make sure the TDM-GCC binaries are in your PATH environment variable after installation.
 
 === Linux === 
-If you are using Linux, 'gcc' should be installed.  You may check the version by running:
+If you are using Linux, `gcc` should be installed.  You may check the version by running:
 {{{
 ~$: gcc --version
 }}}
-If version 4.8 or higher is not installed, please refer to your distrobutions package manager to acquire the latest version or upgrade the current 'gcc' package.
+If version 4.8 or higher is not installed, please refer to your distributions package manager to acquire the latest version or upgrade the current `gcc` package.
 
 == Subversion == 
 We are using SVN for our code repositories, so you will need to download the latest subversion package for your platform.  
 
 === Windows === 
-If using Windows, we suggest downloading TortoiseSVN from here.  Its very clean and simple to use. 
+If using Windows, we suggest downloading TortoiseSVN from [http://tortoisesvn.net/downloads.html here].  Its very clean and simple to use. 
 
 === Linux ===
+Please refer to your distributions package manager to acquire the latest version or upgrade the current `svn` package.
 
 === Checking out ===
-To check out the latest stable sources, use the following command:
+To check out the latest stable sources, use the following command inside a new folder of your choosing (for Windows, I use `C:\\ngen\` and for Linux, I use `\home\ngen`):
+{{{
+svn checkout http://ngen.googlecode.com/svn/develop/v0.2 ngenframework/v0.2
+}}}
 
-= Instructions =
+= Build Instructions =
+
+  # Navigate to the top-level directory of the Ngen Framework source tree and open the `codeblocks.workspace` file.
+  # After the workspace is loaded, make sure the current `Build Target` says `Debug`, and click on `Build->Build Workspace`.
+  # After the compiler is finished (ignore any warnings for now), repeat step 2 using the `Release` build target.
+  # Change the active project by double clicking `UnitTest.Ngen` in the project navigation pane.
+  # Click `Build->Run` to execute the unit test program and evaluate the results.
+  # If all tests have passed, the framework was successfully constructed.
+
+== Working Directory Instructions ==
+
+  # First create a new folder separate from the build folders.
+  # For each project in the workspace (except UnitTest projects), create a folder using a name of that project.  For instance, the `Ngen` project will have a `\Ngen\` folder and the `Ngen.Diagnostics` project will have an `\Ngen.Diagnostics\` folder.
+  # Now naviagate to each project you created a folder for, and copy the contents of the `\include\` folder (not the folder, its contents).  Paste the copied files into the new folder you created for the project.
+  # Finally, copy the `bin\` directory into the same location where you created the folders.
+
+This will be the working directory, and directly resembles the folder structure of pre-built packages.  
+
+==== Finished ====
+ 
