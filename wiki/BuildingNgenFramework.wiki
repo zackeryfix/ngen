@@ -1,0 +1,38 @@
+#summary How to compile the Ngen Framework using Code::Blocks
+
+= The tool-chain =
+
+Considering that the project is still in it's early stages of development, we decided not to design a robust make system for compiling the libraries.  This is because we may change the overall architecture of the frameworks source-tree and package structure as more shared systems are developed.  With that said, compiling the Ngen Framework is very simple, and can be accomplished in a matter of a few minutes.
+
+== CodeBlocks == 
+To begin, you will need two things, the CodeBlocks IDE and a supported C++ compiler.  The reason we choose CodeBlocks for development is because of it being cross-platform (Linux, Windows, and Mac), and because it can easily integrate almost all modern compilers into it's build system.
+
+To download CodeBlocks, please see their download page [http://www.codeblocks.org/downloads here] and download the package for your platform (without MingW if using Windows).
+
+== GCC == 
+While that is downloading or installing, you will need to download a supported compiler, which is simple because we currently only support GCC version 4.8 or higher. 
+
+=== Windows === 
+If your using Windows, you will need to download the latest TDM-GCC package for your processor architecture from [http://tdm-gcc.tdragon.net/download here] and install it.  
+
+Make sure the TDM-GCC binaries are in your PATH environment variable after installation.
+
+=== Linux === 
+If you are using Linux, 'gcc' should be installed.  You may check the version by running:
+{{{
+~$: gcc --version
+}}}
+If version 4.8 or higher is not installed, please refer to your distrobutions package manager to acquire the latest version or upgrade the current 'gcc' package.
+
+== Subversion == 
+We are using SVN for our code repositories, so you will need to download the latest subversion package for your platform.  
+
+=== Windows === 
+If using Windows, we suggest downloading TortoiseSVN from here.  Its very clean and simple to use. 
+
+=== Linux ===
+
+=== Checking out ===
+To check out the latest stable sources, use the following command:
+
+= Instructions =
