@@ -73,6 +73,11 @@ namespace Ngen {
 		 */
 		Array<Type*> GetNamespaces() const pure;
 
+		/** @brief Get an array of all the types currently available through the assembly.
+		 * @return An array that contains each type available through the assembly.
+		 */
+		Array<Type*> GetNamespaces() const pure;
+
 		/** @brief Get an array of attributes that were applied to the assembly.
 		 * @return An array that contains each attribute applied to the assembly.
 		 */
@@ -83,6 +88,12 @@ namespace Ngen {
 		 * @return A non-constructable type representing the static namespace.
 		 */
 		Type* GetNamespace(const mirror& name) const pure;
+
+		/** @brief Gets a type from the assembly.
+		 * @param name A mirror that can be used to identify the type being retrieved.
+		 * @return A constructable or static/non-constructable type representing the type.
+		 */
+		Type* GetType(const mirror& name) const pure;
 	protected:
 
 		friend class Type;

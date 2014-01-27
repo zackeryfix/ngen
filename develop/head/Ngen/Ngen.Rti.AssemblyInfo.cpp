@@ -25,32 +25,26 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
-#include "Ngen.Native.hpp"
-#include "Ngen.Map.hpp"
+*
+
+#include "Ngen.Rti.TypeInfo.hpp"
+
 
 namespace Ngen {
+	typedef Map<mirror, Assembly> AssemblyMap;
 	typedef Map<mirror, Library> LibraryMap;
 
-	LibraryMap mNativeCache = LibraryMap();
+	LibraryMap mRtiNative; // assemblies required by the reflection engine (the ngen framework)
+	LibraryMap mRtiLoaded; // any external libraries loaded during runtime that contained reflected information
+	LibraryMap mRtiCache;  // a set of unloaded assemblies that have been registered to a global cache
 
-	bool System::Load(const mirror& path, Library*& lib) {
-		if(!Cache(path)) {
-			THROW(InvalidOperationException("Failed to cache library information before being loaded."));
-		}
 
-		lib = &mNativeCache[path];
-	}
+	namespace Rti {
 
-	bool System::Unload(const mirror& path) {
-
-	}
-
-	bool System::Cache(const mirror& path) {
-		if(!mNativeCache.ContainsKey(path)) {
-			mNativeCache[path] = Library(path);
-		}
-
-		return mNativeCache.ContainsKey(path);
 	}
 }
+
+TypeInfo* wNewTypeInfo(const TypeInfo& info) {
+
+}
+*/

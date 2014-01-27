@@ -61,7 +61,7 @@ THE SOFTWARE.
 #include "Ngen.Event.hpp"
 #include "Ngen.Exception.hpp"
 #include "Ngen.DateTime.hpp"
-#include "Ngen.Native.hpp"
+#include "Ngen.Library.hpp"
 
 #include "Ngen.Object.hpp"
 //#include "Ngen.Attribute.hpp"

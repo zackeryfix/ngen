@@ -27,9 +27,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//#include "Ngen.Encoding.ipp"
-//#include "Ngen.AsciiEncoding.ipp"
-//#include "Ngen.Type.ipp"
-//#include "Ngen.Console.ipp"
-//#include "Ngen.Object.ipp"
-//#include "Ngen.Delegate.ipp"

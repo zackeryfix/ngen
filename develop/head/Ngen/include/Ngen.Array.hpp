@@ -268,6 +268,17 @@ namespace Ngen {
 			return result;
 		}
 
+		bool Contains(const T& item) {
+			T* begin = mData;
+			do {
+				if(*begin == item) {
+					return true;
+				}
+			} while(End() != begin++);
+			return false;
+		}
+
+
 		/** @brief Iterates over each item and allocates them into a new collection based on a given predicate.
 		 * @param predicate A function or lambda used to filter out unwanted items.
 	    * @return An array of items that was collected after being filter using the predicate.

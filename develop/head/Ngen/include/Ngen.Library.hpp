@@ -26,16 +26,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_SYSTEM_HPP
-#define __NGEN_SYSTEM_HPP
+#ifndef __NGEN_LIBRARY_HPP
+#define __NGEN_LIBRARY_HPP
 
 #include "Ngen.Mirror.hpp"
 
 namespace Ngen {
-	class Library;
 
-	class ngen_api System final {
+	class ngen_api Library final {
 	public:
+		Library() = default;
+		Library(const mirror& path, unknown handle) : mPath(path), mHandle(handle) {}
+		Library(const Library& copy) : mPath(copy.mPath), mHandle(copy.mHandle) {}
+
 		/** @brief Attempts to load a shared library from a physical location.
 		 * @param path A mirror created from the physical file path used to identify the library.
 		 * @param lib A pointer where the loaded library will be referenced after the function exits.
@@ -43,43 +46,33 @@ namespace Ngen {
 		 */
 		static bool Load(const mirror& path, Library*& lib);
 
-		/** @brief Determines if a library has been registered to the global cache.
+		/** @brief Unloads a library that was previously loaded by the system.
 		 * @param path A mirror created from the physical file path used to identify the library.
 		 * @return A value that indicates if the library was correctly unloaded.
 		 */
 		static bool Unload(const mirror& path);
 
-		/** @brief Determines if a library has been registered to the global cache.
+		/** @brief Ensures a library has been registered to the global cache.
 		 * @param path A mirror created from the physical file path used to identify the library.
 		 * @return A value that indicates if the library was correctly cached.
 		 */
 		static bool Cache(const mirror& path);
-	};
-
-	/** @brief A structure representing a library file context.
-	*/
-	class ngen_api Library {
-	public:
-		Library() : mPath(), mIsLoaded(false) {}
-		Library(const mirror& path) : mPath(path), mIsLoaded(false) {
-		}
-		Library(const Library& copy) : mPath(copy.mPath), mIsLoaded(copy.mIsLoaded) {
-		}
-
-		bool IsLoaded() const {
-			return mIsLoaded;
-		}
 
 		mirror Path() const {
 			return mPath;
 		}
 
-	protected:
-		mirror mPath;
-		bool mIsLoaded;
+		template<typename TSignature> TSignature Get(const mirror& signature) const {
+			return (TSignature)mGet(signature);
+		}
 
-		friend class System;
+		bool IsLoaded() const;
+	protected:
+		unknown mGet(const mirror& signature) const;
+
+		mirror mPath;
+		unknown mHandle;
 	};
 
 }
-#endif // __NGEN_NATIVE_HPP
+#endif // __NGEN_LIBRARY_HPP
