@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_RTI_TYPEINFO_HPP
 #define __NGEN_RTI_TYPEINFO_HPP
 
-#include "Ngen.NamespaceInfo.hpp"
+#include "Ngen.Rti.NamespaceInfo.hpp"
 
 namespace Ngen {
 	namespace Rti {
@@ -177,7 +177,7 @@ namespace Ngen {
 
 			/** @brief Creates a new Object instance of the Type from the copy of another same type Object. */
 			Object CopyInstance(Object copy) const {
-w
+
 			}
 
 			/** @brief Destroys an Object instance of the Type.

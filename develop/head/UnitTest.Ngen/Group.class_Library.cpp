@@ -25,37 +25,40 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*
-
-#include "Ngen.Rti.TypeInfo.hpp"
-
-namespace Ngen {
-	namespace Rti {
-			class AssemblyReference {
-	public:
-		AssemblyReference(AssemblyInfo* info) : mAssembly(info), mReference(0) {
-		}
-		AssemblyReference(const AssemblyReference& copy) : mAssembly(copy.mAssembly), mReference(mReference) {
-		}
-
-		bool Dereference() {
-			if(isnull(mReference) || mReference->Current() == 0) {
-				return true;
-			} else {
-				mReference->Decrement();
-			}
-		}
-
-		AssemblyInfo* mAssembly;
-		Reference* mReference;
-	};
-
-	typedef Map<mirror, AssemblyInfo*> AssemblyMap;
-	typedef Map<AssemblyInfo*, Reference*> AssemblyRefMap;
-
-	AssemblyMap _loadedAssemblies =
-	AssemblyRefMap _referencedAssmeblies = AssemblyRefMap();
-
-	}
-}
 */
+#include "_External.hpp"
+
+using namespace Ngen;
+using namespace Ngen::Diagnostics;
+
+t_testgroup(class_Library);
+
+t_begin_test(class_Library, LoadLib) [] (TestResult& result) {
+	Library* lib;
+
+	if(!Library::Load(const_mirror("testlib.dll"), lib)) {
+		result.Error(const_text("Failed to load library 'testlib.dll'."));
+	}
+
+	Library::Unload(const_mirror("testlib.dll"));
+}
+t_end_test
+
+t_begin_test(class_Library, LoadSignature) [] (TestResult& result) {
+	try {
+		Library* lib;
+
+		if(!Library::Load(const_mirror("testlib.dll"), lib)) {
+			result.Error(const_text("Failed to load library 'testlib.dll'."));
+			return;
+		}
+
+		auto func = (StaticDelegate<>::TFunction*)lib->Get(const_mirror("dosomething"));
+		func();
+	} catch(Exception& e) {
+		result.Error(const_text(e.what()));
+	}
+
+	Library::Unload(const_mirror("testlib.dll"));
+}
+t_end_test

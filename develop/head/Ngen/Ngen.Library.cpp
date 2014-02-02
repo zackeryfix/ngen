@@ -48,7 +48,7 @@ namespace Ngen {
 	#	endif
 	}
 
-	unknown __libfree(unknown handle) {
+	void __libfree(unknown handle) {
 	#	if _tkn_Platform == _tknval_Platform_Windows
 		FreeLibrary((HMODULE)handle);
 	#	else
@@ -68,11 +68,16 @@ namespace Ngen {
 
 	bool Library::Load(const mirror& path, Library*& lib) {
 		if(!mNativeCache.ContainsKey(path)) {
-			unknown handle = __libload(path.ToLongName());
-			mNativeCache.Add(path, Library(path, handle));
+			try {
+				unknown handle = __libload(path.ToLongName());
+				mNativeCache.Add(path, Library(path, handle));
+			} catch(...) {
+				return false;
+			}
 		}
 
 		lib = &mNativeCache[path];
+		return true;
 	}
 
 	bool Library::Unload(const mirror& path) {

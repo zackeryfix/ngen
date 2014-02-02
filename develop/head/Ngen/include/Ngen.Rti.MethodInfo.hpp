@@ -40,7 +40,7 @@ namespace Ngen {
 			MethodInfo() : mModifierFlag(0) mScope(0), mSignature(), mFunction(0) {}
 
 			/** @brief Constructor. (NamespaceInfo*, const text&, Delegate*). */
-			MethodInfo(NamespaceInfo* scope, const text& signature, Delegate* function, StaticDelegate<MethodDescriptor*>::TFunction initializer) :
+			MethodInfo(NamespaceInfo* scope, const text& signature, Delegate* function, StaticDelegate<MethodBuilder>::TFunction initializer) :
 				mModifierFlag(_tkn_Mute), mScope(scope), mFunction(function), mSignature(signature), mFullName() {
 				initializer(MethodBuilder(this));
 				pUnmute();

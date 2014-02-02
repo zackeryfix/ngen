@@ -36,9 +36,8 @@ namespace Ngen {
 
 		class ngen_api AssemblyInfo : public Assembly {
 		public:
-			AssemblyInfo(const mirror& library, const mirror& assemblyName) : mLibrary(library), mAssemblyName(assemblyName) {
+			AssemblyInfo(const mirror& library, const mirror& assemblyName);
 
-			}
 
 			/** @brief Get an array of all the namespace currently available through the assembly.
 			 * @return An array that contains each namespace available through the assembly.
@@ -69,7 +68,7 @@ namespace Ngen {
 		protected:
 
 			mirror mAssemblyName;
-			NativeLibrary* mLibrary;
+			Library* mLibrary;
 			NamespaceMap mNamespaces;
 			Array<Attribute*> mAttributes;
 		};

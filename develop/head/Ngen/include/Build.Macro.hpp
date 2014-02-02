@@ -32,6 +32,11 @@ THE SOFTWARE.
 #include "Build.Token.hpp"
 
 namespace Ngen {
+	struct error_incomplete {};
+
+	template<typename T> struct __typename { const error_incomplete* result() { return (error_incomplete*)0; } };
+	template<typename T> struct __aliasname { const error_incomplete* result() { return (error_incomplete*)0; } };
+
    /** @brief A logic structure used by the trait class for determining if a
     * typename represents a primitive data structure.
     */
@@ -52,6 +57,23 @@ namespace Ngen {
 
    /** @brief A macro used to signify that a given typename represents a movable type. */
    #define __make_movable(typename) template<> struct __is_movable<typename> { static constexpr bool result() { return true; } }
+
+	/** @brief A macro used to generate a compile-time constant for the text conversion of a typename. */
+	#define __set_typename(T, typeName) template<> struct __typename<T> {\
+		static constexpr const char8* __m = typeName;\
+		static constexpr const char8* result() {\
+			return __m;\
+		}\
+	}
+
+	/** @brief A macro used to generate a compile-time constant for the text conversion of a typedef'd typename. */
+	#define __set_aliasname(T, typeName) template<> struct __aliasname<T> {\
+		static constexpr const char8* __m = typeName;\
+		static constexpr const char8* result() {\
+			return __m;\
+		}\
+	}
+
 }
 
 #endif // __NGEN_MACRO_HPP

@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 namespace Ngen {
 	Object __nullObject = Object();
+
 	const Object& Object::Null() {
 		return __nullObject;
 	}

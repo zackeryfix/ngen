@@ -32,56 +32,87 @@ THE SOFTWARE.
 #include "Build.External.hpp"
 
 namespace Ngen {
-   /** @brief An 8-bit wide unsigned integer value. */
-   typedef unsigned char uint8;
-
-   /** @brief An 8-bit wide signed integer value. */
-   typedef signed char int8;
-
-   /** @brief A 16-bit wide unsigned integer value. */
-   typedef unsigned short uint16;
-
-   /** @brief A 16-bit wide signed integer value. */
-   typedef signed short int16;
-
-   /** @brief A 32-bit wide unsigned integer value. */
-   typedef unsigned int uint32;
-
-   /** @brief A 32-bit wide signed integer value. */
-   typedef signed int int32;
-
-   /** @brief A 64-bit wide unsigned integer value. */
-   typedef unsigned long long int uint64;
-
-   /** @brief An 64-bit wide signed integer value. */
-   typedef signed long long int int64;
-
-   /** @brief An 32-bit wide floating-point integer value. */
-   typedef float float32;
-
-   /** @brief An 64-bit wide floating-point integer value. */
-   typedef double float64;
-
-   /** @brief An 96-bit wide floating-point integer value. */
-   typedef long double float96;
-
-   /** @brief An 8-bit wide signed value. */
-   typedef signed char byte;
-
-   /** @brief An 8-bit wide unsigned value. */
-   typedef unsigned char ubyte;
-
    /** @brief An 8-bit wide character value. */
    typedef char char8;
+   __set_typename(char8, "Ngen$char8");
 
    /** @brief An 16-bit wide character value. */
    typedef char16_t char16;
+   __make_primitive(char16);
+   __set_typename(char16, "Ngen$char16");
 
    /** @brief An 32-bit wide character value. */
    typedef char32_t char32;
+   __make_primitive(char32);
+   __set_typename(char32, "Ngen$char32");
 
    /** @brief A wide character value. */
    typedef wchar_t wchar;
+   __make_primitive(wchar);
+   __set_typename(wchar, "Ngen$wchar");
+
+   /** @brief An signed 8-bit data value. */
+   typedef signed char byte;
+   __set_aliasname(byte, "Ngen$byte");
+
+   /** @brief An unsigned 8-bit data value. */
+   typedef unsigned char ubyte;
+   __set_aliasname(ubyte, "Ngen$ubyte");
+
+   /** @brief An 8-bit wide unsigned integer value. */
+   typedef unsigned char uint8;
+   __make_primitive(uint8);
+   __set_typename(uint8, "Ngen$uint8");
+
+   /** @brief An 8-bit wide signed integer value. */
+   typedef signed char int8;
+   __make_primitive(int8);
+   __set_typename(int8, "Ngen$int8");
+
+   /** @brief A 16-bit wide unsigned integer value. */
+   typedef unsigned short uint16;
+   __make_primitive(uint16);
+   __set_typename(uint16, "Ngen$uint16");
+
+   /** @brief A 16-bit wide signed integer value. */
+   typedef signed short int16;
+   __make_primitive(int16);
+   __set_typename(int16, "Ngen$int16");
+
+   /** @brief A 32-bit wide unsigned integer value. */
+   typedef unsigned int uint32;
+   __make_primitive(uint32);
+   __set_typename(uint32, "Ngen$uint32");
+
+   /** @brief A 32-bit wide signed integer value. */
+   typedef signed int int32;
+   __make_primitive(int32);
+   __set_typename(int32, "Ngen$int32");
+
+   /** @brief A 64-bit wide unsigned integer value. */
+   typedef unsigned long long int uint64;
+   __make_primitive(uint64);
+   __set_typename(uint64, "Ngen$uint64");
+
+   /** @brief An 64-bit wide signed integer value. */
+   typedef signed long long int int64;
+   __make_primitive(int64);
+   __set_typename(int64, "Ngen$int64");
+
+   /** @brief An 32-bit wide floating-point integer value. */
+   typedef float float32;
+   __make_primitive(float32);
+   __set_typename(float32, "Ngen$float32");
+
+   /** @brief An 64-bit wide floating-point integer value. */
+   typedef double float64;
+   __make_primitive(float64);
+   __set_typename(float64, "Ngen$float64");
+
+   /** @brief An 96-bit wide floating-point integer value. */
+   typedef long double float96;
+   __make_primitive(float96);
+   __set_typename(float96, "Ngen$float96");
 
    /** @brief The floating-point value used by complex data structures used in geometric
     * calculations.
@@ -91,6 +122,7 @@ namespace Ngen {
 #  else
       typedef float32 real;
 #  endif
+	__set_aliasname(real, "Ngen$real");
 
    /** @brief A user-defined literal for converting floating point constants
     * to the frameworks 'real'.
@@ -105,6 +137,7 @@ namespace Ngen {
 #  elif _tkn_RegisterWidth == _tknval_RegisterWidth_64
       typedef uint64 uword;
 #  endif
+	__set_aliasname(uword, "Ngen$uword");
 
    /** @brief The signed integral data type used in indexing arithmetic. */
 #  if _tkn_RegisterWidth == _tknval_RegisterWidth_32
@@ -112,9 +145,11 @@ namespace Ngen {
 #  elif _tkn_RegisterWidth == _tknval_RegisterWidth_64
       typedef int64 word;
 #  endif
+	__set_aliasname(word, "Ngen$word");
 
    /** @brief A pointer with all type information discarded. */
    typedef void* unknown;
+	__set_typename(unknown, "Ngen$unknown");
 
 	/** @brief A pointer value that represents an invalid data structure. */
 #  define null 0x0
@@ -132,6 +167,7 @@ namespace Ngen {
    	bool operator==(const void_t& rhs) const { return true; }
    	bool operator!=(const void_t& rhs) const { return false; }
 	};
+	__set_typename(void_t, "Ngen$void");
 
 	/** @brief Recursive structure used to represent the indices required for accessing a template parameter pack. */
 	template<uword... Indices>
@@ -155,37 +191,7 @@ namespace Ngen {
 	template<typename... Types>
 	using pack_indices_t = typename make_index_pack_t<sizeof...(Types)>::type;
 
-
-	template<typename T> struct typename_t {
-		const char8* result() { return "unknown"; }
-	};
-
-	#define _define_typename(T, typeName) template<> struct typename_t<T> {\
-		static const char8* __m;\
-		static const char8* result() {\
-			return __m;\
-		}\
-	};\
-	const char8* typename_t<T>::__m = typeName;
-
-	#define typenameof(T) typename_t<T>::result()
-
-   // XXXX: Primitive Data-Type Registration -----------------------------------
-   __make_primitive(int8);
-   __make_primitive(int16);
-   __make_primitive(int32);
-   __make_primitive(int64);
-   __make_primitive(uint8);
-   __make_primitive(uint16);
-   __make_primitive(uint32);
-   __make_primitive(uint64);
-   __make_primitive(float32);
-   __make_primitive(float64);
-   __make_primitive(float96);
-   __make_primitive(char8);
-   __make_primitive(char16);
-   __make_primitive(char32);
-   __make_primitive(wchar);
+#	define typenameof(T) __typename<T>::result()
 }
 
 #endif // __NGEN_TYPEDEFS_HPP

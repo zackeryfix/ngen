@@ -44,7 +44,7 @@
 			<Add library="Ngen" />
 			<Add library="Ngen.Diagnostics" />
 		</Linker>
-		<Unit filename="Group.COMMON.cpp">
+		<Unit filename="Group._.cpp">
 			<Option virtualFolder="Group/" />
 		</Unit>
 		<Unit filename="Group.class_Algorithm.cpp">
@@ -54,6 +54,9 @@
 			<Option virtualFolder="Group/" />
 		</Unit>
 		<Unit filename="Group.class_Event.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Library.cpp">
 			<Option virtualFolder="Group/" />
 		</Unit>
 		<Unit filename="Group.class_List.cpp">

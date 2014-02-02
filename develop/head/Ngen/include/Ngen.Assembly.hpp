@@ -40,10 +40,10 @@ namespace Ngen {
 	public:
 		/** @brief Loads a binary file from a physical storage location.
 		 * @param library The mirror that can be used to identify the file path of the library.
-		 * @param autoReference Determines assemblies will be automatically referenced by the reflection engine.
+		 * @param autoReference Determines if assemblies will be automatically referenced by the reflection engine.
 		 * @return The number of assemblies found to exist in the library.
 		 */
-		static uword Load(const mirror& library, bool autoReference);
+		static Array<Assembly*> Load(const mirror& library, bool autoReference);
 
 		/** @brief Ensures a known assembly is referenced by the reflection engine.
 		 * @param assemblyName The mirror used to identify the assembly being  referenced.
@@ -53,20 +53,15 @@ namespace Ngen {
 		static Assembly* Reference(const mirror& assemblyName);
 
 		/** @brief Dereferences an assembly previously referenced by the reflection engine.
-		 * @param assemblyName The mirror used to identify the assembly being dereferenced.
+		 * @param assemblyName The assembly being dereferenced.
 		 * @return A value that determines if there were conflicts while attempting to dereference the assembly.
 		 */
-		static bool Dereference(const mirror& assemblyName);
+		static bool Dereference(Assembly* assembly);
 
 		/** @brief Unloads a previously loaded library, and all assemblies it references.
 		 * @param library A mirror used to identify the library being unloaded.
 		 */
 		static void Unload(const mirror& library);
-
-		/** @brief Get an array of all the assemblies currently being referenced by the reflection engine.
-		 * @return An array that contains each assembly loaded by the reflection engine.
-		 */
-		static Array<Assembly*> GetAssemblies();
 
 		/** @brief Get an array of all the namespace currently available through the assembly.
 		 * @return An array that contains each namespace available through the assembly.

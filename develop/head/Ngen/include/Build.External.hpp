@@ -33,6 +33,7 @@ THE SOFTWARE.
 
 #include <exception>
 #include <new>
+#include <math.h>
 
 #if _tkn_Platform == _tknval_Platform_Windows
 #	include <windows.h>

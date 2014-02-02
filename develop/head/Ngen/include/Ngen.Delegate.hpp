@@ -83,6 +83,7 @@ namespace Ngen {
 		/** @brief Gets the size (in bytes) for the return type of the function call. */
 		virtual uword ReturnSize() const pure;
    };
+   __set_typename(Delegate, "Ngen$delegate");
 
    template<typename TReturn, typename... TParams>
    class ngen_api NonVoidDelegate : public Delegate {

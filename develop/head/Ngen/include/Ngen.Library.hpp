@@ -58,21 +58,32 @@ namespace Ngen {
 		 */
 		static bool Cache(const mirror& path);
 
+		/** @brief Gets the mirror representing the physical path  of the shared object file.
+		 */
 		mirror Path() const {
 			return mPath;
 		}
 
-		template<typename TSignature> TSignature Get(const mirror& signature) const {
-			return (TSignature)mGet(signature);
+		/** @brief Gets a symbol from the library cast to the given symbol signature.
+		 * @param symbol The signature of the symbol being referenced from the library.
+		 */
+		unknown Get(const mirror& symbol) const {
+			return mGet(symbol);
 		}
 
+		/** @brief Determines if the library has been loaded into memory.
+		 */
 		bool IsLoaded() const;
+
 	protected:
+		/** @brief Protected member */
 		unknown mGet(const mirror& signature) const;
 
 		mirror mPath;
 		unknown mHandle;
 	};
+
+	__set_typename(Library, "Ngen$Library");
 
 }
 #endif // __NGEN_LIBRARY_HPP

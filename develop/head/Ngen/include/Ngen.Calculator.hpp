@@ -30,7 +30,6 @@ THE SOFTWARE.
 #define __NGEN_CALCULATOR_HPP
 
 #include "Ngen.Typedefs.hpp"
-#include <math.h>
 
 namespace Ngen {
    /** @brief A static instance that provides advanced mathematical functions and constants. */

@@ -40,9 +40,9 @@ t_testgroup(?);
 using namespace Ngen;
 using namespace Ngen::Diagnostics;
 
-t_testgroup(COMMON);
+t_testgroup(_);
 
-t_begin_test(COMMON, sizeof_primitive) [] (TestResult& result) {
+t_begin_test(_, sizeof_primitive) [] (TestResult& result) {
 	if(sizeof(uint8) != 1) {
 		result.Error(const_text("sizeof(uint8) != 1"));
 	} else if(sizeof(int8) != 1) {
@@ -77,7 +77,7 @@ t_begin_test(COMMON, sizeof_primitive) [] (TestResult& result) {
 }
 t_end_test
 
-t_begin_test(COMMON, Memory) [] (TestResult& result) {
+t_begin_test(_, Memory) [] (TestResult& result) {
 	Ngen::byte* ptr = Memory::New<Ngen::byte>(10);
 	Ngen::byte* bigger = Memory::New<Ngen::byte>(15);
 	Ngen::byte* smaller = Memory::New<Ngen::byte>(5);
@@ -85,5 +85,49 @@ t_begin_test(COMMON, Memory) [] (TestResult& result) {
 	Memory::Delete(ptr);
 	Memory::Delete(bigger);
 	Memory::Delete(smaller);
+}
+t_end_test
+
+t_begin_test(_, Aliases) [] (TestResult& result) {
+	Ngen::byte* ptr = Memory::New<Ngen::byte>(10);
+	Ngen::byte* bigger = Memory::New<Ngen::byte>(15);
+	Ngen::byte* smaller = Memory::New<Ngen::byte>(5);
+
+	Memory::Delete(ptr);
+	Memory::Delete(bigger);
+	Memory::Delete(smaller);
+}
+t_end_test
+
+t_begin_test(_, typenameof_primitive) [] (TestResult& result) {
+	if(const_text(typenameof(int8)) != const_text("Ngen$int8")) {
+		result.Error(const_text("[int8] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(int16)) != const_text("Ngen$int16")) {
+		result.Error(const_text("[int16] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(int32)) != const_text("Ngen$int32")) {
+		result.Error(const_text("[int32] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(uint8)) != const_text("Ngen$uint8")) {
+		result.Error(const_text("[uint8] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(uint16)) != const_text("Ngen$uint16")) {
+		result.Error(const_text("[uint16] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(uint32)) != const_text("Ngen$uint32")) {
+		result.Error(const_text("[uint32] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(int64)) != const_text("Ngen$int64")) {
+		result.Error(const_text("[int64] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(uint64)) != const_text("Ngen$uint64")) {
+		result.Error(const_text("[uint64] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(float32)) != const_text("Ngen$float32")) {
+		result.Error(const_text("[float32] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(float64)) != const_text("Ngen$float64")) {
+		result.Error(const_text("[float64] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(float96)) != const_text("Ngen$float96")) {
+		result.Error(const_text("[float96] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(char16)) != const_text("Ngen$char16")) {
+		result.Error(const_text("[char16] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(char32)) != const_text("Ngen$char32")) {
+		result.Error(const_text("[char32] Something has gone terribly wrong!!"));
+	} else if(const_text(typenameof(wchar)) != const_text("Ngen$wchar")) {
+		result.Error(const_text("[wchar] Something has gone terribly wrong!!"));
+	}
 }
 t_end_test

@@ -64,5 +64,9 @@ THE SOFTWARE.
  */
 #define _tkn_NoThrow _tknval_False
 
+/** @brief Determines if the Ngen Framework will be using a 16-bit UTF encoding for compile-time strings.
+ */
+#define _tkn_UseUTF16Encoding _tknval_False
+
 /** @} */
 #endif // __NGEN_BUILD_CONFIGURATION_HPP
