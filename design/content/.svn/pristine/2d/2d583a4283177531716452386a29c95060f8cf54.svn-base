@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="UnitTest.Ngen" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="Group\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/UnitTest.Ngen.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add directory="../bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/UnitTest.Ngen.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../Ngen/include" />
+			<Add directory="../Ngen.Diagnostics/include" />
+		</Compiler>
+		<Linker>
+			<Add library="Ngen" />
+			<Add library="Ngen.Diagnostics" />
+		</Linker>
+		<Unit filename="Group.COMMON.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Algorithm.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Array.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Event.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_List.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Map.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Object.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="Group.class_Text.cpp">
+			<Option virtualFolder="Group/" />
+		</Unit>
+		<Unit filename="_External.hpp" />
+		<Unit filename="_Main.cpp" />
+		<Unit filename="test.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="1" />
+				<doxyfile_project />
+				<doxyfile_build extract_all="1" />
+				<doxyfile_warnings warn_if_undocumented="1" />
+				<doxyfile_output html_help="1" />
+				<doxyfile_dot have_dot="1" />
+				<general use_at_in_tags="1" />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

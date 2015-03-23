@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -67,6 +67,9 @@ THE SOFTWARE.
 /** @brief Determines if the Ngen Framework will be using a 16-bit UTF encoding for compile-time strings.
  */
 #define _tkn_UseUTF16Encoding _tknval_False
+
+
+#define _tkn_RTIMaxNamespaceDepth 12
 
 /** @} */
 #endif // __NGEN_BUILD_CONFIGURATION_HPP

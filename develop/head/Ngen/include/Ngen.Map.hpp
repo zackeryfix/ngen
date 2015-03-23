@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,130 +34,131 @@ THE SOFTWARE.
 #include "Ngen.List.hpp"
 
 namespace Ngen {
-   /** @brief A generic list of key-value pairs. */
-   template<typename TKey, typename TValue>
-   class ngen_api Map {
+	/** @brief A generic list of key-value pairs. */
+	template<typename TKey, typename TValue>
+	class ngen_api Map {
 	public:
 		typedef KeyValuePair<TKey, TValue> TKvPair;
 		typedef List<TKvPair> TDict;
 		typedef typename TDict::Node Node;
 		typedef Map<TKey, TValue> TSelf;
-
+		
 		Map() : mData() {}
 		Map(const TSelf& copy) : mData(copy.mData) {}
 		Map(TSelf&& move) : mData((TDict&&)move.mData) {}
-
+		
 		Node* Begin(uword at = 0) const {
 			return mData.Begin(at);
 		}
-
+		
 		Node* End() const {
 			return mData.End();
 		}
-
+		
 		TValue& operator[](const TKey& key) {
 			typename TDict::Node* node = mData.Begin();
-
+			
 			do {
 				if(node->Data().Key == key) {
 					return node->Data().Value;
 				}
 			} while(node != mData.End());
-
+			
 			this->Add(key, TValue());
 			return this->End()->Data().Value;
 		}
-
+		
 		uword Capacity() const {
-			return mData.Capacity();
+		return mData.Capacity();
 		}
-
-		uword Length() const {
+		
+			uword Length() const {
 			return mData.Length();
 		}
-
+		
 		bool IsReadonly() const {
 			return mData.IsReadonly();
 		}
-
+		
 		void Add(const TKey& key, const TValue& value) {
 			mData.Add(TKvPair(key, value));
 		}
-
+		
 		void Remove(const TKey& key) {
 			mData.RemoveAt(IndexOf(key));
 		}
-
+		
 		void RemoveAt(uword index) {
 			mData.RemoveAt(index);
 		}
-
+		
 		uword IndexOf(const TKey& key) {
 			typename TDict::Node* node = mData.Begin();
 			uword index = 0;
 			bool hit = false;
-
+			
 			while(!isnull(node)) {
 				if(node->Data().Key == key) {
 					hit = true;
 					break;
 				}
-
+				
 				index++;
 				node = node->Next();
 			}
-
+			
 			if(!hit) {
 				THROW(InvalidParameterException("The parameter 'key' was not a recognized as known pair."));
 			}
-
+			
 			return index;
 		}
-
+		
 		bool ContainsKey(const TKey& key) const {
 			typename TDict::Node* node = mData.Begin();
-
+			
 			while(!isnull(node)) {
 				if(node->Data().Key == key) {
 					return true;
 				}
 				node = node->Next();
 			}
-
+			
 			return false;
 		}
-
+		
 		bool TryGetValue(const TKey& key, inref TValue& value) {
 			typename TDict::Node* node = mData.Begin();
 			bool hit = false;
-
+			
 			while(!isnull(node)) {
 				if(node->Data().Key == key) {
 					hit = true;
 					value = node->Data().Value;
 				}
+				
 				node = node->Next();
 			}
-
+			
 			return hit;
 		}
-
+		
 		Array<TKvPair> ToArray() const {
 			return mData.ToArray();
 		}
-
+		
 		bool Contains(const TKvPair& item) {
 			return mData.Contains(item);
 		}
-
+		
 		bool Contains(const TKvPair& item, TKvPair& ref) {
 			return mData.Contains(item, inref ref);
 		}
-
+		
 		void Reverse() {
 			mData.Reverse();
 		}
-
+		
 		TSelf AsReadonly() const {
 			TSelf result = TSelf();
 			result.mData = mData.AsReadonly();
@@ -165,6 +166,6 @@ namespace Ngen {
 		}
 	protected:
 		TDict mData;
-   };
+};
 }
 #endif // __NGEN_MAP_HPP

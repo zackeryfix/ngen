@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,10 @@ THE SOFTWARE.
 /** @brief A cosmetic preprocessor token that is used in place of the equal operator.
  */
 #define equalto operator==
+
+/** @brief A cosmetic preprocessor token that is used in place of the not equal operator.
+ */
+#define nequalto operator!=
 
 // Build Tokens ----------------------------------------------------------------
 

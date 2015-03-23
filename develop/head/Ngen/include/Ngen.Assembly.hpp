@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,27 +30,28 @@ THE SOFTWARE.
 #define __NGEN_ASSEMBLY_HPP
 
 #include "Ngen.Type.hpp"
+#include "Ngen.Library.hpp"
 
 namespace Ngen {
-	class Type;
+	class Assembly;
 
-	/** @brief The gateway into the frameworks reflected type information.
+	typedef Map<Assembly*, Reference*> AssemblyReferenceMap;
+
+	/** @brief A single unit of reflected type information that is load and unloaded
+	 * in its entirety and typically will reside inside a shared object file or dynamic
+	 * library.
 	 */
 	class ngen_api Assembly {
 	public:
+
+		static bool TryLoadFrom(const mirror& libraryFileName);
+		
 		/** @brief Loads a binary file from a physical storage location.
 		 * @param library The mirror that can be used to identify the file path of the library.
-		 * @param autoReference Determines if assemblies will be automatically referenced by the reflection engine.
+		 * @param assemblyName The mirror used to identify the assemebly being referenced from the library.
 		 * @return The number of assemblies found to exist in the library.
 		 */
-		static Array<Assembly*> Load(const mirror& library, bool autoReference);
-
-		/** @brief Ensures a known assembly is referenced by the reflection engine.
-		 * @param assemblyName The mirror used to identify the assembly being  referenced.
-		 * @return The assembly after ensuring that it was referenced.
-		 * @remarks The assembly can already be referenced.
-		 */
-		static Assembly* Reference(const mirror& assemblyName);
+		static Assembly* Reference(const mirror& libraryFileName, const mirror& assmeblyName);
 
 		/** @brief Dereferences an assembly previously referenced by the reflection engine.
 		 * @param assemblyName The assembly being dereferenced.
@@ -66,30 +67,34 @@ namespace Ngen {
 		/** @brief Get an array of all the namespace currently available through the assembly.
 		 * @return An array that contains each namespace available through the assembly.
 		 */
-		Array<Type*> GetNamespaces() const pure;
+		virtual Array<Type*> GetNamespaces() const pure;
 
 		/** @brief Get an array of all the types currently available through the assembly.
 		 * @return An array that contains each type available through the assembly.
 		 */
-		Array<Type*> GetNamespaces() const pure;
+		virtual Array<Type*> GetTypes() const pure;
 
 		/** @brief Get an array of attributes that were applied to the assembly.
 		 * @return An array that contains each attribute applied to the assembly.
 		 */
-		Array<Attribute*> GetAttributes() const pure;
+		virtual Array<Attribute*> GetAttributes() const pure;
 
 		/** @brief Gets a namespace from the assembly.
 		 * @param name A mirror that can be used to identify the namespace being retrieved.
 		 * @return A non-constructable type representing the static namespace.
 		 */
-		Type* GetNamespace(const mirror& name) const pure;
+		virtual Type* GetNamespace(const mirror& name) const pure;
 
 		/** @brief Gets a type from the assembly.
 		 * @param name A mirror that can be used to identify the type being retrieved.
 		 * @return A constructable or static/non-constructable type representing the type.
 		 */
-		Type* GetType(const mirror& name) const pure;
+		virtual Type* GetType(const mirror& name) const pure;
+
+		/** @brief Gets the library responsible for referencing the assembly. */
+		virtual Library* GetNativeLibrary() const pure;
 	protected:
+		Library* mLib;
 
 		friend class Type;
 	};

@@ -1,0 +1,36 @@
+# Project: Ngen.Diagnostics
+# Makefile created by Dev-C++ 5.7.1
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = obj/Ngen.Diagnostics.o obj/Ngen.Diagnostics.Test.o obj/Ngen.Diagnostics.TestGroup.o
+LINKOBJ  = obj/Ngen.Diagnostics.o obj/Ngen.Diagnostics.Test.o obj/Ngen.Diagnostics.TestGroup.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc ../bin/Ngen.dll -m64 -g3
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"../Ngen/include" -I"include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"../Ngen/include" -I"include"
+BIN      = ../bin/Ngen.Diagnostics.dll
+CXXFLAGS = $(CXXINCS) -m64 -std=c++11 -g3
+CFLAGS   = $(INCS) -m64 -std=c++11 -g3
+RM       = rm.exe -f
+DEF      = ../bin/libNgen.Diagnostics.def
+STATIC   = ../bin/libNgen.Diagnostics.a
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN) $(DEF) $(STATIC)
+
+$(BIN): $(LINKOBJ)
+	$(CPP) -shared $(LINKOBJ) -o $(BIN) $(LIBS) -Wl,--output-def,$(DEF),--out-implib,$(STATIC),--add-stdcall-alias
+
+obj/Ngen.Diagnostics.o: Ngen.Diagnostics.cpp
+	$(CPP) -c Ngen.Diagnostics.cpp -o obj/Ngen.Diagnostics.o $(CXXFLAGS)
+
+obj/Ngen.Diagnostics.Test.o: Ngen.Diagnostics.Test.cpp
+	$(CPP) -c Ngen.Diagnostics.Test.cpp -o obj/Ngen.Diagnostics.Test.o $(CXXFLAGS)
+
+obj/Ngen.Diagnostics.TestGroup.o: Ngen.Diagnostics.TestGroup.cpp
+	$(CPP) -c Ngen.Diagnostics.TestGroup.cpp -o obj/Ngen.Diagnostics.TestGroup.o $(CXXFLAGS)

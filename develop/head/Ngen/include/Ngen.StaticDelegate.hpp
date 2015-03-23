@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,144 +35,142 @@ THE SOFTWARE.
 namespace Ngen {
 	/** @brief A non-member static function without a return argument.
 	 */
-   template<typename... TParams>
-   class StaticDelegate : public VoidDelegate<TParams...> {
-   public:
-      /** @brief Native function signature. */
-      typedef void(TFunction)(TParams...);
-
+	template<typename... TParams>
+	class StaticDelegate : public VoidDelegate<TParams...> {
+	public:
+		/** @brief Native function signature. */
+		typedef void(TFunction)(TParams...);
+	
 		/** @brief A type redefinition of the expanded delegate typename. */
-      typedef StaticDelegate<TParams...> TSelf;
-
+		typedef StaticDelegate<TParams...> TSelf;
+	
 		/** @brief Constructor. Default. */
 		StaticDelegate() : mFunction(0) {}
-
+	
 		/** @brief Constructor. (TFunction). */
-      StaticDelegate(TFunction func) {
-         mFunction = func;
-      }
-
+		StaticDelegate(TFunction func) {
+			mFunction = func;
+		}
+	
 		/** @brief Constructor. Copy. */
-      StaticDelegate(const StaticDelegate<TParams...>& copy) : mFunction(copy.mFunction) {}
-
+		StaticDelegate(const StaticDelegate<TParams...>& copy) : mFunction(copy.mFunction) {}
+	
 		/** @brief De-constructor. */
-      ~StaticDelegate() {
-
-      }
-
+		~StaticDelegate() {
+		}
+	
 		/** @brief Determines if the Delegate is equal-to another delegate. */
-      virtual bool EqualTo(Delegate* rhs) const {
-         if(rhs->IsMember() || rhs->IsNonVoid()) {
-            return false;
-         }
-
-         return ((TSelf*)rhs)->mFunction == mFunction;
-      }
-
+		virtual bool EqualTo(Delegate* rhs) const {
+			if(rhs->IsMember() || rhs->IsNonVoid()) {
+				return false;
+	    }
+	
+			return ((TSelf*)rhs)->mFunction == mFunction;
+		}
+	
 		/** @brief operator!=(const Delegate* const). */
-      bool operator!=(const Delegate* const rhs) {
-         if(rhs->IsMember() || rhs->IsNonVoid()) {
-            return true;
-         }
-
-         return ((TSelf*)rhs)->mFunction != mFunction;
-      }
-
+		bool operator!=(const Delegate* const rhs) {
+			if(rhs->IsMember() || rhs->IsNonVoid()) {
+				return true;
+			}
+			
+			return ((TSelf*)rhs)->mFunction != mFunction;
+		}
+		
 		/** @brief operator=(const Delegate* const). */
-      TSelf& operator=(const TSelf& rhs) {
-         if(this == &rhs) {
+		TSelf& operator=(const TSelf& rhs) {
+			if(this == &rhs) {
 				return *this;
-         }
-
-         mFunction = rhs.mFunction;
-         return *this;
-      }
-
+			}
+			
+			mFunction = rhs.mFunction;
+			return *this;
+		}
+		
 		/** @brief operator()(unknown, unknown*). */
-      unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) {
 			_Call(params, typename make_index_pack_t<sizeof...(TParams)>::type());
 			return null;
-      }
-
-		/** @brief Determines if the delegate references a constant-member function. */
-      bool IsConst() const { return false; }
-
+		}
+		
+		/** @brief Determines if the delegate references a constant-member function. */     
+		bool IsConst() const { return false; }
+		
 		/** @brief Determines if the delegate references a member function. */
-      bool IsMember() const { return false; }
-
+		bool IsMember() const { return false; }
+		
 		/** @brief Gets the number of parameters needed to perform a valid invocation. */
 		uword Length() const { return sizeof...(TParams); }
-
+		
 		/** @brief Invokes the function being referenced by the delegate. */
-      void Call(TParams... params) {
+		void Call(TParams... params) {
 			mFunction(params...);
-      }
-
-   protected:
-   	template<uword... I> void _Call(unknown* params, index_pack_t<I...>) {
+		}
+		
+	protected:
+		template<uword... I> void _Call(unknown* params, index_pack_t<I...>) {
 			Call((Cast<TParams>::From(params[I]))...);
-   	}
-
-      TFunction* mFunction;
-   };
-
-   template<typename TReturn, typename... TParams>
-   class NonVoidStaticDelegate : public NonVoidDelegate<TReturn, TParams...> {
-   public:
-      /** @brief Native function signature. */
-      typedef TReturn(TFunction)(TParams...);
-
-      typedef NonVoidStaticDelegate<TParams...> TSelf;
-
+		}
+		
+		TFunction* mFunction;
+	};
+	
+	template<typename TReturn, typename... TParams>
+	class NonVoidStaticDelegate : public NonVoidDelegate<TReturn, TParams...> {
+	public:
+		/** @brief Native function signature. */
+		typedef TReturn(TFunction)(TParams...);
+		
+		typedef NonVoidStaticDelegate<TParams...> TSelf;
+		
 		NonVoidStaticDelegate() : mFunction(0) {}
-
-      NonVoidStaticDelegate(TFunction func) {
-         mFunction = func;
-      }
-
-      ~NonVoidStaticDelegate() {
-
-      }
-
+		
+		NonVoidStaticDelegate(TFunction func) {
+			mFunction = func;
+		}
+		
+		~NonVoidStaticDelegate() {
+		
+		}
+		
 		/** @brief Determines if the Delegate is equal-to another delegate. */
-      virtual bool EqualTo(Delegate* rhs) const {
-         if(rhs->IsMember() || !rhs->IsNonVoid()) {
-            return false;
-         }
-
-         return ((TSelf*)rhs)->mFunction == mFunction;
-      }
-
-      /** @brief operator=(const Delegate* const). */
-      TSelf& operator=(const TSelf& rhs) {
-         if(this == &rhs) {
+		virtual bool EqualTo(Delegate* rhs) const {
+			if(rhs->IsMember() || !rhs->IsNonVoid()) {
+				return false;
+			}
+			
+			return ((TSelf*)rhs)->mFunction == mFunction;
+		}
+		
+		/** @brief operator=(const Delegate* const). */
+		TSelf& operator=(const TSelf& rhs) {
+			if(this == &rhs) {
 				return *this;
-         }
-
-         mFunction = rhs->mFunction;
-         return *this;
-      }
-
+			}
+			
+			mFunction = rhs->mFunction;
+			return *this;
+		}
+		
 		unknown operator()(unknown _this, unknown* params) {
-			TReturn ret = _Call(params, typename make_index_pack_t<sizeof...(TParams)>::type());
-			return Cast<TReturn>::To(ret);
-      }
-
-      bool IsConst() const { return false; }
-
-      bool IsMember() const { return false; }
-
-      TReturn Call(TParams... params) {
-         return mFunction(params...);
-      }
-
-   protected:
-   	template<uword... I>
-   	TReturn _Call(unknown* params, index_pack_t<I...>) {
+			Cast<TReturn>::To(_Call(params, typename make_index_pack_t<sizeof...(TParams)>::type()));
+		}
+		
+		bool IsConst() const { return false; }
+		
+		bool IsMember() const { return false; }
+		
+		TReturn Call(TParams... params) {
+			return mFunction(params...);
+		}
+		
+	protected:
+		template<uword... I>
+		TReturn _Call(unknown* params, index_pack_t<I...>) {
 			return Call((Cast<TParams>::From(params[I]))...);
-   	}
-
-      TFunction* mFunction;
-   };
+		}
+	
+		TFunction* mFunction;
+	};
 }
 #endif // __NGEN_STATICDELEGATE_HPP

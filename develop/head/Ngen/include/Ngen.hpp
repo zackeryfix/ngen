@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -48,6 +48,8 @@ THE SOFTWARE.
 
 #include "Ngen.Delegate.hpp"
 #include "Ngen.StaticDelegate.hpp"
+#include "Ngen.MemberDelegate.hpp"
+#include "Ngen.ConstMemberDelegate.hpp"
 
 #include "Ngen.Array.hpp"
 #include "Ngen.String.hpp"
@@ -62,11 +64,13 @@ THE SOFTWARE.
 #include "Ngen.Exception.hpp"
 #include "Ngen.DateTime.hpp"
 #include "Ngen.Library.hpp"
+#include "Ngen.Stream.hpp"
+#include "Ngen.Task.hpp"
 
 #include "Ngen.Object.hpp"
-//#include "Ngen.Attribute.hpp"
-//#include "Ngen.Type.hpp"
-//#include "Ngen.Assembly.hpp"
+#include "Ngen.Attribute.hpp"
+#include "Ngen.Type.hpp"
+#include "Ngen.Assembly.hpp"
 
 #include "Ngen.Console.hpp"
 

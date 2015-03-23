@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -239,7 +239,7 @@ namespace Ngen {
       void Remove(const T& value) {
          pThrowIfReadonly();
          if(mLength == 0) {
-            throw InvalidOperationException("Cannot modify the contents of a NULL container!");
+            THROW(InvalidOperationException("Cannot modify the contents of a NULL container!"));
          }
 
          pRemove(pGetByValue(value));
@@ -385,12 +385,12 @@ namespace Ngen {
       inline Node* pGet(uword index, bool throwIfEmpty = false) const {
          if(mLength == 0) {
 				if(throwIfEmpty) {
-					throw InvalidOperationException("The list is empty and contains no items.");
+					THROW(InvalidOperationException("The list is empty and contains no items."));
 				}
 
             return null;
          } else if(index >= mLength) {
-            throw OutOfRangeException("The given parameter 'index' falls beyond the range of the list.");
+            THROW(OutOfRangeException("The given parameter 'index' falls beyond the range of the list."));
          }
 
          Node* result = null;
@@ -490,7 +490,7 @@ namespace Ngen {
       /** @brief Throws an exception if the list is read-only. */
       inline void pThrowIfReadonly() {
          if(mIsReadonly) {
-            throw new InvalidOperationException("Cannot manipulate a read-only list!");
+            THROW(new InvalidOperationException("Cannot manipulate a read-only list!"));
          }
       }
 

@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ using namespace Ngen::Diagnostics;
 
 t_testgroup(class_Library);
 
-t_begin_test(class_Library, LoadLib) [] (TestResult& result) {
+t_begin_test(class_Library, LoadUnloadLibrary) [] (TestResult& result) {
 	Library* lib;
 
 	if(!Library::Load(const_mirror("testlib.dll"), lib)) {
@@ -44,7 +44,7 @@ t_begin_test(class_Library, LoadLib) [] (TestResult& result) {
 }
 t_end_test
 
-t_begin_test(class_Library, LoadSignature) [] (TestResult& result) {
+t_begin_test(class_Library, GetCallFunctionFromLibrary) [] (TestResult& result) {
 	try {
 		Library* lib;
 

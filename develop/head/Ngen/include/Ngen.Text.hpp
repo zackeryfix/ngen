@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -57,18 +57,18 @@ namespace Ngen {
    class ngen_api Text {
    public:
 		/** @brief The character data-type used by the encoded text. */
-      typedef typename TEncoding::TChar TChar;
+    typedef typename TEncoding::TChar TChar;
 
       /** @brief A typedef representing the class without template decorations. */
-      typedef Text<TEncoding> TSelf;
+    typedef Text<TEncoding> TSelf;
 
 		/** @brief Constructor. Default. */
-      Text() : mData(null), mLength(0), mCapacity(0), mIsReadonly(true) {}
+    Text() : mData(null), mLength(0), mCapacity(0), mIsReadonly(true) {}
 
 		/** @brief Constructor. (uword). Creates an encoded text instance using the given capacity. */
-      explicit Text(uword capacity) : mData(Memory::New<TChar>(capacity)), mLength(1), mCapacity(capacity), mIsReadonly(false) {
+    explicit Text(uword capacity) : mData(Memory::New<TChar>(capacity)), mLength(1), mCapacity(capacity), mIsReadonly(false) {
 			TEncoding::EndOfString(mData);
-      }
+    }
 
 		/** @brief Constructor. (TChar*, bool). Create an encoded text instance using the given character array and read-only flag.
 		 * @param str A null terminated string of characters .
@@ -227,7 +227,7 @@ namespace Ngen {
 		}
 
 		/** @brief operator[](uword). */
-      TChar& operator[](uword index) {
+    TChar& operator[](uword index) {
       	if(IsNullOrEmpty()) {
 				THROW(InvalidOperationException("Unable to access empty or null text!"));
       	} else if(index >= mLength) {
@@ -237,8 +237,8 @@ namespace Ngen {
          return *(mData + index);
       }
 
-      /** @brief Gets the address of the first character in the text. */
-      TChar* Data() const {
+    /** @brief Gets the address of the first character in the text. */
+    TChar* Data() const {
       	return mData;
 		}
 
@@ -384,6 +384,50 @@ namespace Ngen {
 			return TSelf((TSelf&&)result);
 		}
 
+		/** @brief Reads text from the string until the given text is discovered.
+		 * @param from The character index within the text to begin reading from, and a place to
+		 * store the stopping location when the function terminates.
+		 * @param c The character, if found, to stop at.
+		 * @return The text that was read.
+		 */
+		TSelf ReadTo(TSelf str, uword& from) const {
+			if(str.IsNullOrEmpty() || IsNullOrEmpty()) {
+				THROW(NullReferenceException("Unable to read from text that is null or empty!"));
+			} else if(from >= mLength) {
+				THROW(InvalidParameterException("The parameter 'from' cannot be greater-than the length of the text being read!"));
+			} else if(str.mLength > mLength) {
+				THROW(InvalidParameterException("The parameter 'str' cannot have a length that is greater-than the length of the text being read!"));
+			}
+
+			TSelf result = TSelf(mLength);
+			TChar* lhsp = (mData + from);
+			TChar* rhsp = str.mData;
+			bool hit = false;
+
+			do {
+				if(*lhsp == *rhsp) {
+					TChar* tmp = lhsp;
+					hit = true;
+
+					do {
+						if(*lhsp != *rhsp) {
+							rhsp = str.mData;
+							lhsp = tmp;
+							hit = false;
+						}
+					} while(++rhsp != str.End() && ++lhsp != End());
+				}
+
+				if(hit) {
+					break;
+				}
+
+				result += *lhsp;
+			} while(++lhsp != End());
+
+			return TSelf((TSelf&&)result);
+		}
+
 		/** @brief Counts the number of occurrences matching the given character.
 		 * @param c The character being counted.
 		 */
@@ -487,18 +531,18 @@ namespace Ngen {
 
    protected:
    	/** @brief Clears the text by initializing the internal data to null. */
-      void pClear(bool ignoreReadOnlyError) {
-         if(!ignoreReadOnlyError) {
-            pThrowIfReadOnly();
-         }
+    void pClear(bool ignoreReadOnlyError) {
+      if(!ignoreReadOnlyError) {
+         pThrowIfReadOnly();
+      }
 
 			if(!mIsReadonly && !isnull(mData)) {
-            Memory::Delete<TChar>(mData);
-            mLength = 0;
-            mCapacity = 0;
-            mData = null;
-         }
+        Memory::Delete<TChar>(mData);
+        mLength = 0;
+        mCapacity = 0;
+        mData = null;
       }
+    }
 
 		/** @brief Ensures that the text is properly initialized.
 		 * @return True if the text needed revalidation.
@@ -518,14 +562,14 @@ namespace Ngen {
 		}
 
 		/** @brief Throws an exception if the text is read-only. */
-      void pThrowIfReadOnly() const {
+    void pThrowIfReadOnly() const {
          if(mIsReadonly) {
             throw InvalidOperationException("Cannot modify the characters of read-only text!");
          }
-      }
+    }
 
 		/** @brief Reallocates the text to a new capacity. */
-      void pReallocate(uword newCapacity, bool ignoreReadonly = true) {
+    void pReallocate(uword newCapacity, bool ignoreReadonly = true) {
 			if(!ignoreReadonly) {
 				pThrowIfReadOnly();
 			}
@@ -549,7 +593,7 @@ namespace Ngen {
 					}
 				}
 			}
-      }
+    }
 
 		/** @brief Appends a null-termination character to the end of the text. */
 		void pTerminate() {
@@ -557,7 +601,7 @@ namespace Ngen {
 		}
 
 		/** @brief Shrinks the text to its length. */
-      void pShrink(bool ignoreReadonly = true) {
+    void pShrink(bool ignoreReadonly = true) {
 			if(!ignoreReadonly) {
 				pThrowIfReadOnly();
 			}
@@ -572,7 +616,7 @@ namespace Ngen {
 					Memory::Delete(ptr);
 				}
 			}
-      }
+    }
 
       TChar* mData;
       uword mLength;
@@ -596,5 +640,7 @@ namespace Ngen {
 #  else
 #     define const_text(str) text(str, true)
 #  endif
+
+	typedef text::TChar tchar;
 }
 #endif // __NGEN_TEXT_HPP

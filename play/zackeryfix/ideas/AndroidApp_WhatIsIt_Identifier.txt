@@ -1,0 +1,10 @@
+
+WHATISIT IDENTIFIER
+Android App
+$1.99
+
+A barcode/label reader combined with image recognition software and text scanner.
+
+- Capable of finding information about an object discovered in a photograph. 
+- Convert the text found in an image to a text file.
+- Many solutions for organizing items scanned.

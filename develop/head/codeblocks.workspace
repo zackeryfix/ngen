@@ -2,8 +2,8 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="codeblocks">
 		<Project filename="Ngen/Ngen.cbp" />
+		<Project filename="Ngen.Networking/Ngen.Networking.cbp" />
 		<Project filename="Ngen.Diagnostics/Ngen.Diagnostics.cbp" />
 		<Project filename="UnitTest.Ngen/UnitTest.Ngen.cbp" />
-		<Project filename="testlib/testlib.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "Ngen.hpp"
 
 /** @brief Used to export or import public symbols from the framework. */
-#if TKN_PLATFORMID == TKNVAL_PLATFORMID_WINDOWS
+#if _tkn_Platform == _tknval_Platform_Windows
 #  if defined(NGEN_DIAGNOSTICS_EXPORT)
 #     define ngen_diagnostics_api __declspec(dllexport)
 #  else

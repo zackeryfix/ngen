@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,7 @@ namespace Ngen {
 		text ToLongName() const {
 			return mLongName;
 		}
-
+		
 	protected:
 		text mLongName;
 		uword mHashcode;
@@ -97,8 +97,8 @@ namespace Ngen {
 	/** @brief A logic structure used by the trait class for determining if a
     * typename is movable.
     */
-   template<typename T> mirror mirrorof() {
-   	return mirror(const_text(typenameof(T)));
+	template<typename T> mirror mirrorof() {
+ 		return mirror(const_text(typenameof(T)));
 	};
 
 }

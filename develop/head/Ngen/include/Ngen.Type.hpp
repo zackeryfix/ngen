@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,15 +31,17 @@ THE SOFTWARE.
 
 #include "Ngen.List.hpp"
 #include "Ngen.Object.hpp"
-#include "Ngen.StaticDelegate.hpp"
-//#include "Ngen.Attribute.hpp"
+#include "Ngen.Delegate.hpp"
+#include "Ngen.Map.hpp"
 
 namespace Ngen {
 	class Assembly;
+	class Attribute;
 
 	/** @brief */
 	class ngen_api Type {
 	public:
+		/** @brief */
 		virtual ~Type() {}
 
 		/** @brief operator==(Type* const) */
@@ -99,16 +101,16 @@ namespace Ngen {
 		virtual bool IsPrimitive() const pure;
 
 		/** @brief Determines if the Type inherits the given Type.
-		 * @param parent A mirror that can be used to identify the type expected in the chain of inheritance.
+		 * @param base A mirror that can be used to identify the type expected in the chain of inheritance.
 		 * @return True when the type is a child of the type belonging to the given mirror.
 		 */
-		virtual bool IsChildOf(const mirror& parent) const pure;
+		virtual bool IsDerivedOf(const mirror& base) const pure;
 
 		/** @brief Determines if the Type is inherited by the given Type.
-		 * @param child A mirror that can be used to identify the type expected in the chain of inheritance.
+		 * @param derived A mirror that can be used to identify the type expected in the chain of inheritance.
 		 * @return True when the type is a parent of the type belonging to the given mirror.
 		 */
-		virtual bool IsParentOf(const mirror& child) const pure;
+		virtual bool IsBaseOf(const mirror& derived) const pure;
 
 		/** @brief Determines if the Type can always be constructed as an object.
 		 */
@@ -177,17 +179,15 @@ namespace Ngen {
 		/** @brief Gets the type (or namespace) where the type is nested.
 		 */
 		virtual Type* GetDirectory() const pure;
-
-	protected:
-		/** @brief Invalidates the data integrity of a given object.
-		 * @remarks Used to mark an object instance as bad, in cases where an object is
-		 * destroyed, but still being referenced.
-		 */
-		void pInvalidate(Object o) const  {
-			if(!isnull(o.mReference)) {
-				o.mReference->IsValid(false);
-			}
-		}
 	};
+
+	typedef Array<Type> TypeArray;
+	typedef Array<Type*> TypePointerArray;
+
+	typedef Map<mirror, Type> MirrorTypeMap;
+	typedef Map<mirror, Type*> MirrorTypePointerMap;
+	typedef Map<mirror, TypeArray> MirrorTypeBook;
+	typedef Map<mirror, TypePointerArray> MirrorTypePointerBook;
+
 }
 #endif // __NGEN_TYPE_HPP

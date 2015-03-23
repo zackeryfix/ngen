@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -61,18 +61,18 @@ namespace Ngen {
 		virtual uword Length() const pure;
 
 		/** @brief Invokes the function being referenced by the delegate. */
-      template<typename TOwner, typename TReturn, typename... TParams>
+    template<typename TOwner, typename TReturn, typename... TParams>
       TReturn Call(TOwner* _this, TParams... params) {
       	unknown ret = 0;
 			unknown args[sizeof...(TParams)] {
 				(Cast<TParams>::To(params))...
 			};
 
-      	if(this->IsNonVoid()) {
+      if(this->IsNonVoid()) {
 				ret = this->operator()(Cast<TOwner*>::To(_this), args);
-      	} else {
+      } else {
 				this->operator()(Cast<TOwner*>::To(_this), args);
-      	}
+      }
 
 			return Cast<TReturn>::From(ret);
 		}
@@ -83,7 +83,7 @@ namespace Ngen {
 		/** @brief Gets the size (in bytes) for the return type of the function call. */
 		virtual uword ReturnSize() const pure;
    };
-   __set_typename(Delegate, "Ngen$delegate");
+   __set_typename(Delegate, "Ngen.Delegate");
 
    template<typename TReturn, typename... TParams>
    class ngen_api NonVoidDelegate : public Delegate {
@@ -95,7 +95,7 @@ namespace Ngen {
       const char8* ReturnTypename() const { return typenameof(TReturn); }
       uword ReturnSize() const { return sizeof(TReturn); }
    };
-
+   
    template<typename... TParams>
    class ngen_api VoidDelegate : public Delegate {
    public:
@@ -106,6 +106,10 @@ namespace Ngen {
       const char8* ReturnTypename() const { return null; }
       uword ReturnSize() const { return 0; }
    };
+   
+   #include "Ngen.StaticDelegate.hpp"
+   #include "Ngen.MemberDelegate.hpp"
+   #include "Ngen.ConstMemberDelegate.hpp"
 }
 
 #endif // __NGEN_DELEGATE_HPP

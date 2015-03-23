@@ -6,7 +6,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-Copyright (c) 2013 Ngeneers Inc.
+COPYRIGHT (C) 2014 NGENWARE STUDIOS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,35 +33,94 @@ THE SOFTWARE.
 #include "Ngen.Array.hpp"
 
 namespace Ngen {
+   /** @brief
+    */
+   enum class EAttributeBinding {
+      /** @brief */
+      TypeBound = 0,
+
+      /** @brief */
+      NamespaceBound,
+
+      /** @brief */
+      AssmeblyBound,
+
+      /** @brief */
+      MethodBound,
+
+      /** @brief */
+      EventBound,
+
+      /** @brief */
+      RuntimeBound,
+
+      /** @brief */
+      FieldBound,
+
+      /** @brief */
+      PropertyBound,
+
+      /** @brief */
+      DelegateBound,
+
+      /** @brief */
+      ParameterBound,
+
+      /** @brief */
+      _COUNT
+   };
+   typedef BitFlags<EAttributeBinding> AttributeBindingFlags;
+
+	/** @brief An attribute is a custom property that can be assigned to any code element, such as
+	 * a type definition or method argument.
+	 */
 	class ngen_api Attribute {
 	public:
-		Attribute(const mirror& identity) : mIdentity(identity) {}
-		Attribute(const mirror& identity, const Array<mirror>& parents) : mIdentity(identity), mParents(parents) {}
-		Attribute(const Attribute& copy) : mIdentity(copy.mIdentity), mParents(copy.mParents) {}
+	   /** @brief */
+	   Attribute() {}
 
+		/** @brief */
 		bool operator==(const Attribute& rhs) const {
-			return rhs.mIdentity == this->mIdentity;
+         return (this->CustomAttribute() == rhs.CustomAttribute() &&
+                 this->CustomData() == rhs.CustomData() &&
+                 this->BindingConstraints() == rhs.BindingConstraints();
 		}
 
+		/** @brief */
 		bool operator!=(const Attribute& rhs) const {
-			return rhs.mIdentity != this->mIdentity;
+         return (this->CustomAttribute() != rhs.CustomAttribute() ||
+                 this->CustomData() != rhs.CustomData() ||
+                 this->BindingConstraints() != rhs.BindingConstraints();
 		}
 
-		/** @brief Determines if the attribute inherited another attribute. */
-		bool IsTypeOf(const mirror& identity) const {
-			for(uword i = 0; i < mParents.Length(); ++i) {
-				if(mParents->Begin(i)->mIdentity == identity) {
-					return true;
-				} else if(mParents->Begin(i)->IsTypeOf(identity)) {
-					return true;
-				}
-			}
 
-			return false;
-		}
-	protected:
-		mirror mIdentity;
-		Array<Attribute*> mParents;
+      bool Equals(Attribute* rhs) const pure;
+
+		/** @brief */
+		Type* CustomAttribute() const pure;
+
+		/** @brief Gets the data object that represents the custom properties of the attribute.
+		 */
+		Object& CustomData() const pure;
+
+		/** @brief Gets the binding flags used to identify the RTI constraints.
+		 */
+      AttributeBindingFlags BindingConstraints() const pure;
+
+      /** @brief
+       */
+      unknown Target() const pure;
+
+      /** @brief */
+      template<typename TReflection> bool Target(inref TReflection* pointer) const {
+         if(this->BindingConstraints()[TReflection::AttributeBinding]) {
+            pointer = (TReflection*)pointer;
+            return true;
+         }
+
+         pointer = null;
+         return false;
+      }
 	};
 }
 #endif // __NGEN_ATTRIBUTE_HPP
