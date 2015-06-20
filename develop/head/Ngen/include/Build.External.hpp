@@ -37,6 +37,7 @@ THE SOFTWARE.
 
 #if _tkn_Platform == _tknval_Platform_Windows
 #	include <windows.h>
+#   include <gl/gl.h>
 #else
 #	include <dlfcn.h>
 #endif
