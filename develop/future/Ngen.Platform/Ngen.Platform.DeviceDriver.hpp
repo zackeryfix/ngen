@@ -47,8 +47,8 @@ namespace Ngen {
 			}
 			
 			
-			virtual Device* pGetDevice(uwhole hashcode) const pure;
-			virtual Array<Device*> pDevices() const pure;
+			virtual Device* pGetDevice(uwhole hashcode) pure;
+			virtual Array<Device*> pGetDevices() const pure;
 			
 			mirror mName;
 			text mVendor;
