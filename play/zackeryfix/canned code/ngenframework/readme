@@ -1,7 +1,0 @@
-1) Each folder here is the include folder that corresponds to a shared library inside /bin/*.
-
-2) The /bin/ folder contains binary files for both /Release/ and /Debug/ versions of the framework.
-
-3) To begin working with the framework, we have provided a set of tutorials on our Google Code page for various platforms and IDEs.  Please check it out before getting started.
-
-Note:  The layout of this directoy tree will change in the future.
