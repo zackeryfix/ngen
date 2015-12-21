@@ -20,7 +20,7 @@ lib
 *.jar
 *.rar
 *.tar
-*.zip
+*.zip  used for our packages
 
 # Logs and databases #
 ######################
