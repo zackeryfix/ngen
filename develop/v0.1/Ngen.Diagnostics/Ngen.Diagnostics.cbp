@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Ngen.Diagnostics" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="source\;include\;namespace\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/Ngen.Diagnostics.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add directory="../bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/Ngen.Diagnostics.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DNGEN_DIAGNOSTICS_IMPORT" />
+			<Add directory="../Ngen/include" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add library="Ngen" />
+		</Linker>
+		<Unit filename="Ngen.Diagnostics.Test.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Diagnostics.TestGroup.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Diagnostics.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="include/Build.Diagnostics.Logic.hpp" />
+		<Unit filename="include/Ngen.Diagnostics.Test.hpp" />
+		<Unit filename="include/Ngen.Diagnostics.TestGroup.hpp" />
+		<Unit filename="include/Ngen.Diagnostics.TestGroupResult.hpp" />
+		<Unit filename="include/Ngen.Diagnostics.TestResult.hpp" />
+		<Unit filename="include/Ngen.Diagnostics.hpp">
+			<Option virtualFolder="namespace/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
