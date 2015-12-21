@@ -85,10 +85,6 @@
 		<Unit filename="_Main.cpp">
 			<Option virtualFolder="source/" />
 		</Unit>
-		<Unit filename="test.hpp">
-			<Option virtualFolder="include/" />
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
