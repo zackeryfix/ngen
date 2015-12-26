@@ -8,7 +8,7 @@
 *.so
 bin
 lib
-external/include/
+**/external/include/**
 
 # Packages #
 ############
