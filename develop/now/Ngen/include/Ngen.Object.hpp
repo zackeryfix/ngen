@@ -31,11 +31,10 @@ THE SOFTWARE.
 
 #include "Ngen.Mirror.hpp"
 #include "Ngen.Reference.hpp"
+#include "Ngen.Callback.hpp"
+#include "Ngen.Field.hpp"
 
 namespace Ngen {
-	class Delegate;
-	class Type;
-
 	class ngen_api Object {
 	public:
 
@@ -141,7 +140,7 @@ namespace Ngen {
 			return mReference;
 		}
 
-		Type* GetType() const {
+		const Type* GetType() const {
 			return mType;
 		}
 
@@ -153,7 +152,7 @@ namespace Ngen {
 		}
 
 		static const Object& Null();
-		static Object New(unknown value, const string& typeName, bool readOnly = false);
+		static Object New(unknown value, const mirror& typeName, bool readOnly = false);
 		static Object New(unknown value, bool readOnly = false);
 
 	protected:

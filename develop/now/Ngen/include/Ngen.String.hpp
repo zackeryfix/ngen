@@ -31,6 +31,9 @@ THE SOFTWARE.
 
 #include "Ngen.Array.hpp"
 
+//TODO: This class only works with null-terminated strings, need to add prefixed
+// length support for native C/C++ char arrays
+
 namespace Ngen {
    /** @brief A fixed-width string of characters. */
    template<typename T> class ngen_api String {
@@ -44,9 +47,10 @@ namespace Ngen {
       // -------------------------------------
       // PUBLIC CTOR
       // -------------------------------------
-      String() : mIsReadonly(true), mData(null), mLength(0), mCapacity(0) {}
+      String() : mIsReadonly(true), mData(null), mLength(0), mCapacity(0) { pValidate(); }
 
-      explicit String(uword capacity) : mIsReadonly(false), mData(capacity == 0 ? null : Memory::New<TChar>(capacity, true)), mLength(0), mCapacity(capacity) {
+      explicit String(uword capacity) : mIsReadonly(false), mData(capacity == 0 ? Memory::New<TChar>(1) : Memory::New<TChar>(capacity)), mLength(1), mCapacity(capacity == 0 ? 1 : capacity) {
+         pTerminate();
       }
 
       String(const TChar* string, bool readOnly) : mIsReadonly(readOnly), mData((TChar*)string), mLength(0), mCapacity(0) {
@@ -54,6 +58,7 @@ namespace Ngen {
          if(!readOnly) {
             mData = Memory::New<TChar>(mLength);
             Memory::Copy<TChar>(string, mData, mLength);
+            pTerminate();
          }
       }
 
@@ -61,19 +66,22 @@ namespace Ngen {
          mLength = mCapacity = TSelf::GetLength(string);
          mData = Memory::New<TChar>(mLength);
          Memory::Copy<TChar>(string, mData, mLength);
+         pTerminate();
       }
 
       String(const TSelf& copy) : mIsReadonly(copy.mIsReadonly), mData(copy.mData), mLength(copy.mLength), mCapacity(copy.mCapacity) {
          if(!mIsReadonly) {
 				mData =	Memory::New<TChar>(copy.mCapacity);
 				Memory::Copy(copy.mData, mData, mLength);
+				pTerminate();
       	}
       }
 
-      String(const TSelf& copy, bool readOnly) : mIsReadonly(copy.mIsReadonly), mData(copy.mData), mLength(copy.mLength), mCapacity(copy.mCapacity) {
+      String(const TSelf& copy, bool readOnly) : mIsReadonly(readOnly), mData(copy.mData), mLength(copy.mLength), mCapacity(copy.mCapacity) {
          if(!mIsReadonly) {
 				mData =	Memory::New<TChar>(copy.mCapacity);
 				Memory::Copy(copy.mData, mData, mLength);
+				pTerminate();
       	}
       }
 
@@ -527,6 +535,64 @@ namespace Ngen {
 			return result;
       }
 
+      static TSelf Format(const TSelf& format, const Array<TSelf>& params) {
+         // TODO:  This was written once, and left unoptimized; optimize it (change to native C string formatting logic)
+         TSelf result;
+         TChar* begin = format.Begin();
+         TChar* end = format.End();
+         TSelf buffer[format.Length()/2];
+         uword i = 0;
+         uword buffer_i = 0;
+         bool param_first = false;
+         //buffer[0].pReallocate(format.Length()/2);
+
+         do {
+            if(*begin == E'{') {
+               if(i == 0) {
+                  param_first=true;
+               }
+               buffer_i++;
+               //buffer[buffer_i].pReallocate(format.Length()/2);
+               while(*begin != E'}') {
+                  if(begin == end) {
+                     THROW(OutOfRangeException("The given string has an invalid formatting or mismatching '{}' pair for use with string::Format!"));
+                  }
+
+                  begin++;
+                  i++;
+               }
+            }
+
+            buffer[buffer_i] += *begin;
+            begin++;
+         } while(begin != end);
+
+         uword format_i = 0;
+         uword params_i = 0;
+         if(param_first) {
+            while(format_i < buffer_i && params_i < params.Length()) {
+               result += params[params_i++];
+               result += buffer[format_i++];
+            }
+         } else {
+            while(format_i < buffer_i && params_i < params.Length()) {
+               result += buffer[format_i++];
+               result += params[params_i++];
+            }
+         }
+
+         if(params_i < params.Length()) {
+            result += params[params_i];
+         }
+
+         if(format_i < buffer_i) {
+            result += buffer[format_i];
+         }
+
+         return TSelf((TSelf&&)result);
+      }
+
+
       static const TSelf& Empty();
    protected:
       // -------------------------------------
@@ -575,7 +641,10 @@ namespace Ngen {
                if(!isnull(ptr)) {
                   Memory::Copy(ptr, mData, mLength);
                   Memory::Delete(ptr);
+                  pTerminate();
                }
+
+               pValidate();
             }
          }
       }

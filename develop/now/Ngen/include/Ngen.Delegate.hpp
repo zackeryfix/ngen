@@ -30,7 +30,6 @@ THE SOFTWARE.
 #define __NGEN_DELEGATE_HPP
 
 #include "Ngen.Memory.hpp"
-#include "Ngen.Cast.hpp"
 
 namespace Ngen {
 

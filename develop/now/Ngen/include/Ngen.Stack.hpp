@@ -30,7 +30,6 @@ THE SOFTWARE.
 #define __NGEN_STACK_HPP
 
 #include "Ngen.Array.hpp"
-#include "Ngen.Delegate.hpp"
 
 namespace Ngen {
    template<typename T>

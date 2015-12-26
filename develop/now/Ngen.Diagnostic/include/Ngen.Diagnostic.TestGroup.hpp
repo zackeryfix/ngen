@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef __NGEN_DIAGNOSTIC_TESTGROUP_HPP
 #define __NGEN_DIAGNOSTIC_TESTGROUP_HPP
 
-#include "Ngen.List.hpp"
 #include "Ngen.Diagnostic.TestGroupResult.hpp"
 
 namespace Ngen {

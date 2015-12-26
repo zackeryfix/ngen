@@ -192,6 +192,7 @@ t_begin_test(class_String, Split_Char) [] (TestResult& result) {
 
 	if(split.Length() != 2) {
 		result.Error(const_string("string was incorrectly split."));
+		return;
 	}
 
 	if(split[0] != const_string("d")) {
@@ -200,6 +201,15 @@ t_begin_test(class_String, Split_Char) [] (TestResult& result) {
 
 	if(split[1] != const_string("b")) {
 		result.Error(const_string("The second token was invalid."));
+	}
+}
+t_end_test
+
+t_begin_test(class_String, Format_String_BufferFirst) [] (TestResult& result) {
+	string format = string::Format(const_string("This is {0} template for an unformatted string."),
+                                 { const_string("the complete") });
+	if(format == const_string("This is the complete template for an unformatted string.")) {
+      result.Error(format);
 	}
 }
 t_end_test

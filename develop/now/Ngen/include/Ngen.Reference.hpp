@@ -64,7 +64,6 @@ namespace Ngen {
 	protected:
 		bool mIsValid;
       uword mCount;
-
    };
 }
 #endif // __NGEN_REFERENCECOUNT_HPP

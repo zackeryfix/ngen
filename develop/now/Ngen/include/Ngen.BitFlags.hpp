@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_BITFLAGS_HPP
 #define __NGEN_BITFLAGS_HPP
 
-#include "Ngen.Trait.hpp"
+#include "Ngen.Typedefs.hpp"
 
 namespace Ngen {
 	/** @brief A structure used to represent an enumeration data type as a set of bit flags.

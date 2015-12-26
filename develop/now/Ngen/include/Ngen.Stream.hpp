@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_STREAM_HPP
 #define __NGEN_STREAM_HPP
 
-#include "Ngen.Memory.hpp"
+#include "Ngen.Typedefs.hpp"
 
 namespace Ngen {
 

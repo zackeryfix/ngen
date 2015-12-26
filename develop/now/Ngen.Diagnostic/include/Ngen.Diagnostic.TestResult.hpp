@@ -30,8 +30,6 @@ THE SOFTWARE.
 #define __NGEN_DIAGNOSTIC_TESTRESULT_HPP
 
 #include "Build.Ngen.Diagnostic.Logic.hpp"
-#include "Ngen.Exception.hpp"
-#include "Ngen.StaticDelegate.hpp"
 
 namespace Ngen {
 	namespace Diagnostic {

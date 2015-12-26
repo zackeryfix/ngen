@@ -29,8 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_FIELD_HPP
 #define __NGEN_FIELD_HPP
 
-
-#include "Ngen.Trait.hpp"
+#include "Ngen.Cast.hpp"
 
 namespace Ngen {
 	/** @brief Represents a static or member field. */
@@ -46,7 +45,7 @@ namespace Ngen {
 
 		/** @brief Gets the size of the field (in bytes).
 		 */
-		uword Size() const pure;
+		virtual uword Size() const pure;
 
 		virtual bool IsConst() const pure;
 		virtual bool IsMember() const pure;
@@ -54,16 +53,16 @@ namespace Ngen {
 		/** @brief Gets the type that identifies the data belonging to the field. */
 		virtual Type* ReturnType() const pure;
 
-		template<TOwner, TValue> TValue Get(TOwner* _this) {
+		template<typename TOwner, typename TValue> TValue Get(TOwner* _this) {
 			return (TValue)Get((unknown)_this);
 		}
 
-		template<TOwner, TValue> void Set(TOwner* _this, TValue value) {
-			Set((unknown)_this, (unknown)&value));
+		template<typename TOwner, typename TValue> void Set(TOwner* _this, TValue value) {
+			Set((unknown)_this, (unknown)&value);
 		}
 	};
 
-	template<typename TOWner, typename TValue>
+	template<typename TOwner, typename TValue>
 	class ngen_api MemberField : public Field {
 	public:
 
@@ -94,14 +93,14 @@ namespace Ngen {
 		}
 
       virtual Type* ReturnType() const {
-         return typeof(TValue);
+         return typeof<TValue>();
       }
 
 	protected:
 		TField mField;
 	};
 
-	template<typename TOWner, typename TValue>
+	template<typename TOwner, typename TValue>
 	class ngen_api ConstMemberField : public Field {
 	public:
 
@@ -132,7 +131,7 @@ namespace Ngen {
 		}
 
       virtual Type* ReturnType() const {
-         return typeof(TValue);
+         return typeof<TValue>();
       }
 	protected:
 		TField mField;
@@ -145,7 +144,7 @@ namespace Ngen {
 		typedef const TValue* TField;
 		typedef ConstStaticField<TValue> TSelf;
 
-		ConstStaticField(TField field) mField(field) {
+		ConstStaticField(TField field) : mField(field) {
 		}
 
 		virtual bool IsConst() const {
@@ -169,7 +168,7 @@ namespace Ngen {
 		}
 
       virtual Type* ReturnType() const {
-         return typeof(TValue);
+         return typeof<TValue>();
       }
 	protected:
 		TField mField;
@@ -180,9 +179,9 @@ namespace Ngen {
 	public:
 
 		typedef TValue* TField;
-		typedef StaticField<TOwner, TValue> TSelf;
+		typedef StaticField<TValue> TSelf;
 
-		StaticField(TField field) mField(field) {
+		StaticField(TField field) : mField(field) {
 		}
 
 		virtual bool IsConst() const {
@@ -206,7 +205,7 @@ namespace Ngen {
 		}
 
       virtual Type* ReturnType() const {
-         return typeof(TValue);
+         return typeof<TValue>();
       }
 	protected:
 		TField mField;

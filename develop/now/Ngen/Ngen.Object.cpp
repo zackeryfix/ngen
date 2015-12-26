@@ -38,10 +38,10 @@ namespace Ngen {
 
 	void Object::pInitialize() {
 		if(!mIsReadonly) {
-			byte* tmp = (byte*)mThis;
-			mThis = (unknown)memory::New<byte>(mType->Size());
+			int8* tmp = (int8*)mThis;
+			mThis = (unknown)memory::New<int8>(mType->Size());
 
-			Memory::Copy<byte>((byte*)mThis, tmp, mType->Size());
+			Memory::Copy<int8>((int8*)mThis, tmp, mType->Size());
 
 			mReference = new Reference();
 			mReference->Increment();
@@ -59,7 +59,7 @@ namespace Ngen {
 
 	void Object::pThrowIfReadonly() const {
 		if(IsReadonly()) {
-			throw InvalidOperationException("Cannot modify a read-only object!");
+			THROW(InvalidOperationException(E"Cannot modify a read-only object!"));
 		}
 	}
 
@@ -93,5 +93,5 @@ namespace Ngen {
 		return mType->Size();
 	}
 
-	Type* typeof(Object& variable) { return variable.GetType(); }
+	Type* typeof(Object& variable) { return (Type*)variable.GetType(); }
 }

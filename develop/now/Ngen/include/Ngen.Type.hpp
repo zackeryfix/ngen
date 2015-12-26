@@ -29,15 +29,9 @@ THE SOFTWARE.
 #ifndef __NGEN_TYPE_HPP
 #define __NGEN_TYPE_HPP
 
-#include "Ngen.List.hpp"
-#include "Ngen.Object.hpp"
-#include "Ngen.Delegate.hpp"
-#include "Ngen.Map.hpp"
+#include "Ngen.Typedefs.hpp"
 
 namespace Ngen {
-	class Assembly;
-	class Attribute;
-
 	/** @brief */
 	class ngen_api Type {
 	public:
@@ -62,21 +56,41 @@ namespace Ngen {
 		 */
 		virtual mirror Name() const pure;
 
-		/** @brief Gets a human readable string representing a Object known to be of the same Type.
-		 */
-		//virtual text ToText(const Object& _this) const pure;
-
-		/** @brief Gets a method known to the Type using the given signature.
+		/** @brief Gets a method member of the Type that matches the given signature.
 		 * @param signature The signature of the method nested within the scope of the type.
 		 * @return A delegate representing the method that was found.
 		 * @throw MissingReferenceException when the method signature could not be resolved to an actual function.
 		 */
 		virtual Delegate* GetMethod(const mirror& signature) const pure;
 
-		/** @brief Invokes a method known to the Type using the given signature. */
-		//virtual Object Invoke(const text& signature, Object _this, Object* params) const pure;
+		/** @brief Gets an array of all the method members of this Type.
+		 * @return An array containing all the method information bound to this type.
+		 */
+		virtual Array<Delegate*> GetMethods() const pure;
 
-		/** @brief Creates a new default Object instance of the Type.
+			/** @brief Gets a field member of the Type that matches the given signature.
+		 * @param signature The signature of the field nested within the scope of this type.
+		 * @return A field representing the field member that was found.
+		 * @throw MissingReferenceException when the field signature could not be resolved to an actual member.
+		 */
+		virtual Field* GetField(const mirror& signature) const pure;
+
+		/** @brief Gets an array of all the field members of this Type.
+		 * @return An array containing all the field information bound to this type.
+		 */
+		virtual Array<Field*> GetFields() const pure;
+
+		/** @brief Gets a member method callback for the Type that matches the given signature.
+		 * @param _this An unknown pointer that is represented as an instance of this type.
+		 * @param signature The signature of the method nested within the scope of the type.
+		 * @return A callback representing an invocation of the method that was found.
+		 * @throw MissingReferenceException when the method signature could not be resolved to an actual function.
+		 */
+      Callback GetCallback(unknown _this, const mirror& signature) const {
+         return Callback(_this, GetMethod(signature));
+		}
+
+		/** @brief Creates a default Object instance of the Type.
 		 */
 		virtual Object NewInstance() const pure;
 
@@ -97,7 +111,7 @@ namespace Ngen {
 		/** @brief Determines if the Type is a base and does not inherit another type. */
 		virtual bool IsBase() const pure;
 
-		/** @brief Determines if the Type is considered a primitive structure. */
+		/** @brief Determines if the Type is considered a primitive data type. */
 		virtual bool IsPrimitive() const pure;
 
 		/** @brief Determines if the Type inherits the given Type.
@@ -112,51 +126,43 @@ namespace Ngen {
 		 */
 		virtual bool IsBaseOf(const mirror& derived) const pure;
 
-		/** @brief Determines if the Type can always be constructed as an object.
+		/** @brief Determines if the Type can be constructed as an object.
 		 */
-		virtual bool IsConstructable() const pure;
+		virtual bool IsConstructible() const pure;
 
 		/** @brief Determines if the Type is represented as pure namespace, which is always static and can never be constructed.
 		 */
 		virtual bool IsPureNamespace() const pure;
 
-		/** @brief Determines if the Type can be copied or only referenced.
+		/** @brief Determines if an instance of this Type can be copied.
 		 */
 		virtual bool IsCopyable() const pure;
 
-		/** @brief Determines if the type is public.
+		/** @brief Determines if this type has public visibility through out the reflection engine.
 		 */
 		virtual bool IsPublic() const pure;
 
-		/** @brief Determines if the type is protected.
+		/** @brief Determines if the type has protected visibility.
 		 */
 		virtual bool IsProtected() const pure;
 
-		/** @brief Determines if the type is private.
+		/** @brief Determines if the type has hidden visibility.
 		 */
-		virtual bool IsPrivate() const pure;
+		virtual bool IsHidden() const pure;
 
 		/** @brief Determines if the type is a template for new types.
 		 */
 		virtual bool IsTemplate() const pure;
 
-		/** @brief Determines if the type is a base abstraction for new types.
+		/** @brief Determines if this type is a base abstraction for new types.
 		 */
 		virtual bool IsAbstract() const pure;
-
-		/** @brief Determines if the type is a virtual interface for new types.
-		 */
-		virtual bool IsVirtual() const pure;
-
-		/** @brief Determines if the type is hidden from external processes.
-		 */
-		virtual bool IsHidden() const pure;
 
 		/** @brief Determines if the type is the final abstraction in a chain of inheritance.
 		 */
 		virtual bool IsFinal() const pure;
 
-		/** @brief Determines if the type is nested inside am upper level scope.
+		/** @brief Determines if the type is nested inside another type scope.
 		 */
 		virtual bool IsNested() const pure;
 
@@ -172,7 +178,7 @@ namespace Ngen {
 		 */
 		virtual Array<Type*> GetParents() const pure;
 
-		/** @brief Gets all the types nested within this type, including non-constructable namespace types.
+		/** @brief Gets all the types nested within this type, including non-constructible static types.
 		 */
 		virtual Array<Type*> GetNested() const pure;
 
@@ -180,15 +186,9 @@ namespace Ngen {
 		 */
 		virtual Type* GetDirectory() const pure;
 
-		/** @brief Gets the type information for a type that has the given typename.
+		/** @brief Gets the type information for a type that has the given mirror.
 		 */
 		static Type* GetType(const mirror& typeName);
-
-		template<typename T> static Type* Of() { return __type<T>::value(); }
-		template<typename T> static Type* Of(const T& variable) { return __type<T>::value(); }
-		static Type* Of(const Object& variable) { return variable.GetType(); }
 	};
-
-
 }
 #endif // __NGEN_TYPE_HPP

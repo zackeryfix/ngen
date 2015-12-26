@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef __NGEN_MAP_HPP
 #define __NGEN_MAP_HPP
 
-#include "Ngen.Memory.hpp"
 #include "Ngen.KeyValuePair.hpp"
 #include "Ngen.List.hpp"
 

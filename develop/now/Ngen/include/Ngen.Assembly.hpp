@@ -29,29 +29,21 @@ THE SOFTWARE.
 #ifndef __NGEN_ASSEMBLY_HPP
 #define __NGEN_ASSEMBLY_HPP
 
-#include "Ngen.Type.hpp"
-#include "Ngen.Library.hpp"
+#include "Ngen.Typedefs.hpp"
 
 namespace Ngen {
-   class Application;
-
 	/** @brief A single unit of reflected type information that is load and unloaded
 	 * in its entirety and typically will reside inside a shared object file or dynamic
 	 * library.
 	 */
 	class ngen_api Assembly {
 	public:
-		/** @brief Unloads a previously loaded library, and all assemblies it references.
-		 * @param library A mirror used to identify the library being unloaded.
-		 */
-		static void Unload(const mirror& library);
-
-		/** @brief Get an array of all the namespace currently available through the assembly.
+		/** @brief Get an array of all the namespace currently available in the assembly.
 		 * @return An array that contains each namespace available through the assembly.
 		 */
 		virtual Array<Type*> GetNamespaces() const pure;
 
-		/** @brief Get an array of all the types currently available through the assembly.
+		/** @brief Get an array of all the types currently available in the assembly.
 		 * @return An array that contains each type available through the assembly.
 		 */
 		virtual Array<Type*> GetTypes() const pure;
@@ -63,25 +55,25 @@ namespace Ngen {
 
 		/** @brief Gets a namespace from the assembly.
 		 * @param name A mirror that can be used to identify the namespace being retrieved.
-		 * @return A non-constructable type representing the static namespace.
+		 * @return The reflected information for the namespace that was discovered, or null if the namespace could not be found.
 		 */
 		virtual Type* GetNamespace(const mirror& name) const pure;
 
 		/** @brief Gets a type from the assembly.
 		 * @param name A mirror that can be used to identify the type being retrieved.
-		 * @return A constructable or static/non-constructable type representing the type.
+		 * @return The reflected information for the type that was discovered, or null if the type could not be found.
 		 */
 		virtual Type* GetType(const mirror& name) const pure;
 
-		/** @brief Gets the library responsible for referencing the assembly. */
+		/** @brief Gets the library where this assembly exists. */
 		virtual Library* GetNativeLibrary() const pure;
 
 	protected:
       /** @brief Determines if the given filename belongs to a library that contains reflected type-information.
-       * @return The number of assemblies that belong to the library, zero if the library contains no assemblies, and
-       * -1 if the library does not exist.
+       * @return The number of assemblies that exist in the library, zero if the library contains no assemblies, and
+       * -1 if the filename does not belong to library or does not belong to an existing file.
        */
-		static int Verify(const mirror& libraryFileName);
+		static word Verify(const mirror& libraryFileName);
 
 		/** @brief Loads a binary file from a physical storage location.
 		 * @param library The mirror that can be used to identify the file path of the library.

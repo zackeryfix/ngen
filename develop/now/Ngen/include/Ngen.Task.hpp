@@ -29,12 +29,9 @@ THE SOFTWARE.
 #ifndef __NGEN_TASK_HPP
 #define __NGEN_TASK_HPP
 
-#include "Ngen.Event.hpp"
+#include "Ngen.Typedefs.hpp"
 
 namespace Ngen {
-	class Runtime;
-	class Application;
-
 	enum class ETaskState {
 		Waiting,
 		Running,

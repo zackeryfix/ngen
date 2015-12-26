@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef __NGEN_ARRAY_HPP
 #define __NGEN_ARRAY_HPP
 
-#include "Ngen.Memory.hpp"
 #include "Ngen.Delegate.hpp"
 
 namespace Ngen {
@@ -47,6 +46,15 @@ namespace Ngen {
 		* @param capacity The number of structures to pre-allocate for the array.
 		*/
 		Array(uword capacity) : mData(Memory::New<T>(capacity)), mLength(0), mCapacity(capacity), mIsReadonly(false) {}
+
+      /** @brief Constructor. (T*, uword, bool)
+		* @param copy The pointer where the data structures will be referenced to create the array.
+		* @param length The number of structures being copied.
+		* @param readOnly Determines if the array will copy the data structures or only reference them.
+		*/
+		Array(std::initializer_list<T> copy, bool readOnly = true) : mData(null), mLength(0), mCapacity(0), mIsReadonly(readOnly) {
+			Set((T*)copy.begin(), copy.size(), readOnly);
+		}
 
 		/** @brief Constructor. (T*, uword, bool)
 		* @param copy The pointer where the data structures will be referenced to create the array.
@@ -86,8 +94,20 @@ namespace Ngen {
 			pClear(true);
 		}
 
+
 		/** @brief operator[](uword).*/
-		T& operator[](uword index) {
+      typename Trait<T>::ConstReference& operator[](uword index) const {
+			if(IsNullOrEmpty()) {
+				THROW(InvalidOperationException("Cannot index an array that is null or empty!"));
+			} else if(index >= mLength) {
+				THROW(OutOfRangeException("The parameter 'index' must be less than the length of the array!"));
+			}
+
+			return *(mData + index);
+		}
+
+		/** @brief operator[](uword).*/
+		typename Trait<T>::Reference& operator[](uword index) {
 			if(IsNullOrEmpty()) {
 				THROW(InvalidOperationException("Cannot index an array that is null or empty!"));
 			} else if(index >= mLength) {

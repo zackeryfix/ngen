@@ -29,10 +29,6 @@ THE SOFTWARE.
 #ifndef __NGEN_LIST_HPP
 #define __NGEN_LIST_HPP
 
-#include "Ngen.Memory.hpp"
-#include "Ngen.Algorithm.hpp"
-#include "Ngen.Trait.hpp"
-#include "Ngen.Exception.hpp"
 #include "Ngen.Array.hpp"
 
 namespace Ngen {

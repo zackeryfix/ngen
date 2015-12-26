@@ -49,8 +49,6 @@ THE SOFTWARE.
 #include "Ngen.MemberDelegate.hpp"
 #include "Ngen.ConstMemberDelegate.hpp"
 
-#include "Ngen.Array.hpp"
-#include "Ngen.List.hpp"
 #include "Ngen.Map.hpp"
 #include "Ngen.Stack.hpp"
 
@@ -59,13 +57,11 @@ THE SOFTWARE.
 #include "Ngen.Event.hpp"
 #include "Ngen.Exception.hpp"
 #include "Ngen.DateTime.hpp"
-#include "Ngen.Library.hpp"
 #include "Ngen.Stream.hpp"
 #include "Ngen.Task.hpp"
 
 #include "Ngen.Object.hpp"
-#include "Ngen.Attribute.hpp"
-#include "Ngen.Type.hpp"
+#include "Ngen.Library.hpp"
 #include "Ngen.Assembly.hpp"
 
 #include "Ngen.Console.hpp"

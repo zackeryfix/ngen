@@ -29,85 +29,46 @@ THE SOFTWARE.
 #ifndef __NGEN_ATTRIBUTE_HPP
 #define __NGEN_ATTRIBUTE_HPP
 
-#include "Ngen.BitFlags.hpp"
-#include "Ngen.Mirror.hpp"
-#include "Ngen.Array.hpp"
+#include "Ngen.Type.hpp"
 
 namespace Ngen {
-   /** @brief
-    */
-   enum class EAttributeBinding : uword {
-      /** @brief */
-      TypeBound = 0,
 
-      /** @brief */
-      NamespaceBound,
-
-      /** @brief */
-      AssmeblyBound,
-
-      /** @brief */
-      MethodBound,
-
-      /** @brief */
-      EventBound,
-
-      /** @brief */
-      //RuntimeBound,
-
-      /** @brief */
-      FieldBound,
-
-      /** @brief */
-      PropertyBound,
-
-      /** @brief */
-      DelegateBound,
-
-      /** @brief */
-      ParameterBound,
-
-      /** @brief */
-      _COUNT
-   };
-   typedef BitFlags<EAttributeBinding> AttributeBindingFlags;
-
-
-	/** @brief An attribute is a custom property that can be assigned to any code element, such as
-	 * a type definition or method argument.
+	/** @brief An attribute is a custom external property that can be assigned to any code element, such as
+	 * a type definition or method argument.  These are not restricted to any kind of RTI element, and any
+	 * Type can be an attribute.
 	 */
 	class ngen_api Attribute {
 	public:
 	   /** @brief */
-	   Attribute() {}
+	   Attribute(unknown rti, const Type* attributeType) : mRTI(rti), mType(attributeType), mData(mType->NewInstance()) {}
 
 		/** @brief */
 		bool operator==(const Attribute& rhs) const {
-         return (this->Target() == rhs.Target() &&
-                 this->Data() == rhs.Data() &&
-                 this->BindingConstraints() == rhs.BindingConstraints());
+         return (this->RTI() == rhs.RTI() &&
+                 this->Type() == rhs.Type() &&
+                 this->Data() == rhs.Data());
 		}
 
 		/** @brief */
 		bool operator!=(const Attribute& rhs) const {
-         return (this->Target() != rhs.Target() ||
-                 this->Data() != rhs.Data() ||
-                 this->BindingConstraints() != rhs.BindingConstraints());
+         return (this->RTI() != rhs.RTI() ||
+                 this->Type() != rhs.Type() ||
+                 this->Data() != rhs.Data());
 		}
 
+		/** @brief Gets the reflected type information element bound to this attribute. */
+		unknown RTI() const { return mRTI; }
 
-      virtual bool Equals(Attribute* rhs) const pure;
+		/** @brief Gets the type information that the custom data for the attribute was created from. */
+		const Type* Type() const { return mType; }
 
-		/** @brief */
-		virtual Object& Data() const pure;
+		/** @brief Gets the custom object representing this attribute's data. */
+		Object Data() const { return mData; }
 
-		/** @brief Gets the binding flags used to identify the RTI constraints.
-		 */
-      virtual AttributeBindingFlags BindingConstraints() const pure;
-
-      /** @brief
-       */
-      virtual unknown Target() const pure;
+   protected:
+      unknown mRTI;
+      Type* mType;
+      Object mData;
 	};
 }
 #endif // __NGEN_ATTRIBUTE_HPP

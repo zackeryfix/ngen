@@ -41,7 +41,7 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add directory="../Ngen/include" />
-			<Add directory="../Ngen.Diagnostics/include" />
+			<Add directory="../Ngen.Diagnostic/include" />
 			<Add directory="../external/include" />
 		</Compiler>
 		<Linker>
