@@ -51,12 +51,10 @@ namespace Ngen {
 			FieldInfo* AddMemberField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction builder);
 			void AddConstructor(Delegate* function, EConstructorKind kind);
 			void AddParent(const mirror& parentName);
-			void AddTrait(ETrait trait);
-			void RemoveTrait(ETrait trait);
-			void SetTraits(TraitFlags traits);
+			void SetTrait(ETypeTrait trait, bool value);
+			void SetTrait(TypeTraitFlags traits);
 			void SetDestructor(Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer);
          TypeInfo* AddNestedType(const mirror& relativeTypeName, typename StaticDelegate<TypeBuilder>::TFunction initializer);
-         void AddAttribute(AttributeInfo* attribute);
 
          /** @brief Validates the type information after it has been constructed. */
          bool Save() const;

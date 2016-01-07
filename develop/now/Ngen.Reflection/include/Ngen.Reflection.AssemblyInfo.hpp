@@ -79,9 +79,11 @@ namespace Ngen {
 		   bool mIsMuted;                               // logic flag
 			mirror mAssemblyName;                        // the actual name of the assembly (constant)
 			Library* mLibrary;                           // the library that owns the assembly
-			Map<Mirror, NamespaceInfo> mNamespaceMap;        // all the namespaces in the assmebly
-			Array<AttributeInfo*> mAssemblyAttributes;   // the attributes bound to the assembly
-         Array<AttributeInfo> mCustomAttributes;      // all the custom attributes found inside the assembly
+			Map<Mirror, NamespaceInfo*> mNamespaceMap;    // all the root namespaces in the assmebly
+			Map<Mirror, TypeInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
+			Map<Mirror, FieldInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
+			Map<Mirror, MethodInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
+         Array<Attribute> mCustomAttributes;          // all the custom attributes found inside the assembly
 
 			friend class AssemblyBuilder;
 		};

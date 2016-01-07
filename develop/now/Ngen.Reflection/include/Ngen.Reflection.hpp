@@ -30,6 +30,6 @@ THE SOFTWARE.
 #define __NGEN_REFLECTION_HPP
 
 #include "Build.Ngen.Reflection.Logic.hpp"
-
+#include "Ngen.Reflection.AssemblyInfo.hpp"
 
 #endif // __NGEN_REFLECTION_HPP

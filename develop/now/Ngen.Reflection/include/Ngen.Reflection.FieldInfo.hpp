@@ -33,11 +33,15 @@ THE SOFTWARE.
 
 namespace Ngen {
    namespace Reflection {
+      /// TODO: Calculate ReturnType from signature
 
       class ngen_api FieldInfo : Field {
       public:
-         FieldInfo(NamespaceInfo* directory,  Field* field, const mirror& relativeName, TypeInfo* valueType, typename StaticDelegate<FieldBuilder>::TFunction initializer) :
-            mIsMuted(true), mTraits(), mDirectory(directory), mReturnType(valueType), mName(relativeName),
+         FieldInfo() : mIsMuted(false), mTraits(), mDirectory(null), mReturnType(null), mName(), mFullName(null), mField(null) {
+         }
+
+         FieldInfo(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename StaticDelegate<FieldBuilder>::TFunction initializer) :
+            mIsMuted(true), mTraits(), mDirectory(directory), mReturnType(null), mName(relativeName),
             mFullName(directory->FullName().ToLongName() + '@' + relativeName.ToLongName()),
             mField(field) {
             initializer(FieldBuilder(this));
@@ -86,6 +90,7 @@ namespace Ngen {
          mirror            mName;
          mirror            mFullName;
          Field*            mField;
+         Array<Attribute>  mCustomAttributes;          // all the custom attributes found inside the assembly
 
          friend class FieldBuilder;
       };

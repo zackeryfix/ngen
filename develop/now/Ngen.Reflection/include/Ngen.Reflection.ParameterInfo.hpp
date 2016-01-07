@@ -36,11 +36,14 @@ namespace Ngen {
    namespace Reflection {
       class ngen_api ParameterInfo {
       public:
-         ParameterInfo(ParameterTraitFlags flags, TypeInfo* type, mirror paramName, uword paramIndex, const string& description, const MethodInfo* owner) :
-            mTraits(flags), mName(paramName), mIndex(paramIndex), mDescription(description), mOwner(owner), mType(type) {
+         ParameterInfo() : mTraits(), mName(), mIndex(),  mOwner(null), mType(null), mTypeName() {}
+
+         ParameterInfo(MethodInfo* owner, ParameterTraitFlags flags, const mirror& typeName, const mirror& paramName, uword paramIndex) :
+            mTraits(flags), mName(paramName), mIndex(paramIndex),  mOwner(owner), mType(null), mTypeName(typeName) {
+            mType = mOwner->Assembly()->GetType(typeName);
          }
 
-         ParamterInfo(const ParameterInfo* copy) :
+         ParamterInfo(const ParameterInfo& copy) :
              mTraits(copy.mTraits), mName(copy.mName), mIndex(copy.mIndex), mDescription(copy.mDescription), mOwner(copy.mOwner), mType(copy.mType) {
          }
 
@@ -64,9 +67,9 @@ namespace Ngen {
          ParameterTraitFlags  mTraits;
          mirror               mName;
          uword                mIndex;
-         string               mDescription;
          MethodInfo*          mOwner;
          TypeInfo*            mType;
+         mirror               mTypeName;
 
          friend class MethodBuilder;
          friend class MethodInfo;

@@ -40,6 +40,11 @@ namespace Ngen {
 		 */
 		class ngen_api NamespaceInfo : public Type {
 		public:
+		   /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
+			NamespaceInfo() : mIsMuted(false), mTraits(), mAssembly(null), mDirectory(null),
+				mFullName(), mStaticFieldMap(), mStaticMethodMap(), mNestedNamespaceMap(), mNestedTypeMap() {
+			}
+
 			/** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
 			NamespaceInfo(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) :
 				mIsMuted(true), mTraits(), mAssembly(assmebly), mDirectory(directory),
@@ -246,6 +251,7 @@ namespace Ngen {
 			Map<Mirror, MethodInfo>    mStaticMethodMap;
 			Map<Mirror, NamespaceInfo> mNestedNamespaceMap;
          Map<Mirror, TypeInfo>      mNestedTypeMap;
+         Array<Attribute>           mCustomAttributes;          // all the custom attributes found inside the assembly
 
          friend class Assembly;
 			friend class AssemblyInfo;

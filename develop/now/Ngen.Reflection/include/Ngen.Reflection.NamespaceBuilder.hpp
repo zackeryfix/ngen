@@ -46,15 +46,7 @@ namespace Ngen {
          NamespaceInfo* AddNestedNamespace(const mirror& relativeNamespaceName, typename VoidStaticDelegate<NamespaceBuilder>::TFunction builder);
 
       protected:
-         NamespaceBuilder(NamespaceInfo* namspace) : mInfo(namspace) {
-            if(!mInfo->pIsMuted()) {
-               THROW(InvalidOperationException("The given RTI is not mutable and can not be modified."));
-            }
-         }
-
          NamespaceInfo* mInfo;
-         friend class Assembly;
-         friend class NamespaceInfo;
       };
    }
 }

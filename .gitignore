@@ -44,3 +44,4 @@ Thumbs.db
 *.save
 *.layout
 *.zip
+develop/now/UnitTest.Ngen/gmon.out

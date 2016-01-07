@@ -40,16 +40,12 @@ namespace Ngen {
 		public:
 			FieldBuilder(FieldInfo* field);
 
-         void SetDescription(const string& description);
          void SetTrait(EFieldTrait trait, bool value);
+         void SetTraits(FieldTraitFlags traits);
+
 
 		protected:
 			FieldInfo* mInfo;
-
-			friend class NamespaceBuilder;
-			friend class TypeBuilder;
-			friend class AssemblyBuilder;
-			friend class Field;
 		};
 	}
 }

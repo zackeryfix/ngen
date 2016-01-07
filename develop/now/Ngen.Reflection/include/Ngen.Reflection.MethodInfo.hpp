@@ -36,9 +36,6 @@ namespace Ngen {
 		/** @brief A meta-data object used to retain the reflected type information of a method or function. */
 		class MethodInfo : public Delegate {
 		public:
-         __insert_standard_containers(MethodInfo);
-         static const EAttributeBinding   Binding;
-         static const string::TChar         ApiDelimeter;
 
 			/** @brief Constructor. Default. */
 			MethodInfo() :	mIsMuted(false), mTraits(), mDirectory(0),
@@ -80,10 +77,10 @@ namespace Ngen {
 			Object operator()(Object _this, Object* params) {
 				unknown[mFunction->Length()] set;
             for(uword i = 0; i < mFunction->Length(); ++i) {
-               set[i] = params[i].GetPtr();
+               set[i] = params[i].UnknownThis();
             }
 
-            unknown result = mFunction(self.GetPtr(), &set);
+            unknown result = mFunction(self.UnknownThis(), &set);
             return IsNonVoid() ?
                Object::From(result, ReturnTypeMirror()) :
                Object::Null();
@@ -209,7 +206,7 @@ namespace Ngen {
 			TraitFlags           mTraits;
 			NamespaceInfo*       mDirectory;
 			mirror               mFullName;
-			string                 mDescription;
+			string               mDescription;
 			Delegate*            mFunction;
 			TypeInfo*            mReturn;
 			Array<ParameterInfo> mParams;

@@ -38,11 +38,10 @@ namespace Ngen {
 		 */
 		class ngen_api TypeInfo : public NamespaceInfo {
 		public:
-         __insert_standard_containers(TypeInfo);
-			typedef Map<EConstructorKind, Delegate*> TKindConstructorMap;
-
-         static const EAttributeBinding   Binding;
-         static const string::TChar         ApiDelimeter;
+         /** @brief Constructor. Initializer. */
+			virtual TypeInfo(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) :
+					NamspaceInfo(), mSize(0), mMemberFields(), mMemberMethods(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
+			}
 
 			/** @brief Constructor. Initializer. */
 			virtual TypeInfo(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) :
@@ -194,8 +193,7 @@ namespace Ngen {
 			 */
 			void DestroyInstance(Object _this) const {
 				if(!_this.IsConst()) {
-					mDeconstructor.Call(_this.This());
-					pInvalidate(_this);
+					mDeconstructor(_this.UnknownThis(), null);
 				} else {
 					THROW(InvalidOperationException("Unable to destroy a constant object instance."));
 				}
@@ -213,21 +211,11 @@ namespace Ngen {
 
 			/** @brief Determines if the Type inherits the given Type. */
 			virtual bool IsChildOf(const mirror& parent) const {
-				for(uword i = 0; i < mParents; ++i) {
-					if(mParents.Begin(i)->FullName() == parent) {
-						return true;
-					}
-				}
+				return false;
 			}
 
 			/** @brief Determines if the Type has been inherited by the given Type. */
 			virtual bool IsParentOf(const mirror& child) const {
-				for(uword i = 0; i < mChildren; ++i) {
-					if(mChildren.Begin(i)->mFullName == child) {
-						return true;
-					}
-				}
-
 				return false;
 			}
 
@@ -241,26 +229,23 @@ namespace Ngen {
 			}
 
 		protected:
-         void pMute() { mIsMuted = true; }
-         void pUnmute() { mIsMuted = false; }
-         bool pIsMuted() { return mIsMuted; }
+         void pMute() { this->mIsMuted = true; }
+         void pUnmute() { this->mIsMuted = false; }
+         bool pIsMuted() { return this->mIsMuted; }
 
-         bool                       mIsMuted;
          TypeTraitFlags             mTraits;
 			uword                      mSize;
 			Map<Mirror, MethodInfo>    mMemberMethods;
          Map<Mirror, FieldInfo>     mMemberFields;
 			Map<Mirror, MethodInfo>    mConstructors;
 			MethodInfo                 mDeconstructor;
-			Map<Mirror, TypeInfo*>     mChildren;
-			Map<Mirror, TypeInfo*>     mParents;
+			Map<Mirror, TypeInfo*>     mChildren; // types inheriting this
+			Map<Mirror, TypeInfo*>     mParents;  // types this inherits
 
 			friend class Assembly;
 			friend class AssmeblyInfo;
 			friend class TypeBuilder;
 		};
-
-
 	}
 
 #endif // __RTI_TYPEINFO_HPP

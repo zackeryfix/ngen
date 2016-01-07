@@ -1,3 +1,4 @@
+
 /*  _______    ________
     \      \  /  _____/  ____   ___
     /   |   \/   \  ____/ __ \ /   \
@@ -6,7 +7,7 @@
            \/        \/     \/    \/
 The MIT License (MIT)
 
-COPYRIGHT (C) 2016 RAZORWARE, LLC
+COPYRIGHT (C) 2016 NGENWARE STUDIOS, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,28 +27,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __NGEN_REFLECTION_METHODBUILDER_HPP
-#define __NGEN_REFLECTION_METHODBUILDER_HPP
-
-#include "Ngen.Reflection.ETypeTrait.hpp"
-#include "Ngen.Reflection.ParameterInfo.hpp"
+#include "Ngen.Reflection.MethodInfo.hpp"
 
 namespace Ngen {
-	namespace Reflection {
-		/** @brief */
-		class ngen_api MethodBuilder {
-		public:
-			MethodBuilder(MethodInfo* method);
+   namespace Reflection {
+         MethodBuilder::MethodBuilder(MethodInfo* method) : mInfo(method) {}
 
-         ParameterInfo* AddParameter(ParameterTraitFlags traits, const mirror& typeName, const string& name, const string& description);
-         void SetTrait(EMethodTrait trait, bool value);
-         void SetTrait(MethodTraitFlags traits);
+         ParameterInfo* MethodBuilder::AddParameter(ParameterTraitFlags traits, const mirror& typeName, const string& name, const string& description) {
+            auto info = ParameterInfo(mInfo, traits, typeName, name, mParamCount);
+            this->Info->mParams.Add(info);
+            return this->mInfo->mParams[this->mParamCount++];
+         }
+         void MethodBuilder::SetTrait(EMethodTrait trait, bool value) {
+            this->mInfo->mTraits[trait] = value;
+         }
+         void MethodBuilder::SetTrait(MethodTraitFlags traits) {
+            this->mInfo->mTraits = traits;
+         }
 
-		protected:
-			MethodInfo* mInfo;
-         whole mParamCount;
-		};
-	}
+         bool MethodIndo::Save() const { return true; }
+   }
 }
-
-#endif
