@@ -70,14 +70,15 @@ THE SOFTWARE.
 #endif
 
 /** @brief The native bit-width of each register used by the target CPU architecture. */
-#if defined(__x86_64__) || defined(_M_X64) || defined(__powerpc64__) || defined(__alpha__) || defined(__ia64__) || defined(__s390__) || defined(__s390x__)
+#if defined(__x86_64__) || defined(_M_X64) || defined(__powerpc64__) || defined(__alpha__) || defined(__ia64__) || defined(__s390__) || defined(__s390x__) || defined(_AMD64_) || defined(_M_X64) || defined(_M_AMD64) || defined(__amd64) || defined(_WIN64)
 #   define _tkn_RegisterWidth _tknval_RegisterWidth_64
 #else
 #   define _tkn_RegisterWidth _tknval_RegisterWidth_32
 #endif
 
 /** @brief Identifies the target CPUs instruction set. */
-#if (defined(_MSC_VER) && (defined(_M_IX86) || defined(_M_X64))) || (defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)))
+#if (defined(_MSC_VER) && (defined(_M_IX86) || defined(_M_X64))) ||\
+    (defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)))
 #   define _tkn_Cpu _tknval_Cpu_Intel
 #elif _tkn_Platform == _tknval_Platform_Mac || _tkn_Platform == _tknval_Platform_iPhone
 #	if defined(__BIG_ENDIAN__)
@@ -164,6 +165,16 @@ THE SOFTWARE.
 #	define THROW(e)
 #else
 #	define THROW(e) throw e
+#endif
+
+#if _tkn_Compiler == _tknval_Compiler_GCC
+#  define ngen_inline inline __attribute__((__alaways_inline__))
+#  define ngen_noinline __attribute__((__noinline__))
+#elif _tkn_Compile == _tknval_Compiler_MSVC
+#  define ngen_inline __forceinline
+#  define ngen_noinline __declspec(noinline)
+#else
+
 #endif
 
 #define _tkn_Mute 9999991

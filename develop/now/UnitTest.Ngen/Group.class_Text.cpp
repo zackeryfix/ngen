@@ -131,16 +131,13 @@ t_begin_test(class_String, HashCollision) [] (TestResult& result) {
 		List<string>::Node* j = check.Begin();
 		while(!isnull(j)) {
 			string y = j->Data();
-
 			if(x != y) {
 				if (y.ToHashcode() == x.ToHashcode()) {
 					result.Error("Hash-code collision was detected!");
 				}
 			}
-
 			j = j->Next();
 		}
-
 		i = i->Next();
 	}
 }
@@ -206,7 +203,7 @@ t_begin_test(class_String, Split_Char) [] (TestResult& result) {
 t_end_test
 
 t_begin_test(class_String, Format_String_BufferFirst) [] (TestResult& result) {
-	string format = string::Format(const_string("This is {0} template for an unformatted string."),
+	string format = string::Format(const_string("This is template for an unformatted string."),
                                  { const_string("the complete") });
 	if(format == const_string("This is the complete template for an unformatted string.")) {
       result.Error(format);

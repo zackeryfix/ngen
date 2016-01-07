@@ -399,15 +399,6 @@ namespace Ngen {
 			return Array<TCast>((Array<TCast>&&)result);
 		}
 
-		template<typename TValue> TValue Accumulate(typename StaticDelegate<TValue, T&>::TFunction accumulator) const {
-			TValue result = TValue();
-			for(uword i = 0; i < this->mLength; ++i) {
-				result += accumulator(this->Begin(i));
-			}
-
-			return result;
-		}
-
       Array<T*> ToPointerArray() const {
          auto result = Array<T*>(mLength);
          for(uword i = 0; i < this->mLength; ++i) {

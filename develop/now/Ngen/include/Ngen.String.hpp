@@ -521,7 +521,6 @@ namespace Ngen {
          return sizeof(T);
       }
 
-      /** @brief Gets the size (in bytes) of the primitive data type used to represent the fixed with characters. */
       static uword GetLength(const TChar* at) {
          if(isnull(at)) {
             return 0;
