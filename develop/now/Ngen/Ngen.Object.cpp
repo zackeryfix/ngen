@@ -37,15 +37,11 @@ namespace Ngen {
 	}
 
 
-   Object New(unknown value, const mirror& typeName, bool readOnly = false) {
-      return Object(value, typeof(typeName), readOnly);
-   }
-
-   Object New(unknown value, Type* type, bool readOnly = false) {
+   Object Object::New(unknown value, Type* type, bool readOnly) {
       return Object(value, type, readOnly);
    }
 
-   Object New(unknown value, bool readOnly = false) {
+   Object Object::New(unknown value, bool readOnly) {
       return Object(value, readOnly);
    }
 

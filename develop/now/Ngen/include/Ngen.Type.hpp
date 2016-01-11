@@ -188,7 +188,7 @@ namespace Ngen {
 
 		/** @brief Gets the type information for a type that has the given mirror.
 		 */
-		static Type* GetType(const mirror& typeName);
+		static Type* GetType(const mirror& typeName);  // Implementation: see [Ngen.Reflection]+Ngen.Reflection.AssemblyInfo.cpp
 	};
 }
 #endif // __NGEN_TYPE_HPP

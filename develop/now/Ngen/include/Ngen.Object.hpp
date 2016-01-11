@@ -155,7 +155,7 @@ namespace Ngen {
 		}
 
 		static const Object& Null();
-		static Object New(unknown value, const mirror& typeName, bool readOnly = false);
+		static Object New(unknown value, const mirror& typeName, bool readOnly = false); // Implementation: see [Ngen.Reflection]+Ngen.Reflection.AssemblyInfo.cpp
 		static Object New(unknown value, Type* type, bool readOnly = false);
 		static Object New(unknown value, bool readOnly = false);
 

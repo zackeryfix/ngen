@@ -287,7 +287,7 @@ namespace Ngen {
    template<typename T> Type* typeof() { return __type<T>::value(); }
 
    /** @brief A template function that gets the Ngen.Type pointer bound to the C++ typename of a given instance of that type. */
-   template<typename T> Type* typeof(const T& ref) { return __type<T>::value(); }
+   Type* typeof(const Mirror& typeName); // Implementation: see [Ngen.Reflection]+Ngen.Reflection.AssemblyInfo.cpp
 
    /** @brief A specialization of Ngen.typeof template function that gets the Ngen.Type pointer for an Ngen.Object reference. */
    Type* typeof(const Object& variable);
