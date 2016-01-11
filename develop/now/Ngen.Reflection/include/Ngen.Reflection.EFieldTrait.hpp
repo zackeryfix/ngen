@@ -29,14 +29,14 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_EFIELDTRAIT_HPP
 #define __NGEN_REFLECTION_EFIELDTRAIT_HPP
 
-#include "Ngen.BitFlags.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
 
 	/** @brief The different traits associated with field information and property information. */
-	enum class EFieldTrait {
+	enum class EFieldTrait : uword {
 	   /** @brief The field is publicly available through-out the reflection engine. */
-      Public,
+      Public = 0,
 	   /** @brief The field is protected and is only available to inherited types, or friendly types. */
       Protected,
       /** @brief The field is private and is only available to the type that it belongs to. */

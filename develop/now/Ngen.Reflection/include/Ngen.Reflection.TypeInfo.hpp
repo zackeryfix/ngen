@@ -39,21 +39,21 @@ namespace Ngen {
 		class ngen_api TypeInfo : public NamespaceInfo {
 		public:
          /** @brief Constructor. Initializer. */
-			virtual TypeInfo() : NamspaceInfo(), mSize(0), mMemberFields(), mMemberMethods(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
+         TypeInfo() : NamespaceInfo(), mSize(0), mMemberMethods(), mMemberFields(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
 			}
 
 			/** @brief Constructor. Copy. (const TypeInfo&)
 			 */
-			virtual TypeInfo(const TypeInfo& copy) : NamespaceInfo((const NamespaceInfo&)copy),
-               mSize(copy.mSize), mMemberFields(copy.mMemberFields), mMemberMethods(copy.mMemberMethods),
+         TypeInfo(const TypeInfo& copy) : NamespaceInfo((const NamespaceInfo&)copy),
+               mSize(copy.mSize), mMemberMethods(copy.mMemberMethods), mMemberFields(copy.mMemberFields),
                mConstructors(copy.mConstructors), mDeconstructor(copy.mDeconstructor),
                mChildren(copy.mChildren), mParents(copy.mParents) {
 					this->pUnmute();
 			}
 
-			virtual TypeInfo(TypeInfo&& move) : NamespaceInfo((NamespaceInfo&&)move), mSize(move.mSize),
-            mMemberFields(mref(move.mMemberFields)), mMemberMethods(mref(move.mMemberMethods)),
-            mConstructors((mref(move.mConstructors)), mDeconstructor(mref(move.mDeconstructor)),
+         TypeInfo(TypeInfo&& move) : NamespaceInfo((NamespaceInfo&&)move), mSize(move.mSize),
+            mMemberMethods(mref(move.mMemberMethods)), mMemberFields(mref(move.mMemberFields)),
+            mConstructors(mref(move.mConstructors)), mDeconstructor(move.mDeconstructor),
             mChildren(mref(move.mChildren)), mParents(mref(move.mParents)) {
          }
 
@@ -63,7 +63,7 @@ namespace Ngen {
 					return *this;
 				}
 
-				this->TypeInfo(rhs);
+            *this = TypeInfo(rhs);
 				return *this;
 			}
 
@@ -73,9 +73,27 @@ namespace Ngen {
 					return *this;
 				}
 
-				this->TypeInfo(rhs);
+				*this = TypeInfo(rhs);
 				return *this;
 			}
+
+         /** @brief operator==(Type* const) */
+         virtual bool operator==(Type* const rhs) const {
+            if((Type*)this == rhs) {
+					return false;
+				}
+
+				return mFullName != rhs->FullName();
+         }
+
+         /** @brief operator!=(Type* const) */
+         virtual bool operator!=(Type* const rhs) const {
+            if((Type*)this == rhs) {
+					return false;
+				}
+
+				return mFullName == rhs->FullName();
+         }
 
 			/** @brief Gets the size (in bytes) of the type. */
 			virtual uword Size() const {
@@ -94,7 +112,7 @@ namespace Ngen {
 			 * static or constructable.
 			 */
 			virtual bool IsStatic() const {
-				return mTraits[ETrait::Static];
+				return mTraits[ETypeTrait::Static];
 			}
 
 			/** @brief Determines if the namespace is constructable.
@@ -102,64 +120,46 @@ namespace Ngen {
 			 * static or constructable.
 			 */
 			virtual bool IsConstructable() const {
-				return pHasDefaultCtor();
+				return IsStatic() && mConstructors.Length() != 0;
 			}
 
 			/** @brief Determines if the type is public. */
 			virtual bool IsPublic() const {
-				return mTraint[ETrait::Public];
-			}
-
-			/** @brief Determines if the type is protected. */
-			virtual bool IsProtected() const {
-				return mTraits[ETrait::Protected];
-			}
-
-			/** @brief Determines if the type is private. */
-			virtual bool IsPrivate() const {
-				return mTraits[ETrait::Private];
+				return mTraits[ETypeTrait::Public];
 			}
 
 			/** @brief Determines if the type is a template for new types. */
 			virtual bool IsTemplate() const {
-				return mTraits[ETrait::Template];
+				return mTraits[ETypeTrait::Template];
 			}
 
 			/** @brief Determines if the type is a base abstraction for new types. */
 			virtual bool IsAbstract() const {
-				return mTraits[ETrait::Abstract];
-			}
-
-			/** @brief Determines if the type is a virtual interface for new types. */
-			virtual bool IsVirtual() const {
-				return mTraits[ETrait::Virtual];
+				return mTraits[ETypeTrait::Abstract];
 			}
 
 			/** @brief Determines if the type is hidden from external processes. */
 			virtual bool IsHidden() const {
-				return mTraits[ETrait::Hidden];
+				return mTraits[ETypeTrait::Hidden];
 			}
 
 			/** @brief Determines if the type is the final abstraction in a chain of inheritance. */
 			virtual bool IsFinal() const {
-				return mTraits[ETrait::Final];
+				return mTraits[ETypeTrait::Final];
 			}
 
 			/** @brief Determines if the type is nested inside a namespace or another type. */
 			virtual bool IsNested() const {
-				return !isnull(this->mScope);
+				return !isnull(this->mDirectory);
 			}
 
 			/** @brief Creates a new default Object instance of the Type.
 			 * @return An object created in heap-bound memory.
 			 */
 			Object NewInstance() const  {
-				Constructor* ctor = null;
-				if(!pHasCtorKind(EConstructorKind::Default)) {
-					THROW(InvalidOperationException("Unable to create an object from a non-constructable type."));
-				}
 
-				return Object(ctor->Ctor.Call(void_t, 1), this, false);
+				//TODO:
+				return Object::Null();
 			}
 
 			/** @brief Creates a new default Object instance of the Type.
@@ -169,8 +169,8 @@ namespace Ngen {
 			 * @remarks A heap-bound instance will be referenced counted and destroyed when not used. Optionally,
 			 * the object can be destroyed at any time.
 			 */
-			Object NewInstance(unknown data, bool stackBound = true) const  {
-				return Object(ptr, this, stackBound);
+			Object NewInstance(unknown ptr, bool stackBound = true) const  {
+				return Object(ptr, (Type*)this, stackBound); // const to non-const
 			}
 
 			/** @brief Creates a new Object instance of the Type from the copy of another same type Object. */
@@ -182,10 +182,10 @@ namespace Ngen {
 			 * @remarks
 			 */
 			void DestroyInstance(Object _this) const {
-				if(!_this.IsConst()) {
+				if(!_this.IsNull() && !_this.IsReadonly()) {
 					mDeconstructor(_this.UnknownThis(), null);
 				} else {
-					THROW(InvalidOperationException("Unable to destroy a constant object instance."));
+					THROW(InvalidOperationException("Unable to destroy a constant or null object instance."));
 				}
 			}
 
@@ -194,9 +194,19 @@ namespace Ngen {
 				return IsParent() && !IsChild(); // child |= parent
 			}
 
+         /** @brief Determines if the type is a base abstraction for new types. */
+			virtual bool IsParent() const {
+				return mChildren.Length() != 0;
+			}
+
+			/** @brief Determines if the type is hidden from external processes. */
+			virtual bool IsChild() const {
+				return mParents.Length() != 0;
+			}
+
 			/** @brief Determines if the Type is considered a primitive structure. */
 			virtual bool IsPrimitive() const {
-				return mTraits[ETrait:::Primitive];
+				return mTraits[ETypeTrait::Primitive];
 			}
 
 			/** @brief Determines if the Type inherits the given Type. */
@@ -209,26 +219,55 @@ namespace Ngen {
 				return false;
 			}
 
-
 			virtual Array<Type*> GetChildren() const {
-				return mChildren.AsType<Type*>();
+				return mChildren.ToPointerMap().Values().AsType<Type*>();
 			}
 
 			virtual Array<Type*> GetParents() const {
-				return mParents.AsType<Type*>();
+				return mParents.ToPointerMap().Values().AsType<Type*>();
 			}
 
-         TypeInfo* Initialize(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) {
-				this->pMute();
-				this->mName(typeName);
-            this->mFullName(directory->mFullName.ToLongName() + '@' + typeName.ToLongName());
-            this->mAssembly(directory->mAssembly);
-            this->mDirectory(directory);
-            this->mSize = size;
-				initializer(TypeBuilder(this));
-				this->pUnmute();
-				return this;
+			virtual Delegate* GetMethod(const mirror& signature) const {
+            if(!this->mStaticMethodMap.ContainsKey(signature)) {
+               if(!this->mMemberMethods.ContainsKey(signature)) {
+                  return null;
+               }
+
+               return (Delegate*)&((TypeInfo*)this)->mMemberMethods[signature];
+            }
+
+            return (Delegate*)&this->mStaticMethodMap[signature];
 			}
+
+			virtual Array<Delegate*> GetStaticMethods() const {
+            return this->mStaticMethodMap.ToPointerMap().Values().AsType<Delegate*>();
+			}
+
+			virtual Array<Delegate*> GetMemberMethods() const {
+            return this->mMemberMethods.ToPointerMap().Values().AsType<Delegate*>();
+			}
+
+			virtual Field* GetField(const mirror& signature) const {
+            if(!this->mStaticFieldMap.ContainsKey(signature)) {
+               if(!this->mMemberFields.ContainsKey(signature)) {
+                  return null;
+               }
+
+               return (Field*)&this->mMemberFields[signature];;
+            }
+
+            return (Field*)&this->mStaticFieldMap[signature];
+			}
+
+			virtual Array<Field*> GetStaticFields() const {
+            return this->mStaticFieldMap.ToPointerMap().Values().AsType<Field*>();
+			}
+
+			virtual Array<Field*> GetMemberFields() const {
+            return this->mMemberFields.ToPointerMap().Values().AsType<Field*>();
+			}
+
+         TypeInfo* Initialize(NamespaceInfo* directory, const mirror& typeName, uword size, typename VoidStaticDelegate<TypeBuilder>::TFunction initializer);
 		protected:
          void pMute() { this->mIsMuted = true; }
          void pUnmute() { this->mIsMuted = false; }
@@ -243,10 +282,8 @@ namespace Ngen {
 			Map<Mirror, TypeInfo*>     mChildren; // types inheriting this
 			Map<Mirror, TypeInfo*>     mParents;  // types this inherits
 
-			friend class Assembly;
-			friend class AssmeblyInfo;
 			friend class TypeBuilder;
 		};
 	}
-
+}
 #endif // __RTI_TYPEINFO_HPP

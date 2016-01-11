@@ -1,4 +1,3 @@
-
 /*  _______    ________
     \      \  /  _____/  ____   ___
     /   |   \/   \  ____/ __ \ /   \
@@ -28,33 +27,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include "Ngen.Reflection.ParameterInfo.hpp"
+#include "Ngen.Reflection.MethodInfo.hpp"
 #include "Ngen.Reflection.AssemblyInfo.hpp"
-#include "Ngen.Reflection.FieldInfo.hpp"
-#include "Ngen.Reflection.NamespaceInfo.hpp"
-#include "Ngen.Reflection.TypeInfo.hpp"
 
 namespace Ngen {
    namespace Reflection {
-      FieldBuilder::FieldBuilder(FieldInfo* field) : mInfo(field) {}
-
-      void FieldBuilder::SetTrait(EFieldTrait trait, bool value) {
-         this->mInfo->mTraits.Set(trait, value);
-      }
-
-      void FieldBuilder::SetTrait(FieldTraitFlags traits) {
-         this->mInfo->mTraits = traits;
-      }
-
-      FieldInfo* FieldInfo::Initialize(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename VoidStaticDelegate<FieldBuilder>::TFunction initializer) {
-         pMute();
-         mDirectory = directory;
-         mReturnType = null; //TODO: find return type information || pass into Initialize as param
-         mName = relativeName;
-         mFullName = directory->FullName().ToLongName() + '#' + mName.ToLongName();
-         mField = field;
-         initializer(FieldBuilder(this));
-         pUnmute();
-         return this;
+       ParameterInfo::ParameterInfo(MethodInfo* owner, ParameterTraitFlags flags, const mirror& typeName, const mirror& paramName, uword paramIndex) :
+         mTraits(flags), mName(paramName), mIndex(paramIndex),  mOwner(owner), mType(null), mTypeName(typeName) {
+         mType = (TypeInfo*)mOwner->Assembly()->GetType(typeName);
       }
    }
 }

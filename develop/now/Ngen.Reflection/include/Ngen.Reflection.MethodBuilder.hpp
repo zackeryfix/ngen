@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_METHODBUILDER_HPP
 #define __NGEN_REFLECTION_METHODBUILDER_HPP
 
-#include "Ngen.Reflection.ETypeTrait.hpp"
+#include "Ngen.Reflection.EMethodTrait.hpp"
 #include "Ngen.Reflection.ParameterInfo.hpp"
 
 namespace Ngen {
@@ -45,7 +45,7 @@ namespace Ngen {
 
 		protected:
 			MethodInfo* mInfo;
-         whole mParamCount;
+         word mParamCount;
 		};
 	}
 }

@@ -29,13 +29,13 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_EMETHODTRAIT_HPP
 #define __NGEN_REFLECTION_EMETHODTRAIT_HPP
 
-#include "Ngen.BitFlags.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
    /** @brief The different traits associated with a method. */
-	enum class EMethodTrait {
+	enum class EMethodTrait : uword {
 	   /** @brief The method is publicly available through-out the reflection engine. */
-      Public,
+      Public = 0,
 	   /** @brief The method is protected and is only available to inherited types, or friendly types. */
       Protected,
       /** @brief The method is private and is only available to the type that it belongs to. */
@@ -54,6 +54,8 @@ namespace Ngen {
       Abstract,
 	   /** @brief The method requires an instance to be invoked and guarantees that the instance will not be modified when the method is invoked. */
       ConstMember,
+      /** @brief The method cannot be overridden or reimplemented in derived types. */
+      Final,
       _COUNT
 	};
 	typedef BitFlags<EMethodTrait> MethodTraitFlags;

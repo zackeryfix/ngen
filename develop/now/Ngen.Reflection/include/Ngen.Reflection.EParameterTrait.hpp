@@ -29,12 +29,12 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_EPARAMETERTRAIT_HPP
 #define __NGEN_REFLECTION_EPARAMETERTRAIT_HPP
 
-#include "Ngen.BitFlags.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
 
 	/** @brief The different traits associated with the parameters of a method call. */
-	enum class EParameterTrait {
+	enum class EParameterTrait : uword {
        /** @brief The parameter is a reference to the value changes made to the parameter will persist when the function returns. */
 		Reference = 0,
       /** @brief The parameter is a copy of the value and changes to the parameter will not persist when the function returns. */

@@ -30,14 +30,10 @@ THE SOFTWARE.
 #ifndef NGEN_REFLECTION_TYPEINFO_CPP_INCLUDED
 #define NGEN_REFLECTION_TYPEINFO_CPP_INCLUDED
 
-#include "Ngen.Reflection.TypeInfo.hpp"
-#include "Ngen.Reflection.MethodInfo.hpp"
-#include "Ngen.Reflection.FieldInfo.hpp"
-#include "Ngen.Reflection.NamespaceBuilder.hpp"
 
 namespace Ngen {
    namespace Reflection {
-
+   }
 }
 
 #endif // NGEN_REFLECTION_TYPEINFO_CPP_INCLUDED

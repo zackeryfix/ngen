@@ -32,7 +32,6 @@ THE SOFTWARE.
 #include "Ngen.Reflection.MethodInfo.hpp"
 #include "Ngen.Reflection.FieldInfo.hpp"
 #include "Ngen.Reflection.NamespaceBuilder.hpp"
-#include "Ngen.Reflection.ETrait.hpp"
 
 namespace Ngen {
 	namespace Reflection {
@@ -41,17 +40,17 @@ namespace Ngen {
 		class ngen_api NamespaceInfo : public Type {
 		public:
 		   /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
-			NamespaceInfo() : mIsMuted(false), mTraits(), mAssembly(null), mDirectory(null),
+			NamespaceInfo() : mIsMuted(false), mAssembly(null), mDirectory(null),
 				mFullName(), mStaticFieldMap(), mStaticMethodMap(), mNestedNamespaceMap(), mNestedTypeMap() {
 			}
 
-			NamespaceInfo(const NamespaceInfo& copy) : mIsMuted(copy.mIsMuted), mTraits(copy.mTraits),
+			NamespaceInfo(const NamespaceInfo& copy) : mIsMuted(copy.mIsMuted),
             mAssembly(copy.mAssembly), mDirectory(copy.mDirectory), mFullName(copy.mFullName), mName(copy.mName),
 				mStaticFieldMap(copy.mStaticFieldMap), mStaticMethodMap(copy.mStaticMethodMap),
 				mNestedNamespaceMap(copy.mNestedNamespaceMap), mNestedTypeMap(copy.mNestedTypeMap) {
 			}
 
-         NamespaceInfo(NamespaceInfo&& move) : mIsMuted(move.mIsMuted), mTraits(move.mTraits),
+         NamespaceInfo(NamespaceInfo&& move) : mIsMuted(move.mIsMuted),
             mAssembly(move.mAssembly), mDirectory(move.mDirectory), mFullName(mref(move.mFullName)), mName(mref(move.mName)),
 				mStaticFieldMap(mref(move.mStaticFieldMap)), mStaticMethodMap(mref(move.mStaticMethodMap)),
 				mNestedNamespaceMap(mref(move.mNestedNamespaceMap)), mNestedTypeMap(mref(move.mNestedTypeMap)) {
@@ -77,6 +76,25 @@ namespace Ngen {
 
 				return mFullName != rhs.mFullName;
 			}
+
+			/** @brief operator==(Type* const) */
+         virtual bool operator==(Type* const rhs) const {
+            if((Type*)this == rhs) {
+					return false;
+				}
+
+				return mFullName != rhs->FullName();
+         }
+
+         /** @brief operator!=(Type* const) */
+         virtual bool operator!=(Type* const rhs) const {
+            if((Type*)this == rhs) {
+					return false;
+				}
+
+				return mFullName == rhs->FullName();
+         }
+
 
 			/** @brief Gets the size (in bytes) of the namespace. */
 			virtual uword Size() const {
@@ -131,13 +149,18 @@ namespace Ngen {
 				return false;
 			}
 
-			/** @brief Determines if the type is a virtual interface for new types. */
-			virtual bool IsVirtual() const {
+			/** @brief Determines if the type is hidden from external processes. */
+			virtual bool IsHidden() const {
+				return false;
+			}
+
+         /** @brief Determines if the type is a base abstraction for new types. */
+			virtual bool IsParent() const {
 				return false;
 			}
 
 			/** @brief Determines if the type is hidden from external processes. */
-			virtual bool IsHidden() const {
+			virtual bool IsChild() const {
 				return false;
 			}
 
@@ -151,6 +174,25 @@ namespace Ngen {
 			 */
 			virtual bool IsNested() const {
 				return !isnull(mDirectory);
+			}
+
+
+			/** @brief Determines if the type is the final abstraction in a chain of inheritance.
+			 */
+			virtual bool IsBase() const {
+				return false;
+			}
+
+			/** @brief Determines if the type is nested within the scope of another type or namespace.
+			 */
+			virtual bool IsCopyable() const {
+				return false;
+			}
+
+			/** @brief Determines if the type is nested within the scope of another type or namespace.
+			 */
+			virtual bool IsPrimitive() const {
+				return false;
 			}
 
 			virtual Object NewInstance() const  {
@@ -186,6 +228,10 @@ namespace Ngen {
 				return (Assembly*)this->mAssembly;
 			}
 
+         AssemblyInfo* GetAssemblyInfo() const {
+				return this->mAssembly;
+			}
+
 			virtual Array<Type*> GetChildren() const {
 				return Array<Type*>();
 			}
@@ -194,66 +240,72 @@ namespace Ngen {
 				return Array<Type*>();
 			}
 
+			virtual Delegate* GetMethod(const mirror& signature) const {
+            if(!this->mStaticMethodMap.ContainsKey(signature)) {
+               return null;
+            }
+
+            return (Delegate*)&this->mStaticMethodMap[signature];
+			}
+
+			virtual Array<Delegate*> GetStaticMethods() const {
+            return this->mStaticMethodMap.ToPointerMap().Values().AsType<Delegate*>();
+			}
+
+			virtual Array<Delegate*> GetMemberMethods() const {
+			   return Array<Delegate*>();
+			}
+
+			virtual Field* GetField(const mirror& signature) const {
+            if(!this->mStaticFieldMap.ContainsKey(signature)) {
+               return null;
+            }
+
+            return (Field*)&this->mStaticFieldMap[signature];
+			}
+
+			virtual Array<Field*> GetStaticFields() const {
+            return this->mStaticMethodMap.ToPointerMap().Values().AsType<Field*>();
+			}
+
+			virtual Array<Field*> GetMemberFields() const {
+			   return Array<Field*>();
+			}
+
 			virtual Array<Type*> GetNestedNamespaces() const {
-            auto result = Array<Type*>(mNestedNamespaceMap.Length());
-            auto kv = mNestedNamespaceMap.Begin();
-            while(kv != mNestedNamespaceMap.End()) {
-               result.Add((Type*)&kv->Value);
-               kv++;
-            }
-
-            return result;
+            return this->mNestedNamespaceMap.ToPointerMap().Values().AsType<Type*>();
 			}
 
-			virtual Array<Type*> GetNestedTypes() const {
-            auto result = Array<Type*>(mNestedTypeMap.Length());
-            auto kv = mNestedTypeMap.Begin();
-            while(kv != mNestedTypeMap.End()) {
-               result.Add((Type*)&kv->Value);
-               kv++;
-            }
-
-            return result;
-			}
+         virtual Array<Type*> GetNestedTypes() const;
 
 			virtual Type* GetDirectory() const {
 				return (Type*)mDirectory;
 			}
 
          /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
-         NamespaceInfo* Initialize(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, const mirror& fullName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
+         NamespaceInfo* Initialize(AssemblyInfo* assembly, NamespaceInfo* directory, const mirror& relativeName, const mirror& fullName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
             pMute();
-            mName(relativeName);
-            mFullName(fullName);
-            mAssembly(assembly);
-            mDirectory(directory);
+            mName = relativeName;
+            mFullName = fullName;
+            mAssembly = assembly;
+            mDirectory = directory;
 				initalizer(NamespaceBuilder(this));
 				pUnmute();
 				return this;
 			}
 
-			 /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
-         NamespaceInfo* Initialize(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
-            pMute();
-            mName(relativeName);
-            mFullName(directory->FullName().ToLongName() + ':' + relativeName.ToLongName());
-            mAssembly(assembly);
-            mDirectory(directory);
-				initalizer(NamespaceBuilder(this));
-				pUnmute();
-				return this;
-			}
+         /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
+         NamespaceInfo* Initialize(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer);
 		protected:
 			void pMute() { mIsMuted = true; }
 			void pUnmute() { mIsMuted = false; }
          bool pIsMuted() const { return mIsMuted; }
 
          bool                       mIsMuted;
-			mirror                     mName;
-			mirror                     mFullName; // created during construction
-			string                     mDescription;
 			AssemblyInfo*              mAssembly;
 			NamespaceInfo*             mDirectory;
+			mirror                     mFullName; // created during construction
+			mirror                     mName;
 			Map<Mirror, FieldInfo>     mStaticFieldMap;
 			Map<Mirror, MethodInfo>    mStaticMethodMap;
 			Map<Mirror, NamespaceInfo> mNestedNamespaceMap;

@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_TYPEBUILDER_HPP
 #define __NGEN_REFLECTION_TYPEBUILDER_HPP
 
-#include "Ngen.Reflection.NamespaceBuilder.hpp"
+#include "Ngen.Reflection.ETypeTrait.hpp"
 
 namespace Ngen {
 	namespace Reflection {
@@ -45,19 +45,17 @@ namespace Ngen {
 			 * @param signature The signature used to identify the method as a part of the type.
 			 * @param function The delegate constant that represents the method body.
 			 */
-			MethodInfo* AddStaticMethod(const mirror& relativeSignature, Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer);
-         FieldInfo* AddStaticField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction builder);
-         MethodInfo* AddMemberMethod(const mirror& relativeSignature, Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer);
-			FieldInfo* AddMemberField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction builder);
-			void AddConstructor(Delegate* function, EConstructorKind kind);
-			void AddParent(const mirror& parentName);
+			MethodInfo* AddStaticMethod(const mirror& relativeSignature, Delegate* function, typename VoidStaticDelegate<MethodBuilder>::TFunction initializer);
+         FieldInfo* AddStaticField(const mirror& signature, Field* field, typename VoidStaticDelegate<FieldBuilder>::TFunction builder);
+         MethodInfo* AddMemberMethod(const mirror& relativeSignature, Delegate* function, typename VoidStaticDelegate<MethodBuilder>::TFunction initializer);
+			FieldInfo* AddMemberField(const mirror& signature, Field* field, typename VoidStaticDelegate<FieldBuilder>::TFunction builder);
+         MethodInfo* AddConstructor(const mirror& relativeSignature, Delegate* function, typename VoidStaticDelegate<MethodBuilder>::TFunction initializer);
+         void AddParent(const mirror& parentName);
 			void SetTrait(ETypeTrait trait, bool value);
 			void SetTrait(TypeTraitFlags traits);
-			void SetDestructor(Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer);
-         TypeInfo* AddNestedType(const mirror& relativeTypeName, typename StaticDelegate<TypeBuilder>::TFunction initializer);
+			void SetDestructor(Delegate* function, typename VoidStaticDelegate<MethodBuilder>::TFunction initializer);
+         TypeInfo* AddNestedType(const mirror& relativeTypeName, uword typeSize, typename VoidStaticDelegate<TypeBuilder>::TFunction initializer);
 
-         /** @brief Validates the type information after it has been constructed. */
-         bool Save() const;
 		protected:
 			TypeInfo* mInfo;
 

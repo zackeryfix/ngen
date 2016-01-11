@@ -27,28 +27,47 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
+#include "Ngen.Reflection.AssemblyInfo.hpp"
+#include "Ngen.Reflection.NamespaceInfo.hpp"
 #include "Ngen.Reflection.TypeInfo.hpp"
-#include "Ngen.Reflection.MethodInfo.hpp"
-#include "Ngen.Reflection.FieldInfo.hpp"
-#include "Ngen.Reflection.NamespaceBuilder.hpp"
 
 namespace Ngen {
-   typedef typename StaticDelegate<word>::TFunction assembly_count_function;
-   typedef typename StaticDelegate<Reflection::AssemblyInfo*, const mirror& assemblyName>::TFunction assembly_load_function;
+   typedef typename StaticDelegate<word>::TFunction* assembly_count_function;
+   typedef typename StaticDelegate<Reflection::AssemblyInfo*, const mirror&>::TFunction* assembly_load_function;
 
    // the actual assembly storage
-   Map<Mirror, Reflection::AssemblyInfo>                    pAssemblyMap = Map<Mirror, Reflection::AssemblyInfo>();
+   Reflection::MirrorAssemblyInfoMap            pAssemblyMap = Reflection::MirrorAssemblyInfoMap();
 
    // referenced and loaded assemblies
-   Map<Mirror, Reflection::AssemblyInfo*>                   pMirrorAssemblyInfoMap = Map<Mirror, Reflection::AssemblyInfo*>();
-   Map<Reflection::AssemblyInfo*, Reference*>               pAssemblyReferenceMap = Map<Reflection::AssemblyInfo*, Reference*>();
-   Map<Reflection::AssemblyInfo*, Library*>                 pAssemblyLibraryMap = Map<Reflection::AssemblyInfo*, Library*>();
-   Map<Library*, uword> pLibraryAssemblyCount = Map<Library*, uword>();
+   Reflection::MirrorAssemblyInfoPtrMap         pMirrorAssemblyPtrMap = Reflection::MirrorAssemblyInfoPtrMap();
+   Map<Reflection::AssemblyInfo*, Reference*>   pAssemblyReferenceMap = Map<Reflection::AssemblyInfo*, Reference*>();
+   Map<Reflection::AssemblyInfo*, Library*>     pAssemblyLibraryMap = Map<Reflection::AssemblyInfo*, Library*>();
+   Map<Library*, uword>                         pLibraryAssemblyCount = Map<Library*, uword>();
 
-   ////////////////////////
-   // Ngen.Assembly implementation (requires Ngen::Reflection)
-   ////////////////////////////////////////////////////////////
-   word Assebly::Verify(const mirror& libraryFileName) {
+
+   Type* Type::GetType(const mirror& typeName) {
+      Type* result = null;
+      Reflection::MirrorAssemblyInfoPtrMap::Node* begin = pMirrorAssemblyPtrMap.Begin();
+      while(!isnull(begin)) {
+         result = begin->Data().Value->GetType(typeName);
+         if(!isnull(result)) {
+            break;
+         }
+
+         begin = begin->Next();
+      }
+
+      return result;
+   }
+	Type* typeof(const mirror& typeName) {
+	   return Type::GetType(typeName);
+   }
+   Object Object::New(unknown value, const mirror& typeName, bool readOnly) {
+      return Object(value, typeof(typeName), readOnly);
+   }
+
+   word Assembly::Verify(const mirror& libraryFileName) {
       Library* lib = null;
       if(!Library::Load(libraryFileName, inref lib)) {
          //THROW();
@@ -60,16 +79,16 @@ namespace Ngen {
    }
 
    Assembly* Assembly::Reference(const mirror& libraryFileName, const mirror& assemblyName) {
-      AssemblyInfo* result = null;
+      Reflection::AssemblyInfo* result = null;
       Library* lib = null;
-      if(!pMirrorAssemblyInfoMap.TryGetValue(assemblyName, inref result)) {
+      if(!pMirrorAssemblyPtrMap.TryGetValue(assemblyName, inref result)) {
          if(!Library::Load(libraryFileName, inref lib)) {
             //THROW();
          }
 
-         auto load_assembly = (assembly_load_function)lib->Get(const_mirror(E"load_assembly"));
+         auto load_assembly = (assembly_load_function)lib->Get(const_mirror(E"assembly_load"));
          result = load_assembly(assemblyName);
-         pMirrorAssemblyInfoMap.Add(assemblyName, result);
+         pMirrorAssemblyPtrMap.Add(assemblyName, result);
          pAssemblyLibraryMap.Add(result, lib);
          pAssemblyReferenceMap.Add(result, new Ngen::Reference());
          pLibraryAssemblyCount.Add(lib, 0);
@@ -81,19 +100,19 @@ namespace Ngen {
    }
 
    bool Assembly::Dereference(const mirror& assemblyName) {
-      AssemblyInfo* result = null;
-      if(!pMirrorAssemblyInfoMap.TryGetValue(assemblyName, inref result)) {
+      Reflection::AssemblyInfo* result = null;
+      if(!pMirrorAssemblyPtrMap.TryGetValue(assemblyName, inref result)) {
          return true;
       }
 
       Library* lib = pAssemblyLibraryMap[result];
-      Reference* counter = pAssemblyReferenceMap[assemblyName];
-      if(counter->Decrement().Current() == 0) {
-         delete counter;
+      auto refc = pAssemblyReferenceMap[result];
+      if(refc->Decrement().Current() == 0) {
+         delete refc;
 
          // remove all map bindings and references
          pAssemblyLibraryMap.Remove(result);
-         pMirrorAssemblyInfoMap.Remove(assemblyName);
+         pMirrorAssemblyPtrMap.Remove(assemblyName);
          pAssemblyReferenceMap.Remove(result);
          pAssemblyMap.Remove(assemblyName);
 
@@ -109,50 +128,54 @@ namespace Ngen {
 
       return false;
    }
+}
 
+namespace Ngen {
    namespace Reflection {
-      AssemblyInfo::AssemblyInfo() : mIsMuted(true), mLibrary(null), mAssemblyName(), mNamespaceMap(), mCustomAttributes() {
+      AssemblyInfo::AssemblyInfo() : mIsMuted(true), mLibrary(null), mAssemblyName(), mRootNamespaceMap(), mNamespaceInfoMap(), mCustomAttributes() {
       }
 
-      AssemblyInfo* AssemblyInfo::New(Library* library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize) {
+      AssemblyInfo* AssemblyInfo::New(const mirror& library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize) {
          pAssemblyMap.Add(assemblyName, AssemblyInfo());
          auto result = &pAssemblyMap[assemblyName];
          result->pMute();
-         result->mLibrary(library);
-         result->mAssemblyName(assemblyName);
-         result->mNamespaceMap();
-         result->mTypeInfoMap();
-         result->mCustomAttributes();
+         Library::Load(library, inref result->mLibrary); // this may conflict during generation of RTI
+         result->mAssemblyName = assemblyName;
          initialize(AssemblyBuilder(result));
          result->pUnmute();
+         return result;
       }
 
       Array<Type*> AssemblyInfo::GetNamespaces() const {
-         return this->mNamespaceMap.Values().AsType<Type*>();
+         return this->mNamespaceInfoMap.Values().AsType<Type*>();
       }
 
       Array<Type*> AssemblyInfo::GetTypes() const {
          return this->mTypeInfoMap.Values().AsType<Type*>();
       }
 
-      Array<Attribute*> AssemblyInfo::GetAssemblyAttributes() const {
-         return this->mCustomAttributes().ToPointerArray();
+      Array<Attribute*> AssemblyInfo::GetAttributes() const {
+         return this->mCustomAttributes.ToPointerArray();
       }
 
       Type* AssemblyInfo::GetNamespace(const mirror& name) const {
-         if(!this->mNamespaceMap.ContainsKey(name)) {
-            THROW();
+         if(!this->mNamespaceInfoMap.ContainsKey(name)) {
+            return null;
          }
 
-         return (Type*)this->mNamespaceMap[name];
+         return (Type*)this->mNamespaceInfoMap[name];
       }
 
       Type* AssemblyInfo::GetType(const mirror& name) const {
          if(!this->mTypeInfoMap.ContainsKey(name)) {
-            THROW();
+            return null;
          }
 
          return (Type*)this->mTypeInfoMap[name];
+      }
+
+      Library* AssemblyInfo::GetNativeLibrary() const {
+         return this->mLibrary;
       }
 
       AssemblyBuilder::AssemblyBuilder(AssemblyInfo* info) : mInfo(info) {
@@ -161,15 +184,16 @@ namespace Ngen {
          }
       }
 
-      AssmeblyInfo* AssemblyBuilder::Finalize() {
+      AssemblyInfo* AssemblyBuilder::Finalize() {
          return mInfo;
       }
 
-      NamespaceInfo* AssemblyBuilder::AddNamespace(const mirror& namespaceName, NamespaceInfo* directory, const VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
-         mirror fullName = (isnull(directory) ? mInfo->FullName() + ':' + relativeName.ToLongName() :
-                                                mInfo->FullName() + ':' + directory->FullName()) + ':' + relativeName.ToLongName());
-         mInfo->mNamespaceMap(fullName, NamespaceInfo());
-         return mInfo->mNamespaceMap[fullName].Initialize(this->mInfo, directory, namespaceName, fullName, initalizer);
+      AssemblyBuilder& AssemblyBuilder::AddNamespace(const mirror& namespaceName, NamespaceInfo* directory, const VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
+         mirror fullName = (isnull(directory) ? namespaceName.ToLongName() :
+                            directory->FullName().ToLongName() + ':' + namespaceName.ToLongName());
+         mInfo->mRootNamespaceMap.Add(fullName, NamespaceInfo());
+         mInfo->mRootNamespaceMap[fullName].Initialize(this->mInfo, directory, namespaceName, fullName, initalizer);
+         return *this;
       }
    }
 }

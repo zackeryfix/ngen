@@ -31,8 +31,6 @@ THE SOFTWARE.
 
 #include "Ngen.hpp"
 
-#include "Ngen.hpp"
-
 #ifdef NGEN_NGENFRAMEWORKDLL_EXPORT
 #  define ngen_ngenframeworkdll_api api_export
 #else

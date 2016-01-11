@@ -30,7 +30,6 @@ THE SOFTWARE.
 #define __NGEN_REFLECTION_PARAMETERINFO_HPP
 
 #include "Ngen.Reflection.EParameterTrait.hpp"
-#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
    namespace Reflection {
@@ -38,30 +37,24 @@ namespace Ngen {
       public:
          ParameterInfo() : mTraits(), mName(), mIndex(),  mOwner(null), mType(null), mTypeName() {}
 
-         ParameterInfo(MethodInfo* owner, ParameterTraitFlags flags, const mirror& typeName, const mirror& paramName, uword paramIndex) :
-            mTraits(flags), mName(paramName), mIndex(paramIndex),  mOwner(owner), mType(null), mTypeName(typeName) {
-            mType = mOwner->Assembly()->GetType(typeName);
-         }
+         ParameterInfo(MethodInfo* owner, ParameterTraitFlags flags, const mirror& typeName, const mirror& paramName, uword paramIndex);
 
-         ParamterInfo(const ParameterInfo& copy) :
-             mTraits(copy.mTraits), mName(copy.mName), mIndex(copy.mIndex), mDescription(copy.mDescription), mOwner(copy.mOwner), mType(copy.mType) {
+         ParameterInfo(const ParameterInfo& copy) : mTraits(copy.mTraits), mName(copy.mName), mIndex(copy.mIndex),  mOwner(copy.mOwner), mType(copy.mType), mTypeName(copy.mTypeName) {
          }
 
          mirror Name() const { return mName; }
-
-         string Description() const { return mDescription; }
 
          MethodInfo* Owner() const { return mOwner; }
 
          TypeInfo* Type() const { return mType; }
 
-         bool IsObject() const { return mTraits[EParameterTraits::Object]; }
-         bool IsConst() const { return mTraits[EParameterTraits::Const]; }
-         bool IsValue() const { return mTraits[EParameterTraits::Value]; }
-         bool IsReference() const { return mTraits[EParameterTraits::Reference]; }
-         bool IsPointer() const { return mTraits[EParameterTraits::Pointer]; }
-         bool IsDelegate() const { return mTraits[EParameterTraits::Delegate]; }
-         bool IsArray() const { return mTraits[EParameterTraits::Array]; }
+         bool IsObject() const { return mTraits[EParameterTrait::Object]; }
+         bool IsConst() const { return mTraits[EParameterTrait::Const]; }
+         bool IsValue() const { return mTraits[EParameterTrait::Value]; }
+         bool IsReference() const { return mTraits[EParameterTrait::Reference]; }
+         bool IsPointer() const { return mTraits[EParameterTrait::Pointer]; }
+         bool IsDelegate() const { return mTraits[EParameterTrait::Delegate]; }
+         bool IsArray() const { return mTraits[EParameterTrait::Array]; }
 
       protected:
          ParameterTraitFlags  mTraits;

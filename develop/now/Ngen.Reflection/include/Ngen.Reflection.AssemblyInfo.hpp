@@ -42,7 +42,7 @@ namespace Ngen {
 
 		   /** @brief
           */
-			AssemblyInfo* New(const mirror& library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize);
+			static AssemblyInfo* New(const mirror& library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize);
 
 			/** @brief Get an array of all the namespaces currently available through the assembly.
 			 * @return An array that contains each namespace available through the assembly.
@@ -57,12 +57,7 @@ namespace Ngen {
 			/** @brief Get an array of attributes that were bound to the assembly.
 			 * @return An array that contains each attribute applied to the assembly.
 			 */
-			Array<Attribute*> GetAssemblyAttributes() const;
-
-         /** @brief Gets all the custom attributes created as part of the assembly.
-          * @return
-          */
-         Array<Attribute*> GetCustomAttributes() const;
+			Array<Attribute*> GetAttributes() const;
 
 			/** @brief Gets the reflected information for a namespace that belongs to the assembly.
 			 * @param name A mirror that can be used to identify the namespace being retrieved.
@@ -76,17 +71,22 @@ namespace Ngen {
 			 */
 			Type* GetType(const mirror& name) const;
 
+			Library* GetNativeLibrary() const;
+
 		protected:
 			void pMute() { mIsMuted = true; }
 			void pUnmute() { mIsMuted = false; }
 
 		   bool mIsMuted;                               // logic flag
-			mirror mAssemblyName;                        // the actual name of the assembly (constant)
 			Library* mLibrary;                           // the library that owns the assembly
-			Map<Mirror, NamespaceInfo> mNamespaceMap;    // all the root namespaces in the assmebly
-			Map<Mirror, TypeInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
+			mirror mAssemblyName;                        // the actual name of the assembly (constant)
+			Map<Mirror, NamespaceInfo> mRootNamespaceMap;    // all the root namespaces in the assmebly
+			Map<Mirror, NamespaceInfo*> mNamespaceInfoMap;
+			Map<Mirror, TypeInfo*> mTypeInfoMap;
          Array<Attribute> mCustomAttributes;          // all the custom attributes found inside the assembly
 
+         friend class TypeInfo;
+         friend class NamespaceInfo;
 			friend class AssemblyBuilder;
 		};
 

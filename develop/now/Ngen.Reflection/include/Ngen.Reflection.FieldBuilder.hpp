@@ -29,9 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_FIELDBUILDER_HPP
 #define __NGEN_REFLECTION_FIELDBUILDER_HPP
 
-#include "Ngen.Field.hpp"
 #include "Ngen.Reflection.EFieldTrait.hpp"
-#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
 	namespace Reflection {
@@ -41,7 +39,7 @@ namespace Ngen {
 			FieldBuilder(FieldInfo* field);
 
          void SetTrait(EFieldTrait trait, bool value);
-         void SetTraits(FieldTraitFlags traits);
+         void SetTrait(FieldTraitFlags traits);
 
 
 		protected:

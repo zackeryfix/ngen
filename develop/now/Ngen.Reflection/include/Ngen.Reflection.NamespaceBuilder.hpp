@@ -29,8 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_NAMESPACEBUILDER_HPP
 #define __NGEN_REFLECTION_NAMESPACEBUILDER_HPP
 
-#include "Ngen.Reflection.MethodBuilder.hpp"
-#include "Ngen.Reflection.FieldBuilder.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
    namespace Reflection {
@@ -38,6 +37,7 @@ namespace Ngen {
        */
       class ngen_api NamespaceBuilder {
       public:
+         NamespaceBuilder(NamespaceInfo* info);
 
          MethodInfo* AddStaticMethod(const mirror& signature, Delegate* function, typename VoidStaticDelegate<MethodBuilder>::TFunction builder);
          FieldInfo* AddStaticField(const mirror& signature, Field* field, typename VoidStaticDelegate<FieldBuilder>::TFunction builder);

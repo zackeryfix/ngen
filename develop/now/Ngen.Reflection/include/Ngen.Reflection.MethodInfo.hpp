@@ -34,7 +34,7 @@ THE SOFTWARE.
 namespace Ngen {
 	namespace Reflection {
 		/** @brief A meta-data object used to retain the reflected type information of a method or function. */
-		class MethodInfo : public Delegate {
+		class ngen_api MethodInfo : public Delegate {
 		public:
 
 			/** @brief Constructor. Default. */
@@ -43,7 +43,7 @@ namespace Ngen {
 			/** @brief Constructor. Copy. */
 			MethodInfo(const MethodInfo& copy) :
 				mIsMuted(false), mTraits(copy.mTraits), mDirectory(copy.mDirectory),
-				mSignature(copy.mSignature), mDescription(copy.mDescription), mFunction(copy.mFunction), mReturn(copy.mReturn), mParams(copy.mParams) {}
+				mName(copy.mName), mFullName(copy.mFullName), mFunction(copy.mFunction), mReturn(copy.mReturn), mParams(copy.mParams) {}
 
          ~MethodInfo() {
 
@@ -51,39 +51,57 @@ namespace Ngen {
 
 			/** @brief operator==(const MethodInfo&) */
 			bool operator==(const MethodInfo& rhs) const {
-				return mSignature == rhs.mSignature && mFunction->EqualTo(rhs.mFunction);
+				return mFullName == rhs.mFullName && mFunction->EqualTo(rhs.mFunction);
 			}
 
 			/** @brief operator!=(const MethodInfo&) */
 			bool operator!=(const MethodInfo& rhs) const {
-				return mSignature != rhs.mSignature || !mFunction->EqualTo(rhs.mFunction);
+				return mFullName != rhs.mFullName || !mFunction->EqualTo(rhs.mFunction);
 			}
 
 			/** @brief operator()(unknown, unknown*) */
-			unknown operator()(unknown _this, unknown* params) {
-				return mFunction(_this, params);
+			unknown operator()(unknown _this, unknown* params) const {
+				return mFunction->operator()(_this, params);
 			}
 
 			/** @brief operator()(Object, Object*). */
-			Object operator()(Object _this, Object* params) {
-				unknown[mFunction->Length()] set;
+			Object operator()(Object _this, Object* params) const {
+				unknown set[mFunction->Length()];
             for(uword i = 0; i < mFunction->Length(); ++i) {
                set[i] = params[i].UnknownThis();
             }
 
-            unknown result = mFunction(self.UnknownThis(), &set);
+            unknown result = mFunction->operator()(_this.UnknownThis(), set);
             return IsNonVoid() ?
-               Object::From(result, ReturnTypeMirror()) :
+               Object::New(result, ReturnType()) :
                Object::Null();
 			}
+
+         virtual bool EqualTo(Delegate* rhs) const {
+            if((Delegate*)this == rhs || this->mFunction == rhs) {
+               return true;
+            }
+
+            return mFunction->EqualTo(rhs);
+         }
+
+         void SetOwner(unknown _this) {
+            mFunction->SetOwner(_this);
+         }
+
+         bool IsValid() const {
+            return mFunction->IsValid();
+         }
 
 			mirror FullName() const {
             return mFullName;
 			}
 
 			mirror Signature() const {
-            return mFullName.ToLongName().Split(EMirrorToken::MethodSeperator).Last();
+            return mName;
 			}
+
+			Assembly* Assembly() const;
 
 			/** @brief Determines if the method represents a member function. */
 			bool IsMember() const {
@@ -107,42 +125,42 @@ namespace Ngen {
 
 			/** @brief Determines if the type is public. */
 			bool IsPublic() const {
-				return mTraits[ETrait::Public];
+				return mTraits[EMethodTrait::Public];
 			}
 
 			/** @brief Determines if the type is protected. */
 			bool IsProtected() const {
-				return mTraits[ETrait::Protected];
+				return mTraits[EMethodTrait::Protected];
 			}
 
 			/** @brief Determines if the type is private. */
 			bool IsPrivate() const {
-				return mTraits[ETrait::Private];
+				return mTraits[EMethodTrait::Private];
 			}
 
 			/** @brief Determines if the type is a template for new types. */
 			bool IsTemplate() const {
-				return mTraits[ETrait::Template];
+				return mTraits[EMethodTrait::Template];
 			}
 
 			/** @brief Determines if the type is a base abstraction for new types. */
 			bool IsAbstract() const {
-				return mTraits[ETrait::Abstract];
+				return mTraits[EMethodTrait::Abstract];
 			}
 
 			/** @brief Determines if the type is a virtual interface for new types. */
 			bool IsVirtual() const {
-				return mTraits[ETrait::Virtual];
+				return mTraits[EMethodTrait::Virtual];
 			}
 
 			/** @brief Determines if the type is hidden from external processes. */
 			bool IsHidden() const {
-				return mTraits[ETrait::Hidden];
+				return mTraits[EMethodTrait::Hidden];
 			}
 
 			/** @brief Determines if the type is the final abstraction in a chain of inheritance. */
 			bool IsFinal() const {
-				return mTraits[ETrait::Final];
+				return mTraits[EMethodTrait::Final];
 			}
 
 			/** @brief Gets the number of parameters in the function. */
@@ -151,44 +169,26 @@ namespace Ngen {
 			}
 
 			/** @brief Gets the reflected name of the underlying functions return type. */
-			const char8* ReturnTypename() const {
-				return mFunction->GetReturnType();
-			}
-
-			/** @brief Gets the reflected name of the underlying functions return type. */
-			mirror ReturnTypeMirror() const {
-				return const_mirror(mFunction->ReturnTypename());
+			Type* ReturnType() const {
+				return (Type*)mReturn;
 			}
 
 			/** @brief Gets the size (in bytes) of the underlying functions return type. */
 			uword ReturnSize() const {
-				return mFunction->GetReturnSize();
+				return mFunction->ReturnSize();
 			}
 
-
-
          template<typename TSelf, typename TReturn, typename... TParams>
-         TReturn SafeCall(TSelf* self, TParams params) {
-            unknown[mFunction->Length()] tmp = {
-               Cast<TParams>::To(params)....
+         TReturn SafeCall(TSelf* self, TParams... params) {
+            unknown tmp[sizeof...(TParams)] {
+               (Cast<TParams>::To(params))...
             };
 
-            return Cast<TReturn>::From(this->operator()(self, params));
+            return Cast<TReturn>::From(this->operator()(self, tmp));
          }
 
          /** @brief Constructor. (NamespaceInfo*, const string&, Delegate*). */
-			MethodInfo* Initialize(NamespaceInfo* directory, const mirror& signature, Delegate* function, StaticDelegate<MethodBuilder>::TFunction initializer) {
-            pMute();
-            mTraits();
-            mDirectory(directory);
-            mName(signature);
-            mFullName(directory->FullName().ToLongName() + '$' + mName.ToLongName());
-            mFunction(function);
-            mReturn(0);
-            mParams(0);
-				initializer(MethodBuilder(this));
-				pUnmute();
-			}
+			MethodInfo* Initialize(NamespaceInfo* directory, const mirror& signature, Delegate* function, VoidStaticDelegate<MethodBuilder>::TFunction initializer);
 		protected:
 			void pMute() {
 				mIsMuted = true;

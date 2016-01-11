@@ -29,12 +29,10 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_FIELDINFO_HPP
 #define __NGEN_REFLECTION_FIELDINFO_HPP
 
-#include "Ngen.FieldBuilder.hpp"
+#include "Ngen.Reflection.FieldBuilder.hpp"
 
 namespace Ngen {
    namespace Reflection {
-      /// TODO: Calculate ReturnType from signature
-
       class ngen_api FieldInfo : Field {
       public:
          FieldInfo() : mIsMuted(false), mTraits(), mDirectory(null), mReturnType(null), mName(), mFullName(null), mField(null) {
@@ -42,10 +40,10 @@ namespace Ngen {
 
          virtual uword Size() const { return mField->Size(); }
 
-         virtual unknown Get(unknown _this) { return mField->Get(_this); }
+         virtual unknown Get(unknown _this) const { return mField->Get(_this); }
 
-         virtual void Set(unknown _this, unknown value) {
-            if(mField->IsReadOnly()) {
+         virtual void Set(unknown _this, unknown value) const {
+            if(mField->IsConst() || IsReadonly()) {
                THROW(InvalidOperationException(E"Unable to modify a readonly/const data field."));
             }
 
@@ -55,6 +53,8 @@ namespace Ngen {
          mirror Name() const { return mName; }
 
          mirror FullName() const { return mFullName; }
+
+         Type* ReturnType() const { return (Type*)mReturnType; }
 
          TypeInfo* ReturnTypeInfo() const { return mReturnType; }
 
@@ -69,17 +69,7 @@ namespace Ngen {
          virtual bool IsConst() const { return mField->IsConst(); }
          virtual bool IsMember() const { return mField->IsMember(); }
 
-          FieldInfo* Initialize(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename StaticDelegate<FieldBuilder>::TFunction initializer) {
-            pMute();
-            mTraits();
-            mDirectory(directory);
-            mReturnType(null);
-            mName(relativeName);
-            mFullName(directory->FullName().ToLongName() + '#' + mName.ToLongName());
-            mField(field);
-            initializer(FieldBuilder(this));
-            pUnmute();
-         }
+         FieldInfo* Initialize(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename VoidStaticDelegate<FieldBuilder>::TFunction initializer);
       protected:
          void pMute() { mIsMuted = true; }
          void pUnmute() { mIsMuted = false; }

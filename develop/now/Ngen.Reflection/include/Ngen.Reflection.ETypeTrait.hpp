@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_ETYPETRAIT_HPP
 #define __NGEN_REFLECTION_ETYPETRAIT_HPP
 
-#include "Ngen.BitFlags.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
 namespace Reflection {
@@ -47,6 +47,8 @@ namespace Reflection {
       Abstract,
       /** @brief The type is the final implementation in a chain of inheritance. */
       Final,
+
+      Primitive,
       _COUNT
 	};
 	typedef BitFlags<ETypeTrait> TypeTraitFlags;

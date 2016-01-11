@@ -27,24 +27,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
+#include "Ngen.Reflection.AssemblyInfo.hpp"
 #include "Ngen.Reflection.MethodInfo.hpp"
+#include "Ngen.Reflection.NamespaceInfo.hpp"
+#include "Ngen.Reflection.TypeInfo.hpp"
 
 namespace Ngen {
    namespace Reflection {
+			MethodInfo* MethodInfo::Initialize(NamespaceInfo* directory, const mirror& signature, Delegate* function, VoidStaticDelegate<MethodBuilder>::TFunction initializer) {
+            pMute();
+            mDirectory = directory;
+            mName = signature;
+            mFullName = directory->FullName().ToLongName() + '$' + mName.ToLongName();
+            mFunction = function;
+            mReturn = 0;
+				initializer(MethodBuilder(this));
+				pUnmute();
+				return this;
+			}
+
+         Assembly* MethodInfo::Assembly() const {
+            return mDirectory->GetAssembly();
+			}
+
          MethodBuilder::MethodBuilder(MethodInfo* method) : mInfo(method) {}
 
          ParameterInfo* MethodBuilder::AddParameter(ParameterTraitFlags traits, const mirror& typeName, const string& name, const string& description) {
             auto info = ParameterInfo(mInfo, traits, typeName, name, mParamCount);
-            this->Info->mParams.Add(info);
-            return this->mInfo->mParams[this->mParamCount++];
+            this->mInfo->mParams.Add(info);
+            return &this->mInfo->mParams[this->mParamCount++];
          }
+
          void MethodBuilder::SetTrait(EMethodTrait trait, bool value) {
-            this->mInfo->mTraits[trait] = value;
+            this->mInfo->mTraits.Set(trait, value);
          }
          void MethodBuilder::SetTrait(MethodTraitFlags traits) {
             this->mInfo->mTraits = traits;
          }
-
-         bool MethodIndo::Save() const { return true; }
    }
 }

@@ -29,21 +29,15 @@ THE SOFTWARE.
 #ifndef __NGEN_REFLECTION_ASSEMBLYBUILDER_HPP
 #define __NGEN_REFLECTION_ASSEMBLYBUILDER_HPP
 
-#include "Ngen.Reflection.TypeBuilder.hpp"
+#include "Ngen.Reflection.Typedefs.hpp"
 
 namespace Ngen {
    namespace Reflection {
       /** @brief
        */
-      class AssemblyBuilder {
-         AssemblyBuilder(AssemblyInfo* info) : mInfo(info) {
-            if(!info->mIsMuted) {
-               THROW(InvalidOperationException("The assembly being constructed is read-only and cannot be modified."));
-            }
-         }
-
+      class ngen_api AssemblyBuilder {
+         AssemblyBuilder(AssemblyInfo* info);
          AssemblyBuilder& AddNamespace(const mirror& namespaceName, NamespaceInfo* directory, const VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer);
-
          AssemblyInfo* Finalize();
       private:
          AssemblyInfo* mInfo;
