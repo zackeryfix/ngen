@@ -1,1 +1,130 @@
 # depslib dependency file v1.0
+1450680769 source:c:\workspaces\ngen\develop\now\ngen\ngen.console.cpp
+	"Ngen.Console.hpp"
+	<iostream>
+	<iomanip>
+
+1450684607 c:\workspaces\ngen\develop\now\ngen\include\ngen.console.hpp
+	"Ngen.String.hpp"
+
+1451355280 c:\workspaces\ngen\develop\now\ngen\include\ngen.string.hpp
+	"Ngen.Array.hpp"
+
+1452509042 c:\workspaces\ngen\develop\now\ngen\include\ngen.array.hpp
+	"Ngen.Delegate.hpp"
+
+1452504123 c:\workspaces\ngen\develop\now\ngen\include\ngen.delegate.hpp
+	"Ngen.Memory.hpp"
+
+1450684607 c:\workspaces\ngen\develop\now\ngen\include\ngen.memory.hpp
+	"Ngen.Cast.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.cast.hpp
+	"Ngen.Trait.hpp"
+
+1452500436 c:\workspaces\ngen\develop\now\ngen\include\ngen.trait.hpp
+	"Ngen.Exception.hpp"
+
+1450684607 c:\workspaces\ngen\develop\now\ngen\include\ngen.exception.hpp
+	"Ngen.Typedefs.hpp"
+
+1452498043 c:\workspaces\ngen\develop\now\ngen\include\ngen.typedefs.hpp
+	"Build.Ngen.External.hpp"
+
+1451121775 c:\workspaces\ngen\develop\now\ngen\include\build.ngen.external.hpp
+	"Build.Ngen.Logic.hpp"
+	<exception>
+	<new>
+	<math.h>
+	<initializer_list>
+	<windows.h>
+	<dlfcn.h>
+
+1451148484 c:\workspaces\ngen\develop\now\ngen\include\build.ngen.logic.hpp
+	"Build.Ngen.Macro.hpp"
+	"Build.Ngen.Configuration.hpp"
+	<xmmintrin.h>
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\build.ngen.macro.hpp
+	"Build.Ngen.Token.hpp"
+
+1450686350 c:\workspaces\ngen\develop\now\ngen\include\build.ngen.token.hpp
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\build.ngen.configuration.hpp
+	"Build.Ngen.Token.hpp"
+
+1450676323 source:c:\workspaces\ngen\develop\now\ngen\ngen.delegate.cpp
+	"Ngen.Exception.hpp"
+	"Ngen.Delegate.hpp"
+	"Ngen.StaticDelegate.hpp"
+	"Ngen.MemberDelegate.hpp"
+	"Ngen.ConstMemberDelegate.hpp"
+	"Ngen.Object.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.staticdelegate.hpp
+	"Ngen.Delegate.hpp"
+	"Ngen.Cast.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.memberdelegate.hpp
+	"Ngen.Delegate.hpp"
+	"Ngen.Cast.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.constmemberdelegate.hpp
+	"Ngen.Delegate.hpp"
+	"Ngen.Cast.hpp"
+
+1452498043 c:\workspaces\ngen\develop\now\ngen\include\ngen.object.hpp
+	"Ngen.Mirror.hpp"
+	"Ngen.Reference.hpp"
+	"Ngen.Callback.hpp"
+	"Ngen.Field.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.mirror.hpp
+	"Ngen.string.hpp"
+
+1452513545 c:\workspaces\ngen\develop\now\ngen\include\ngen.reference.hpp
+	"Ngen.Typedefs.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.callback.hpp
+	"Ngen.Delegate.hpp"
+
+1451120650 c:\workspaces\ngen\develop\now\ngen\include\ngen.field.hpp
+	"Ngen.Cast.hpp"
+
+1450681870 source:c:\workspaces\ngen\develop\now\ngen\ngen.library.cpp
+	"Ngen.Library.hpp"
+	"Ngen.Map.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.library.hpp
+	"Ngen.Mirror.hpp"
+
+1452510772 c:\workspaces\ngen\develop\now\ngen\include\ngen.map.hpp
+	"Ngen.KeyValuePair.hpp"
+	"Ngen.List.hpp"
+
+1450684607 c:\workspaces\ngen\develop\now\ngen\include\ngen.keyvaluepair.hpp
+	"Ngen.Algorithm.hpp"
+
+1450684608 c:\workspaces\ngen\develop\now\ngen\include\ngen.algorithm.hpp
+	"Ngen.Memory.hpp"
+
+1452510814 c:\workspaces\ngen\develop\now\ngen\include\ngen.list.hpp
+	"Ngen.Array.hpp"
+
+1450678900 source:c:\workspaces\ngen\develop\now\ngen\ngen.string.cpp
+	"Ngen.Algorithm.hpp"
+	"Ngen.String.hpp"
+
+1452513785 source:c:\workspaces\ngen\develop\now\ngen\ngen.object.cpp
+	"Ngen.Object.hpp"
+	"Ngen.Type.hpp"
+
+1452512701 c:\workspaces\ngen\develop\now\ngen\include\ngen.type.hpp
+	"Ngen.Object.hpp"
+
+1452513322 source:c:\workspaces\ngen\develop\now\ngen\ngen.attribute.cpp
+	"Ngen.Attribute.hpp"
+
+1452513767 c:\workspaces\ngen\develop\now\ngen\include\ngen.attribute.hpp
+	"Ngen.Object.hpp"
+

@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef __NGEN_REFERENCECOUNT_HPP
 #define __NGEN_REFERENCECOUNT_HPP
 
+#include "Ngen.Typedefs.hpp"
+
 namespace Ngen {
    /** @brief A class that maintains the reference count of an object instance. */
    class Reference {

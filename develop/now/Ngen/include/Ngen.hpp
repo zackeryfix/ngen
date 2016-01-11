@@ -29,6 +29,10 @@ THE SOFTWARE.
 #ifndef __NGEN_HPP
 #define __NGEN_HPP
 
+namespace Ngen {
+class Type;
+}
+
 #include "Build.Ngen.Token.hpp"
 #include "Build.Ngen.Configuration.hpp"
 #include "Build.Ngen.Macro.hpp"
@@ -42,6 +46,7 @@ THE SOFTWARE.
 #include "Ngen.Algorithm.hpp"
 #include "Ngen.Reference.hpp"
 #include "Ngen.KeyValuePair.hpp"
+#include "Ngen.BitFlags.hpp"
 #include "Ngen.Calculator.hpp"
 
 #include "Ngen.Delegate.hpp"
@@ -60,9 +65,10 @@ THE SOFTWARE.
 #include "Ngen.Stream.hpp"
 #include "Ngen.Task.hpp"
 
-#include "Ngen.Object.hpp"
 #include "Ngen.Library.hpp"
 #include "Ngen.Assembly.hpp"
+#include "Ngen.Attribute.hpp"
+#include "Ngen.Type.hpp"
 
 #include "Ngen.Console.hpp"
 

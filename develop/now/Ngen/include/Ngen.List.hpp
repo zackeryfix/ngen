@@ -169,6 +169,11 @@ namespace Ngen {
          return At(index);
       }
 
+        /** @brief Operator. Indexer. */
+      const T& operator[](uword index) const {
+         return At(index);
+      }
+
       /** @brief Gets a value that determines if the list was constructed as read-only. */
       bool IsReadonly() const {
          return mIsReadonly;
@@ -191,6 +196,11 @@ namespace Ngen {
 
       /** @brief Gets a data item from the node found at the given index. */
       T& At(uword index) {
+         return pGet(index, true)->mData;
+      }
+
+      /** @brief Gets a data item from the node found at the given index. */
+      const T& At(uword index)const {
          return pGet(index, true)->mData;
       }
 

@@ -44,7 +44,7 @@ namespace Ngen {
       virtual bool EqualTo(Delegate* rhs) const pure;
 
 		/** @brief operator()(unknown, unknown*). */
-      virtual unknown operator()(unknown _this, unknown* params) pure;
+      virtual unknown operator()(unknown _this, unknown* params) const pure;
 
 		/** @brief Determines if the delegate references a constant-member function. */
       virtual bool IsConst() const pure;

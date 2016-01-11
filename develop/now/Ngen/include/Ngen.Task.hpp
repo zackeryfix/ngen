@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_TASK_HPP
 #define __NGEN_TASK_HPP
 
-#include "Ngen.Typedefs.hpp"
+#include "Ngen.Exception.hpp"
 
 namespace Ngen {
 	enum class ETaskState {

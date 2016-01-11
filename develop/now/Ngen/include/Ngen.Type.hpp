@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_TYPE_HPP
 #define __NGEN_TYPE_HPP
 
-#include "Ngen.Typedefs.hpp"
+#include "Ngen.Object.hpp"
 
 namespace Ngen {
 	/** @brief */
@@ -66,7 +66,12 @@ namespace Ngen {
 		/** @brief Gets an array of all the method members of this Type.
 		 * @return An array containing all the method information bound to this type.
 		 */
-		virtual Array<Delegate*> GetMethods() const pure;
+		virtual Array<Delegate*> GetMemberMethods() const pure;
+
+      /** @brief Gets an array of all the method members of this Type.
+		 * @return An array containing all the method information bound to this type.
+		 */
+		virtual Array<Delegate*> GetStaticMethods() const pure;
 
 			/** @brief Gets a field member of the Type that matches the given signature.
 		 * @param signature The signature of the field nested within the scope of this type.
@@ -78,7 +83,13 @@ namespace Ngen {
 		/** @brief Gets an array of all the field members of this Type.
 		 * @return An array containing all the field information bound to this type.
 		 */
-		virtual Array<Field*> GetFields() const pure;
+		virtual Array<Field*> GetStaticFields() const pure;
+
+
+		/** @brief Gets an array of all the field members of this Type.
+		 * @return An array containing all the field information bound to this type.
+		 */
+		virtual Array<Field*> GetMemberFields() const pure;
 
 		/** @brief Gets a member method callback for the Type that matches the given signature.
 		 * @param _this An unknown pointer that is represented as an instance of this type.
@@ -142,10 +153,6 @@ namespace Ngen {
 		 */
 		virtual bool IsPublic() const pure;
 
-		/** @brief Determines if the type has protected visibility.
-		 */
-		virtual bool IsProtected() const pure;
-
 		/** @brief Determines if the type has hidden visibility.
 		 */
 		virtual bool IsHidden() const pure;
@@ -166,6 +173,10 @@ namespace Ngen {
 		 */
 		virtual bool IsNested() const pure;
 
+
+		virtual bool IsParent() const pure;
+		virtual bool IsChild() const pure;
+
 		/** @brief Gets the assembly where the type is located.
 		 */
 		virtual Assembly* GetAssembly() const pure;
@@ -180,7 +191,11 @@ namespace Ngen {
 
 		/** @brief Gets all the types nested within this type, including non-constructible static types.
 		 */
-		virtual Array<Type*> GetNested() const pure;
+		virtual Array<Type*> GetNestedNamespaces() const pure;
+
+		/** @brief Gets all the types nested within this type, including non-constructible static types.
+		 */
+		virtual Array<Type*> GetNestedTypes() const pure;
 
 		/** @brief Gets the type (or namespace) where the type is nested.
 		 */

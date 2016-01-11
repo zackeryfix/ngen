@@ -57,16 +57,30 @@ namespace Ngen {
 			return mData.End();
 		}
 
-		TValue& operator[](const TKey& key) {
+      const TValue& operator[](const TKey& key) const {
 			typename TDict::Node* node = mData.Begin();
 
-			do {
+			while(!isnull(node)) {
 				if(node->Data().Key == key) {
 					return node->Data().Value;
 				}
 
 				node = node->Next();
-			} while(node != mData.End());
+			}
+
+			return this->End()->Data().Value;
+		}
+
+      TValue& operator[](const TKey& key) {
+			typename TDict::Node* node = mData.Begin();
+
+			while(!isnull(node)) {
+				if(node->Data().Key == key) {
+					return node->Data().Value;
+				}
+
+				node = node->Next();
+			}
 
 			this->Add(key, TValue());
 			return this->End()->Data().Value;
@@ -97,17 +111,17 @@ namespace Ngen {
 		}
 
       Map<TKey, TValue*> ToPointerMap() const {
-         auto result =  Map<TKey, TValue*>(mData.Count());
-         for(int i = 0; i < mData.Count(); ++i) {
-            result.Add(mData[i].Key, &mData[i].Value);
+         auto result =  Map<TKey, TValue*>();
+         for(uword i = 0; i < mData.Length(); ++i) {
+            result.Add(mData[i].Key, (TValue*)&mData[i].Value); // const to non-const
          }
 
          return result;
       }
 
       Array<TValue> Values() const {
-         auto result =  Array<TValue>(mData.Count());
-         for(int i = 0; i < mData.Count(); ++i) {
+         auto result =  Array<TValue>(mData.Length());
+         for(uword i = 0; i < mData.Length(); ++i) {
             result.Add(mData[i].Value);
          }
 
@@ -115,8 +129,8 @@ namespace Ngen {
       }
 
       Array<TKey> Keys() const {
-         auto result =  Array<TValue>(mData.Count());
-         for(int i = 0; i < mData.Count(); ++i) {
+         auto result =  Array<TValue>(mData.Length());
+         for(uword i = 0; i < mData.Length(); ++i) {
             result.Add(mData[i].Key);
          }
 

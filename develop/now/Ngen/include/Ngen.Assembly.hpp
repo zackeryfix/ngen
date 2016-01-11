@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_ASSEMBLY_HPP
 #define __NGEN_ASSEMBLY_HPP
 
-#include "Ngen.Typedefs.hpp"
+#include "Ngen.Attribute.hpp"
 
 namespace Ngen {
 	/** @brief A single unit of reflected type information that is load and unloaded
@@ -89,12 +89,7 @@ namespace Ngen {
 		static bool Dereference(const mirror& assemblyName);
 
 		Library* mLibrary;
-
-		friend class Type;
-		friend class Application;
 	};
-
-#	define typeof(T) Assembly::GetType(t_mirror<T>::result());
 }
 
 #endif // __NGEN_REFLECTION_HPP

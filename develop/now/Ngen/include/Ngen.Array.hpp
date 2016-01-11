@@ -96,7 +96,7 @@ namespace Ngen {
 
 
 		/** @brief operator[](uword).*/
-      typename Trait<T>::ConstReference& operator[](uword index) const {
+      const T& operator[](uword index) const {
 			if(IsNullOrEmpty()) {
 				THROW(InvalidOperationException("Cannot index an array that is null or empty!"));
 			} else if(index >= mLength) {
@@ -107,7 +107,7 @@ namespace Ngen {
 		}
 
 		/** @brief operator[](uword).*/
-		typename Trait<T>::Reference& operator[](uword index) {
+		T& operator[](uword index) {
 			if(IsNullOrEmpty()) {
 				THROW(InvalidOperationException("Cannot index an array that is null or empty!"));
 			} else if(index >= mLength) {

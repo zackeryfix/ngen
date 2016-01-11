@@ -29,10 +29,9 @@ THE SOFTWARE.
 #ifndef __NGEN_ATTRIBUTE_HPP
 #define __NGEN_ATTRIBUTE_HPP
 
-#include "Ngen.Type.hpp"
+#include "Ngen.Object.hpp"
 
 namespace Ngen {
-
 	/** @brief An attribute is a custom external property that can be assigned to any code element, such as
 	 * a type definition or method argument.  These are not restricted to any kind of RTI element, and any
 	 * Type can be an attribute.
@@ -40,19 +39,17 @@ namespace Ngen {
 	class ngen_api Attribute {
 	public:
 	   /** @brief */
-	   Attribute(unknown rti, const Type* attributeType) : mRTI(rti), mType(attributeType), mData(mType->NewInstance()) {}
+	   Attribute(unknown rti, const Type* attributeType) : mRTI(rti), mData(Object::Null()) {}
 
 		/** @brief */
 		bool operator==(const Attribute& rhs) const {
          return (this->RTI() == rhs.RTI() &&
-                 this->Type() == rhs.Type() &&
                  this->Data() == rhs.Data());
 		}
 
 		/** @brief */
 		bool operator!=(const Attribute& rhs) const {
          return (this->RTI() != rhs.RTI() ||
-                 this->Type() != rhs.Type() ||
                  this->Data() != rhs.Data());
 		}
 
@@ -60,14 +57,13 @@ namespace Ngen {
 		unknown RTI() const { return mRTI; }
 
 		/** @brief Gets the type information that the custom data for the attribute was created from. */
-		const Type* Type() const { return mType; }
+		const Type* Type() const { return mData.GetType(); }
 
 		/** @brief Gets the custom object representing this attribute's data. */
 		Object Data() const { return mData; }
 
    protected:
       unknown mRTI;
-      Type* mType;
       Object mData;
 	};
 }

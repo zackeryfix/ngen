@@ -129,6 +129,8 @@ namespace Ngen {
 
       __inline_reusable_trait_logic
    };
+
+   template <typename T> typename Trait<T>::Moved mref(T&& arg) { return (typename Trait<T>::Moved)arg; }
 }
 
 #endif // __NGEN_TRAITS_HPP

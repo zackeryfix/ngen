@@ -41,7 +41,7 @@ namespace Ngen {
 
 		/** @brief Default. ()
 		 */
-		BitFlags() : mCount(TEnum::_COUNT) {
+		BitFlags() : mCount((uword)TEnum::_COUNT) {
 			Clear();
 		}
 
@@ -61,7 +61,7 @@ namespace Ngen {
 		 * bit-flag will be turned off.
 		 */
 		BitFlags* Set(TEnum target, bool value) {
-			mFlags[target] = value;
+			mFlags[(uword)target] = value;
 			return this;
 		}
 
@@ -69,10 +69,10 @@ namespace Ngen {
 		 * @param target The enumeration representing the bit-flag being toggled.
 		 */
 		BitFlags* Toggle(TEnum target) {
-			if(mFlags[target]) {
-				mFlags[target] = false;
+			if(mFlags[(uword)target]) {
+				mFlags[(uword)target] = false;
 			} else {
-				 mFlags[target] = true;
+				 mFlags[(uword)target] = true;
 			}
 
 			return this;
@@ -82,7 +82,7 @@ namespace Ngen {
 		 * @param target The enumeration representing the bit-flag being toggled.
 		 */
 		BitFlags* On(TEnum target) {
-			mFlags[target] = true;
+			mFlags[(uword)target] = true;
 			return this;
 		}
 
@@ -90,14 +90,14 @@ namespace Ngen {
 		 * @param target The enumeration representing the bit-flag being toggled.
 		 */
 		BitFlags* Off(TEnum target) {
-			mFlags[target] = false;
+			mFlags[(uword)target] = false;
 			return this;
 		}
 
       /** @brief Gets a value that determines if a specific bit-flag has been set.
        */
       bool operator[](TEnum e) const {
-         return mFlags[e];
+         return mFlags[(uword)e];
       }
 
       /** @brief Gets a value that determines if a specific bit-flag has been set.

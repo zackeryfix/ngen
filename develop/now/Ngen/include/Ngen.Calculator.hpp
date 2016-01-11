@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef __NGEN_CALCULATOR_HPP
 #define __NGEN_CALCULATOR_HPP
 
-#include "Ngen.Typedefs.hpp"
+#include "Ngen.Exception.hpp"
 
 namespace Ngen {
    /** @brief A static instance that provides advanced mathematical functions and constants. */

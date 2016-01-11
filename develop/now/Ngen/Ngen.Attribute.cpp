@@ -26,12 +26,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#include "Ngen.Exception.hpp"
-#include "Ngen.Delegate.hpp"
-#include "Ngen.StaticDelegate.hpp"
-#include "Ngen.MemberDelegate.hpp"
-#include "Ngen.ConstMemberDelegate.hpp"
-#include "Ngen.Object.hpp"
+
+#include "Ngen.Attribute.hpp"
 
 namespace Ngen {
 
