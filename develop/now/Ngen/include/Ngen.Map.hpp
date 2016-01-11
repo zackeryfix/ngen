@@ -64,6 +64,8 @@ namespace Ngen {
 				if(node->Data().Key == key) {
 					return node->Data().Value;
 				}
+
+				node = node->Next();
 			} while(node != mData.End());
 
 			this->Add(key, TValue());
