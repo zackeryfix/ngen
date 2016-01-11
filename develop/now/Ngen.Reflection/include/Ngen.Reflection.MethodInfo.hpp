@@ -38,16 +38,7 @@ namespace Ngen {
 		public:
 
 			/** @brief Constructor. Default. */
-			MethodInfo() :	mIsMuted(false), mTraits(), mDirectory(0),
-            mSignature(), mDescription(), mFunction(0), mReturn(0), mParams(0) {}
-
-			/** @brief Constructor. (NamespaceInfo*, const string&, Delegate*). */
-			MethodInfo(NamespaceInfo* directory, const mirror& signature, Delegate* function, StaticDelegate<MethodBuilder>::TFunction initializer) :
-				mIsMuted(true), mTraits(), mDirectory(directory),
-            mSignature(signature), mDescription(), mFunction(function), mReturn(0), mParams(0) {
-				initializer(MethodBuilder(this));
-				pUnmute();
-			}
+			MethodInfo() :	mIsMuted(false), mTraits(), mDirectory(0), mName(), mFullName(), mFunction(0), mReturn(0), mParams(0) {}
 
 			/** @brief Constructor. Copy. */
 			MethodInfo(const MethodInfo& copy) :
@@ -184,8 +175,21 @@ namespace Ngen {
 
             return Cast<TReturn>::From(this->operator()(self, params));
          }
-		protected:
 
+         /** @brief Constructor. (NamespaceInfo*, const string&, Delegate*). */
+			MethodInfo* Initialize(NamespaceInfo* directory, const mirror& signature, Delegate* function, StaticDelegate<MethodBuilder>::TFunction initializer) {
+            pMute();
+            mTraits();
+            mDirectory(directory);
+            mName(signature);
+            mFullName(directory->FullName().ToLongName() + '$' + mName.ToLongName());
+            mFunction(function);
+            mReturn(0);
+            mParams(0);
+				initializer(MethodBuilder(this));
+				pUnmute();
+			}
+		protected:
 			void pMute() {
 				mIsMuted = true;
 			}
@@ -198,13 +202,10 @@ namespace Ngen {
 				return mIsMuted;
 			}
 
-			void pParseMirror() {
-            //todo:
-			}
-
 			bool                 mIsMuted;
-			TraitFlags           mTraits;
+			MethodTraitFlags     mTraits;
 			NamespaceInfo*       mDirectory;
+			mirror               mName;
 			mirror               mFullName;
 			string               mDescription;
 			Delegate*            mFunction;

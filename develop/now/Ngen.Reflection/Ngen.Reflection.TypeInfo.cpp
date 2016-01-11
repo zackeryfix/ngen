@@ -58,27 +58,24 @@ namespace Ngen {
                //THROW()
             }
 
-            auto copy = MethodInfo((NamespaceInfo*)this->mInfo, relativeSignature, function, initializer);
-            this->mInfo->mMemberMethods.Add(relativeSignature, copy);
-            return &this->mInfo->mMemberMethods[relativeSignature];
+            this->mInfo->mMemberMethods.Add(relativeSignature, MethodInfo());
+            return this->mInfo->mMemberMethods[relativeSignature].Initialize((NamespaceInfo*)this->mInfo, relativeSignature, function, initializer);
          }
-			FieldInfo* TypeBuilder::AddMemberField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction builder) {
+			FieldInfo* TypeBuilder::AddMemberField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction initializer) {
 			 if(this->mInfo->mMemberFields.ContainsKey(relativeSignature)) {
                //THROW()
             }
 
-            auto copy = FieldInfo((NamespaceInfo*)this->mInfo, relativeSignature, field, initializer);
-            this->mInfo->mMemberMethods.Add(relativeSignature, copy);
-            return &this->mInfo->mMemberFields[relativeSignature];
+            this->mInfo->mMemberFields.Add(relativeSignature, FieldInfo());
+            return this->mInfo->mMemberFields[relaitveSignature].Initialize((NamespaceInfo*)this->mInfo, signature, field, initializer);
 			}
 			MethodInfo* TypeBuilder::AddConstructor(const mirror& relativeSignature, Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer) {
             if(this->mInfo->mConstructors.ContainsKey(relativeSignature)) {
                //THROW()
             }
 
-            auto copy = MethodInfo((NamespaceInfo*)this->mInfo, relativeSignature, function, initializer);
-            this->mInfo->mConstructors.Add(relativeSignature, copy);
-            return &this->mInfo->mConstructors[relativeSignature];
+            this->mInfo->mConstructors.Add(relativeSignature, MethodInfo());
+            return this->mInfo->mConstructors[relativeSignature].Initialize((NamespaceInfo*)this->mInfo, relativeSignature, function, initializer);
          }
 			void TypeBuilder::AddParent(const mirror& parentName) {
             auto info = this->mInfo->mAssembly->GetType(parentName);
@@ -92,8 +89,7 @@ namespace Ngen {
             this->mInfo->mTraits = traits;
 			}
 			void TypeBuilder::SetDestructor(Delegate* function, typename StaticDelegate<MethodBuilder>::TFunction initializer) {
-            MethodInfo method = MethodInfo((NamespaceInfo*)mInfo, const_text(""), function, initializer);
-            mInfo->mDtor = method;
+            mInfo->mDtor = MethodInfo((NamespaceInfo*)mInfo, const_text(""), function, initializer);
 			}
          TypeInfo* TypeBuilder::AddNestedType(const mirror& relativeTypeName, typename StaticDelegate<TypeBuilder>::TFunction initializer) {
             if(this->mInfo->mNestedTypeMap.ContainsKey(relativeTypeName)) {

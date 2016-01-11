@@ -40,14 +40,6 @@ namespace Ngen {
          FieldInfo() : mIsMuted(false), mTraits(), mDirectory(null), mReturnType(null), mName(), mFullName(null), mField(null) {
          }
 
-         FieldInfo(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename StaticDelegate<FieldBuilder>::TFunction initializer) :
-            mIsMuted(true), mTraits(), mDirectory(directory), mReturnType(null), mName(relativeName),
-            mFullName(directory->FullName().ToLongName() + '@' + relativeName.ToLongName()),
-            mField(field) {
-            initializer(FieldBuilder(this));
-            pUnmute();
-         }
-
          virtual uword Size() const { return mField->Size(); }
 
          virtual unknown Get(unknown _this) { return mField->Get(_this); }
@@ -77,7 +69,17 @@ namespace Ngen {
          virtual bool IsConst() const { return mField->IsConst(); }
          virtual bool IsMember() const { return mField->IsMember(); }
 
-
+          FieldInfo* Initialize(NamespaceInfo* directory,  Field* field, const mirror& relativeName, typename StaticDelegate<FieldBuilder>::TFunction initializer) {
+            pMute();
+            mTraits();
+            mDirectory(directory);
+            mReturnType(null);
+            mName(relativeName);
+            mFullName(directory->FullName().ToLongName() + '#' + mName.ToLongName());
+            mField(field);
+            initializer(FieldBuilder(this));
+            pUnmute();
+         }
       protected:
          void pMute() { mIsMuted = true; }
          void pUnmute() { mIsMuted = false; }

@@ -43,6 +43,8 @@ namespace Ngen {
          }
 
          AssemblyBuilder& AddNamespace(const mirror& namespaceName, NamespaceInfo* directory, const VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer);
+
+         AssemblyInfo* Finalize();
       private:
          AssemblyInfo* mInfo;
 

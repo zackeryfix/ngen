@@ -38,7 +38,11 @@ namespace Ngen {
 		public:
 		   /** @brief
           */
-			AssemblyInfo(const mirror& library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize);
+			AssemblyInfo();
+
+		   /** @brief
+          */
+			AssemblyInfo* New(const mirror& library, const mirror& assemblyName,  typename VoidStaticDelegate<AssemblyBuilder>::TFunction initialize);
 
 			/** @brief Get an array of all the namespaces currently available through the assembly.
 			 * @return An array that contains each namespace available through the assembly.
@@ -79,10 +83,8 @@ namespace Ngen {
 		   bool mIsMuted;                               // logic flag
 			mirror mAssemblyName;                        // the actual name of the assembly (constant)
 			Library* mLibrary;                           // the library that owns the assembly
-			Map<Mirror, NamespaceInfo*> mNamespaceMap;    // all the root namespaces in the assmebly
+			Map<Mirror, NamespaceInfo> mNamespaceMap;    // all the root namespaces in the assmebly
 			Map<Mirror, TypeInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
-			Map<Mirror, FieldInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
-			Map<Mirror, MethodInfo*> mTypeInfoMap;    // all the root namespaces in the assmebly
          Array<Attribute> mCustomAttributes;          // all the custom attributes found inside the assembly
 
 			friend class AssemblyBuilder;

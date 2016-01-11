@@ -45,9 +45,8 @@ namespace Ngen {
                //THROW()
             }
 
-            auto copy = MethodInfo(this->mInfo, relativeSignature, function, initializer);
-            this->mInfo->mStaticMethodMap.Add(relativeSignature, copy);
-            return &this->mInfo->mStaticMethodMap[relativeSignature];
+            this->mInfo->mStaticMethodMap.Add(relativeSignature, MethodInfo());
+            return this->mInfo->mStaticMethodMap[relativeSignature].Initialize(this->mInfo, relativeSignature, function, initializer);
 			}
 
          FieldInfo* NamespaceBuilder::AddStaticField(const mirror& signature, Field* field, typename StaticDelegate<FieldBuilder>::TFunction initializer) {
@@ -55,31 +54,27 @@ namespace Ngen {
                //THROW()
             }
 
-            auto copy = FieldInfo((NamespaceInfo*)this->mInfo, signature, field, initializer);
-            this->mInfo->mStaticFieldMap.Add(relativeSignature, copy);
-            return &this->mInfo->mStaticFieldMap[relativeSignature];
-         }
-
+            this->mInfo->mStaticFieldMap.Add(signature, FieldInfo());
+            return this->mInfo->mStaticFieldMap[signature].Initialize(this->mInfo, signature, field, initializer);
+			}
 
          TypeInfo* NamespaceBuilder::AddNestedType(const mirror& relativeTypeName, typename StaticDelegate<TypeBuilder>::TFunction initializer) {
             if(this->mInfo->mNestedTypeMap.ContainsKey(relativeTypeName)) {
                //THROW()
             }
 
-            auto copy = TypeInfo(this->mInfo, relativeTypeName, function, initializer);
-            this->mInfo->mNestedTypeMap.Add(relativeTypeName, copy);
-            return &this->mInfo->mNestedTypeMap[relativeTypeName];
-         }
+            this->mInfo->mNestedTypeMap.Add(relativeTypeName, TypeInfo());
+            return this->mInfo->mNestedTypeMap[relativeTypeName].Initialize(this->mInfo, relativeTypeName, field, initializer);
+			}
 
          NamespaceInfo* NamespaceBuilder::AddNestedNamespace(const mirror& relativeNamespaceName, typename StaticDelegate<NamespaceBuilder>::TFunction initializer) {
             if(this->mInfo->mNestedNamespaceMap.ContainsKey(relativeNamespaceName)) {
                //THROW()
             }
 
-            auto copy = NamesaceInfo(this->mInfo, relativeNamespaceName, initializer);
-            this->mInfo->mNestedNamespaceMap.Add(relativeNamespaceName, copy);
-            return &this->mInfo->mNestedNamespaceMap[relativeNamespaceName];
-         }
+            this->mInfo->mNestedNamespaceMap.Add(relativeNamespaceName, TypeInfo());
+            return this->mInfo->mNestedNamespaceMap[relativeNamespaceName].Initialize(this->mInfo->mAssembly, this->mInfo, relativeNamespaceName, initializer);
+			}
 
          /** @brief Validates the type information after it has been constructed. */
          bool Save() const { return true; }

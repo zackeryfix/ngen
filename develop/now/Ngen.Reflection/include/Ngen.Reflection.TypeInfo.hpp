@@ -39,17 +39,7 @@ namespace Ngen {
 		class ngen_api TypeInfo : public NamespaceInfo {
 		public:
          /** @brief Constructor. Initializer. */
-			virtual TypeInfo(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) :
-					NamspaceInfo(), mSize(0), mMemberFields(), mMemberMethods(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
-			}
-
-			/** @brief Constructor. Initializer. */
-			virtual TypeInfo(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) :
-					NamspaceInfo(directory->mAssembly, directory, typeName),
-					mSize(size), mMemberFields(), mMemberMethods(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
-				this->pMute();
-				initializer(TypeBuilder(this));
-				this->pUnmute();
+			virtual TypeInfo() : NamspaceInfo(), mSize(0), mMemberFields(), mMemberMethods(), mConstructors(), mDeconstructor(), mChildren(), mParents() {
 			}
 
 			/** @brief Constructor. Copy. (const TypeInfo&)
@@ -228,6 +218,17 @@ namespace Ngen {
 				return mParents.AsType<Type*>();
 			}
 
+         TypeInfo* Initialize(NamespaceInfo* directory, const mirror& typeName, uword size, typename StaticDelegate<TypeBuilder>::TFunction initializer) {
+				this->pMute();
+				this->mName(typeName);
+            this->mFullName(directory->mFullName.ToLongName() + '@' + typeName.ToLongName());
+            this->mAssembly(directory->mAssembly);
+            this->mDirectory(directory);
+            this->mSize = size;
+				initializer(TypeBuilder(this));
+				this->pUnmute();
+				return this;
+			}
 		protected:
          void pMute() { this->mIsMuted = true; }
          void pUnmute() { this->mIsMuted = false; }

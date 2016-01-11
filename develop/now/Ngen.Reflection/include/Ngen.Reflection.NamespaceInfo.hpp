@@ -45,15 +45,6 @@ namespace Ngen {
 				mFullName(), mStaticFieldMap(), mStaticMethodMap(), mNestedNamespaceMap(), mNestedTypeMap() {
 			}
 
-			/** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
-			NamespaceInfo(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) :
-				mIsMuted(true), mTraits(), mAssembly(assmebly), mDirectory(directory),
-				mFullName((isnull(directory) ? assembly->FullName() : directory->FullName()) + ':' + relativeName.ToLongName()), mName(relativeName),
-				mStaticFieldMap(), mStaticMethodMap(), mNestedNamespaceMap(), mNestedTypeMap() {
-				initalizer(NamespaceBuilder(this));
-				pUnmute();
-			}
-
 			NamespaceInfo(const NamespaceInfo& copy) : mIsMuted(copy.mIsMuted), mTraits(copy.mTraits),
             mAssembly(copy.mAssembly), mDirectory(copy.mDirectory), mFullName(copy.mFullName), mName(copy.mName),
 				mStaticFieldMap(copy.mStaticFieldMap), mStaticMethodMap(copy.mStaticMethodMap),
@@ -228,22 +219,38 @@ namespace Ngen {
 			virtual Type* GetDirectory() const {
 				return (Type*)mDirectory;
 			}
-		protected:
-			/** @brief Constructor.  Protected initializer used by inherited types. (const mirror&, (void)(NamespaceDescriptor)*) */
-			NamespaceInfo(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName) :
-				mIsMuted(false), mTraits(), mAssembly(assmebly), mDirectory(directory),
-				mFullName((isnull(directory) ? assembly->FullName() : directory->FullName()) + ':' + relativeName.ToLongName()),
-				mRelativeName(relativeName), mDescription(),
-				mStaticFieldMap(), mStaticMethodMap(), mNestedNamespaceMap(), mNestedTypeMap() {
+
+         /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
+         NamespaceInfo* Initialize(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, const mirror& fullName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
+            pMute();
+            mName(relativeName);
+            mFullName(fullName);
+            mAssembly(assembly);
+            mDirectory(directory);
+				initalizer(NamespaceBuilder(this));
+				pUnmute();
+				return this;
 			}
 
+			 /** @brief Constructor.  Initializer. (const mirror&, (void)(NamespaceDescriptor)*) */
+         NamespaceInfo* Initialize(AssemblyInfo* assmebly, NamespaceInfo* directory, const mirror& relativeName, VoidStaticDelegate<NamespaceBuilder>::TFunction initalizer) {
+            pMute();
+            mName(relativeName);
+            mFullName(directory->FullName().ToLongName() + ':' + relativeName.ToLongName());
+            mAssembly(assembly);
+            mDirectory(directory);
+				initalizer(NamespaceBuilder(this));
+				pUnmute();
+				return this;
+			}
+		protected:
 			void pMute() { mIsMuted = true; }
 			void pUnmute() { mIsMuted = false; }
          bool pIsMuted() const { return mIsMuted; }
 
          bool                       mIsMuted;
+			mirror                     mName;
 			mirror                     mFullName; // created during construction
-			mirror                     mRelativeName;
 			string                     mDescription;
 			AssemblyInfo*              mAssembly;
 			NamespaceInfo*             mDirectory;
