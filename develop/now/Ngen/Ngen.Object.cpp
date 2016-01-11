@@ -36,6 +36,19 @@ namespace Ngen {
 		return __nullObject;
 	}
 
+
+   Object New(unknown value, const mirror& typeName, bool readOnly = false) {
+      return Object(value, typeof(typeName), readOnly);
+   }
+
+   Object New(unknown value, Type* type, bool readOnly = false) {
+      return Object(value, type, readOnly);
+   }
+
+   Object New(unknown value, bool readOnly = false) {
+      return Object(value, readOnly);
+   }
+
 	void Object::pInitialize() {
 		if(!mIsReadonly) {
 			int8* tmp = (int8*)mThis;

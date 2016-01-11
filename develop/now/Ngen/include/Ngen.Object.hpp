@@ -34,6 +34,9 @@ THE SOFTWARE.
 #include "Ngen.Callback.hpp"
 #include "Ngen.Field.hpp"
 
+//TODO:  Use an internal ObjectHeader structure to track IsReadOnly, Type, and Reference of an Object
+// This is a trade-off for 5 bytes per object
+
 namespace Ngen {
 	class ngen_api Object {
 	public:
@@ -153,6 +156,7 @@ namespace Ngen {
 
 		static const Object& Null();
 		static Object New(unknown value, const mirror& typeName, bool readOnly = false);
+		static Object New(unknown value, Type* type, bool readOnly = false);
 		static Object New(unknown value, bool readOnly = false);
 
 	protected:
