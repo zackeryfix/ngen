@@ -171,7 +171,7 @@ namespace Ngen {
 			return *this;
 		}
 
-		unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) const {
 			return Cast<TReturn>::To(_Call(_this, params, typename make_index_pack_t<sizeof...(TParams)>::type()));
 		}
 
@@ -183,7 +183,7 @@ namespace Ngen {
 
 		void SetOwner(unknown owner) const { mOwner = Cast<TOwner*>::From(owner); }
 
-		TReturn Call(TOwner* _this, TParams... params) {
+		TReturn Call(TOwner* _this, TParams... params) const {
          if((isnull(_this) && isnull(mFunction)) || !IsValid()) {
             THROW(NullReferenceException());
 			} else if(isnull(_this)) {
@@ -195,7 +195,7 @@ namespace Ngen {
 
 	protected:
 		template<uword... I>
-		TReturn _Call(unknown _this, unknown* params, index_pack_t<I...>) {
+		TReturn _Call(unknown _this, unknown* params, index_pack_t<I...>) const {
 			return Call(Cast<TOwner*>::From(_this), (Cast<TParams>::From(params[I]))...);
 		}
 

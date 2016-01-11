@@ -91,7 +91,7 @@ namespace Ngen {
    class ngen_api NonVoidDelegate : public Delegate {
    public:
       virtual ~NonVoidDelegate() {}
-      virtual TReturn Call(TParams... params) pure;
+      virtual TReturn Call(TParams... params) const pure;
       bool IsNonVoid() const { return true; };
 
       Type* ReturnType() const { return typeof<TReturn>(); }
@@ -103,7 +103,7 @@ namespace Ngen {
    class ngen_api VoidDelegate : public Delegate {
    public:
       virtual ~VoidDelegate() {}
-      virtual void Call(TParams... params) pure;
+      virtual void Call(TParams... params) const pure;
       bool IsNonVoid() const { return false; };
 
       Type* ReturnType() const { return null; }

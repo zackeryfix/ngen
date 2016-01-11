@@ -87,7 +87,7 @@ namespace Ngen {
 		}
 
 		/** @brief operator()(unknown, unknown*). */
-		unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) const {
 			_Call(params, typename make_index_pack_t<sizeof...(TParams)>::type());
 			return null;
 		}
@@ -103,12 +103,12 @@ namespace Ngen {
       void SetOwner(unknown owner) { }
 
 		/** @brief Invokes the function being referenced by the delegate. */
-		void Call(TParams... params) {
+		void Call(TParams... params) const {
 			mFunction(params...);
 		}
 
 	protected:
-		template<uword... I> void _Call(unknown* params, index_pack_t<I...>) {
+		template<uword... I> void _Call(unknown* params, index_pack_t<I...>) const {
 			Call((Cast<TParams>::From(params[I]))...);
 		}
 
@@ -155,7 +155,7 @@ namespace Ngen {
 			return *this;
 		}
 
-		unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) const {
 			return Cast<TReturn>::To(_Call(params, typename make_index_pack_t<sizeof...(TParams)>::type()));
 		}
 
@@ -168,13 +168,13 @@ namespace Ngen {
       void SetOwner(unknown owner) {
       }
 
-		TReturn Call(TParams... params) {
+		TReturn Call(TParams... params) const {
 			return mFunction(params...);
 		}
 
 	protected:
 		template<uword... I>
-		TReturn _Call(unknown* params, index_pack_t<I...>) {
+		TReturn _Call(unknown* params, index_pack_t<I...>) const {
 			return Call((Cast<TParams>::From(params[I]))...);
 		}
 

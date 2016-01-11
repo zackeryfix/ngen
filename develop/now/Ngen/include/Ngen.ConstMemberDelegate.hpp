@@ -94,7 +94,7 @@ namespace Ngen {
 		}
 
 		/** @brief operator()(unknown, unknown*). */
-		unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) const {
 			_Call(_this, params, typename make_index_pack_t<sizeof...(TParams)>::type());
 			return null;
 		}
@@ -110,7 +110,7 @@ namespace Ngen {
       void SetOwner(unknown owner) const { mOwner = Cast<TOwner*>::From(owner); }
 
 		/** @brief Invokes the function being referenced by the delegate. */
-		void Call(TOwner* _this, TParams... params) {
+		void Call(TOwner* _this, TParams... params) const {
          if((isnull(_this) && isnull(mFunction)) || !IsValid()) {
             THROW(NullReferenceException());
 			} else if(isnull(_this)) {
@@ -121,7 +121,7 @@ namespace Ngen {
 		}
 
 	protected:
-		template<uword... I> void _Call(unknown _this, unknown* params, index_pack_t<I...>) {
+		template<uword... I> void _Call(unknown _this, unknown* params, index_pack_t<I...>) const {
 			Call(Cast<TOwner*>::From(_this), (Cast<TParams>::From(params[I]))...);
 		}
 
@@ -173,7 +173,7 @@ namespace Ngen {
 			return *this;
 		}
 
-		unknown operator()(unknown _this, unknown* params) {
+		unknown operator()(unknown _this, unknown* params) const {
 			return Cast<TReturn>::To(_Call(_this, params, typename make_index_pack_t<sizeof...(TParams)>::type()));
 		}
 
@@ -186,7 +186,7 @@ namespace Ngen {
       void SetOwner(unknown owner) const { mOwner = Cast<TOwner*>::From(owner); }
 
 		/** @brief Invokes the function being referenced by the delegate. */
-		TReturn Call(TOwner* _this, TParams... params) {
+		TReturn Call(TOwner* _this, TParams... params) const {
          if((isnull(_this) && isnull(mFunction)) || !IsValid()) {
             THROW(NullReferenceException());
 			} else if(isnull(_this)) {
@@ -197,7 +197,7 @@ namespace Ngen {
 		}
 	protected:
 		template<uword... I>
-		TReturn _Call(unknown _this, unknown* params, index_pack_t<I...>) {
+		TReturn _Call(unknown _this, unknown* params, index_pack_t<I...>) const {
 			return Call(Cast<TOwner*>::From(_this), (Cast<TParams>::From(params[I]))...);
 		}
 
