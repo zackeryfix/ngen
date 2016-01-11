@@ -86,7 +86,7 @@ namespace Ngen {
 		 * @param assemblyName The assembly being dereferenced.
 		 * @return A value that determines if there were conflicts while attempting to dereference the assembly.
 		 */
-		static bool Dereference(Assembly* assembly);
+		static bool Dereference(const mirror& assemblyName);
 
 		Library* mLibrary;
 

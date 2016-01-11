@@ -32,6 +32,9 @@ THE SOFTWARE.
 #include "Ngen.KeyValuePair.hpp"
 #include "Ngen.List.hpp"
 
+/// Because I was lazy and needed the API functional:
+/// TODO: Use an Array of Keys and an array of Values instead of a KeyValuePair.
+
 namespace Ngen {
 	/** @brief A generic list of key-value pairs. */
 	template<typename TKey, typename TValue>
