@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Ngen.Reflection" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="include\;doc\;source\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/Ngen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add directory="../external/lib/debug" />
+					<Add directory="../bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/Ngen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../external/lib/release" />
+					<Add directory="../bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="../external/include" />
+			<Add directory="../Ngen/include" />
+		</Compiler>
+		<Linker>
+			<Add library="Ngen" />
+			<Add directory="../external/lib" />
+		</Linker>
+		<Unit filename="LICENSE">
+			<Option virtualFolder="doc/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.AssemblyInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.FieldInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.MethodInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.NamespaceInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.Reflection.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Reflection.TypeInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="include/Build.Ngen.Reflection.Logic.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.AssemblyBuilder.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.AssemblyInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.EFieldTrait.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.EMethodTrait.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.EParameterTrait.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.ETypeTrait.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.FieldBuilder.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.FieldInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.MethodBuilder.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.MethodInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.NamespaceBuilder.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.NamespaceInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.ParameterInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.TypeBuilder.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.TypeInfo.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.Typedefs.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Reflection.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

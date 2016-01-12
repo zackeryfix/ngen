@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Ngen.Diagnostic" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="source\;include\;doc\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/Ngen.Diagnostic.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add directory="../bin/Debug" />
+					<Add directory="../external/lib/debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/Ngen.Diagnostic.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../bin/Release" />
+					<Add directory="../external/lib/release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-DNGEN_DIAGNOSTIC_EXPORT" />
+			<Add directory="../Ngen/include" />
+			<Add directory="include" />
+			<Add directory="../external/include" />
+		</Compiler>
+		<Linker>
+			<Add library="Ngen" />
+			<Add directory="../external/lib" />
+		</Linker>
+		<Unit filename="LICENSE">
+			<Option virtualFolder="doc/" />
+		</Unit>
+		<Unit filename="Ngen.Diagnostic.Test.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Diagnostic.TestGroup.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="Ngen.Diagnostic.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="include/Build.Ngen.Diagnostic.Logic.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Diagnostic.Test.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Diagnostic.TestGroup.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Diagnostic.TestGroupResult.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Diagnostic.TestResult.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/Ngen.Diagnostic.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

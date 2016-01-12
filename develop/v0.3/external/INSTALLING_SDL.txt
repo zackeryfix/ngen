@@ -1,0 +1,50 @@
+///////////////////////////////////////////
+ ABOUT
+///////////////////////////////////////////
+The SDL2 package in the link provided here is required to develop (compile/debug) the following projects:
+
+* Ngen.IO - Uses the SDL_Window for gathering user input needed in implementing an Ngen::Application context
+* Ngen.Drawing - Uses SDL_Renderer and SDL_Surface for drawing 2D/3D geometry
+* Ngen.Drawing.Gui - Uses the Ngen.Drawing API to provide a custom GUI control library w/ custom/native-os skinning
+* Ngen.Audio - Uses the SDL audio layer to provide a clean API for rendering sound
+* Ngen.Scence - Uses the above APIs and brings them together into an interactive scene managment API
+* Ngen.Drawing.Html - Uses the Ngen.Drawing APIs to provide an HTML rendering engine 
+
+////////////////////////////////////////////
+ INSTALLATION - WINDOWS
+////////////////////////////////////////////
+1) Click the link provided for SDL ending with "WIN".  Your browser should navigate directly to the file and begin downloading.
+2) Unzip the archive completely using a decompression utility. (link to 7-zip provided in "\develop\tools\")
+3) Locate the "\lib\" folder for your architecture and copy the "SDL2.dll" files into the "\develop\now\bin\Release\" and "develop\now\bin\Debug\" folders.
+3) Locate the "\lib\" folder for your architecture and copy the "SDL2.lib" and "SDL2main.lib" files into the "\develop\now\lib\" folder.
+4) Locate the "\include\" folder and copy the entire "SDL2" folder into "\develop\now\external\include\".
+
+////////////////////////////////////////////
+ INSTALLATION - OSX
+////////////////////////////////////////////
+1) TODO:  If you are working inside an OSX development environment and get the 'UnitTest.Ngen.Drawing' project running successfully, please feel free to add you instructions to this section!
+
+////////////////////////////////////////////
+ INSTALLATION - LINUX (DISTRO)
+////////////////////////////////////////////
+1) Obtain the SDL2-devel libraries from the maintainers of your distribution.
+2) TODO: (per DISTRO) If you are working inside a LINUX DISTRO development environment and get the 'UnitTest.Ngen.Drawing' project running successfully, please feel free to add you instructions to this section!
+
+////////////////////////////////////////////
+ CHECKING THE INSTALLAION
+////////////////////////////////////////////
+You should end up with the following folder/file paths:
+
+\develop\now\bin\Debug\SDL2.(dll/so)
+\develop\now\bin\Release\SDL2.(dll/so)
+\develop\now\external\lib\(lib)SDL2.lib
+\develop\now\external\lib\(lib)SDL2main.lib
+\develop\now\external\include\SDL2\*.h
+
+1) Open the "gre.workspace" file found in the "\develop\now\" folder. 
+2) Compile the 'Entire Workspace'.  If not successful, read the out-put and make sure you copied the "\include\SDL2" folder to "\develop\now\external\include\" folder (the paths should be "\external\include\SDL2\*.h".
+3) If build was successful, run the 'UnitTest.Ngen.Drawing' project and make sure it runs successfully.  If anything fails, you probably copied the wrong library files.  Douible-check your platform-architecture and copy the correct libraries into the "\develop\bin\Debug|Release" folders.
+
+Congrats!  You can now start working on the next-generation drawing and rendering frameworks.
+
+NOTE:  Installation instructions may change in future releases.  In the end, we would like to provide our own cross-platform API that uses OpenGL, OpenCL, and OpenAL.  This version of SDL contains many unwanted/unused features and overtime we will ommit many of the header files that we are not using, and possibly remove SDL completely from the framework.
