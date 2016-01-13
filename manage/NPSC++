@@ -48,5 +48,5 @@ Rule.0008
 Use defensive programming techniques and throw appropriate exceptions when encountering unexpected beahvior.  See Ngen.Exception.hpp for a list of existing exception types before creating your own.  This also includes creating unit-tests for any new APIs.
 
 ----------------------------------------------------------------------------------------
-
+Rule.0009
 
