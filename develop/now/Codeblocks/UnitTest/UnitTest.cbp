@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="UnitTest" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="include\;source\;doc\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/debug/UnitTest" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+					<Add directory="../Ngen/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="../external/lib/debug" />
+					<Add directory="../bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="..bin/release/UnitTest" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../external/lib/release" />
+					<Add directory="../bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-DNGEN_EXPORT" />
+			<Add option="-DNGEN_DIAGNOSTIC_EXPORT" />
+			<Add directory="../external/include" />
+			<Add directory="../Ngen/include" />
+			<Add directory="../Ngen.Diagnostic/include" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add library="Ngen" />
+			<Add library="Ngen.Diagnostic" />
+			<Add directory="../external/lib" />
+			<Add directory="../bin" />
+		</Linker>
+		<Unit filename="Group..cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="LICENSE">
+			<Option virtualFolder="doc/" />
+		</Unit>
+		<Unit filename="_Main.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
+		<Unit filename="include/Build.NgenFrameworkDLL.Logic.hpp">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
