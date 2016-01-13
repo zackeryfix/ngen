@@ -48,10 +48,10 @@
 		<Unit filename="LICENSE">
 			<Option virtualFolder="doc/" />
 		</Unit>
-		<Unit filename="Ngen.Console.cpp">
+		<Unit filename="Ngen.Attribute.cpp">
 			<Option virtualFolder="source/" />
 		</Unit>
-		<Unit filename="Ngen.Delegate.cpp">
+		<Unit filename="Ngen.Console.cpp">
 			<Option virtualFolder="source/" />
 		</Unit>
 		<Unit filename="Ngen.Library.cpp">

@@ -32,7 +32,11 @@ THE SOFTWARE.
 using namespace Ngen;
 using namespace Ngen::Diagnostic;
 
-t_testgroup(?);
+t_testgroup($TEST_GROUP);
+
+
+t_begin_test(#TEST_GROUP, $TEST_NAME) [] (TestResult& result) {
+}
 */
 
 #include "_External.hpp"

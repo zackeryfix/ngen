@@ -8,9 +8,9 @@
 		<Option virtualFolders="include\;doc\;source\;" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../bin/Debug/Ngen" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/Debug/Ngen.Reflection" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="3" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
@@ -21,9 +21,9 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../bin/Release/Ngen" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/Release/Ngen.Reflection" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="3" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
@@ -40,11 +40,15 @@
 			<Add option="-Wall" />
 			<Add directory="../external/include" />
 			<Add directory="../Ngen/include" />
+			<Add directory="include" />
 		</Compiler>
 		<Linker>
 			<Add library="Ngen" />
 			<Add directory="../external/lib" />
 		</Linker>
+		<Unit filename="./Ngen.Reflection.ParameterInfo.cpp">
+			<Option virtualFolder="source/" />
+		</Unit>
 		<Unit filename="LICENSE">
 			<Option virtualFolder="doc/" />
 		</Unit>
