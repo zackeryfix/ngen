@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="testing">
+		<Project filename="UnitTest.Ngen/UnitTest.Ngen.cbp" />
+		<Project filename="UnitTest.Ngen.Reflection/UnitTest.Ngen.Reflection.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
