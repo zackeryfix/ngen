@@ -1,0 +1,52 @@
+
+Next-generation Programming Standard for C++ (NPS-C++)
+
+These rules were made to enhance the development process of applications written in C++, and are not meant to redefine the standards of the langauge itself.  Most of these rules apply to source code found specifically inside the Ngen Framework, but should be applied to all project efforts using C++ and the Ngen Framework (both internally, and externally).
+
+---------------------------------------------------------------------------------------
+Rule.0001
+The depth of a pointer can be no greater than 1. Consequently, if a depth greater than one is required, use built-in container templates provided by the framework.
+
+Example:
+T* pointer; // acceptable
+T** pointer; // not-acceptable use Ngen::Array<T*>
+T*** pointer; // not-acceptable use Ngen::Array<Ngen::Array<T*> >
+
+----------------------------------------------------------------------------------------
+Rule.0002
+For all public APIs and symbols, use a camel-case naming convention and more imporantly, use the same local language identified by the source code package you are modifying.  ie.  If the sources are written using English, do not use Korean; use English.
+
+----------------------------------------------------------------------------------------
+Rule.0003
+For all protected members in a class, or namespace, use a prefix 'm', and for all private members use a prefix 'p'.
+
+Example:
+class ExampleClass {
+public: ExampleClass() {}
+protected: uint mProtected;
+private: uint pPrivate();
+};
+
+----------------------------------------------------------------------------------------
+Rule.0004
+Do not use polymorphism using more than one complete type.  A complete type is a class that has a complete implementation with no pure virtual functions.  You can only inheriet from multiple types if each additional type contains at least one pure virtual function. 
+
+----------------------------------------------------------------------------------------
+Rule.0005
+Do not use raw pointers if possible.  Always store data in container types, such as Ngen::Array, Ngen::Map, or Ngen::List, or use the Ngen::Pointer auto-shared unique pointer implementation.
+
+----------------------------------------------------------------------------------------
+Rule.0006
+Keep all types, functions, and fields within a namespace or class, and try using a modular design that provides one namespace per library.
+
+----------------------------------------------------------------------------------------
+Rule.0007
+Use a single escape route for all functions whenever possible.  Most algorithms in the framework are organized to use a single return statement.  Multiple-escape routes are allowed in cases where defensive programming has been applied.
+
+----------------------------------------------------------------------------------------
+Rule.0008
+Use defensive programming techniques and throw appropriate exceptions when encountering unexpected beahvior.  See Ngen.Exception.hpp for a list of existing exception types before creating your own.  This also includes creating unit-tests for any new APIs.
+
+----------------------------------------------------------------------------------------
+
+
